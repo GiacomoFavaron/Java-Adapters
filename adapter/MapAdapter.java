@@ -3,6 +3,9 @@ package adapter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+
+
+
 // Notes:
 // Modifiche "invalide" di entrySet, keySet, values...
 // Metodo toString()
