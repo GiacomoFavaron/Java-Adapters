@@ -368,28 +368,136 @@ public class ListAdapter implements HList {
         return v.size();    //Integer.maxValue??
     }
 
-    /**
-     * 
-    */
-    @Override
     public HList subList(int fromIndex, int toIndex) {
-        return null;
+        return new SubList(fromIndex, toIndex);
     }
 
-    /**
-     * 
-    */
-    @Override
     public Object[] toArray() {
-        return null;
+        Object[] v = new Object[size()];
+        HIterator it = iterator();
+        int i = 0;
+        while(it.hasNext()) {
+            v[i] = it.next();
+            i++;
+        }
+        return v;
     }
 
-    /**
-     * 
-    */
-    @Override
     public Object[] toArray(Object[] a) {
-        return null;
+        return toArray();
+    }
+
+    private class SubList extends ListAdapter {
+        int offset = 0;
+        int size = 0;
+        
+        public SubList(int from, int to) {
+            offset = from;
+            size = to;
+        }
+
+        public void add(int index, Object element) {
+            super.add(index + offset, element);
+        }
+
+        public boolean add(Object o) {
+            super.add(offset + size, o);
+            size++;
+            return true;
+        }
+
+        public boolean addAll(HCollection c) {
+            return super.addAll(offset + size, c);
+        }
+
+        public boolean addAll(int index, HCollection c) {
+            return super.addAll(index + size, c);
+        }
+
+        public void clear() {
+            int i = offset;
+            while(i < size) {
+                super.remove(i);
+                i++;
+            }
+        }
+
+        public boolean contains(Object o) {
+            return true;
+        }
+
+        public boolean containsAll(HCollection c) {
+            return true;
+        }
+
+        public boolean equals(Object o) {
+            return true;
+        }
+
+        public Object get(int index) {
+            return null;
+        }
+
+        public int hashCode() {
+            return 0;
+        }
+
+        public int indexOf(Object o) {
+            return 0;
+        }
+
+        public boolean isEmpty() {
+            return offset == size;
+        }
+
+        public Iterator iterator() {
+            return null;
+        }
+
+        public int lastIndexOf(Object o) {
+            return 0;
+        }
+
+        public HListIterator listIterator() {
+            return null;
+        }
+
+        public HListIterator listIterator(int index) {
+            return null;
+        }
+
+        public Object remove(int index) {
+            return super.remove(offset + index);
+        }
+
+        public boolean remove(Object o) {
+            return true;
+        }
+
+        public boolean removeAll(HCollection c) {
+            return true;
+        }
+
+        public boolean retainAll(HCollection c) {
+            return true;
+        }
+
+        public Object set(int index, Object element) {
+            return null;
+        }
+
+        public int size() {
+            return offset - size;
+        }
+
+        public Object[] toArray() {
+            return null;
+        }
+
+        public Object[] toArray(Object[] a) {
+            return null;
+        }
+
     }
 
 }

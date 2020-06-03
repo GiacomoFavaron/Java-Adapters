@@ -124,8 +124,8 @@ public class SetAdapter implements HSet {
     }
 
     private class SetIterator implements HIterator {
-        Enumeration keys = hashtable.keys();
-        Object lastRetKey = null;
+        private Enumeration keys = hashtable.keys();
+        private Object lastRetKey = null;
 
         public boolean hasNext() {
             return keys.hasMoreElements();
@@ -208,10 +208,10 @@ public class SetAdapter implements HSet {
      */
     public Object[] toArray(){
         Object[] v = new Object[size()];
-        Enumeration keys = hashtable.elements();
+        HIterator it = iterator();
         int i = 0;
-        while(keys.hasMoreElements()) {
-            v[i] = keys.nextElement();
+        while(it.hasNext()) {
+            v[i] = it.next();
             i++;
         }
         return v;
@@ -221,6 +221,6 @@ public class SetAdapter implements HSet {
      * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
      */
     public Object[] toArray(Object[] a) {
-        throw new UnsupportedOperationException();
+        return toArray();
     }
 }
