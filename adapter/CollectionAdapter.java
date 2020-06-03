@@ -1,5 +1,5 @@
 package adapter;
 
-public class CollectionAdapter implements HCollection {
+public class CollectionAdapter extends ListAdapter implements HCollection {
     
 }
