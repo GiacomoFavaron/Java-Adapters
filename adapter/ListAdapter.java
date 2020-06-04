@@ -423,32 +423,6 @@ public class ListAdapter implements HList {
             }
         }
 
-        // public boolean contains(Object o) {
-        //     if(o == null) {
-        //         throw new NullPointerException();
-        //     }
-        //     HIterator it = iterator();
-        //     while(it.hasNext()) {
-        //         if(it.next().equals(o)) {
-        //             return true; 
-        //         }
-        //     }
-        //     return false;
-        // }
-
-        // public boolean containsAll(HCollection c) {
-        //     if(c == null) {
-        //         throw new NullPointerException();
-        //     }
-        //     HIterator it = c.iterator();
-        //     while(it.hasNext()) {
-        //         if(!contains(it.next())) {
-        //             return false;
-        //         }
-        //     }
-        //     return true;
-        // }
-
         public Object get(int index) {
             boundCheck(index);
             return super.get(offset + index);
@@ -467,8 +441,7 @@ public class ListAdapter implements HList {
         }
 
         public HIterator iterator() {
-            // ...
-            return null;
+            return new SubListIterator(0);
         }
 
         public int lastIndexOf(Object o) {
@@ -480,13 +453,67 @@ public class ListAdapter implements HList {
         }
 
         public HListIterator listIterator() {
-            // ...
-            return null;
+            return new SubListIterator(0);
         }
 
         public HListIterator listIterator(int index) {
-            // ...
-            return null;
+            return new SubListIterator(index);
+        }
+
+        private class SubListIterator implements HListIterator {
+            private HListIterator it = null;
+
+            SubListIterator(int index) {
+                it = ListAdapter.this.listIterator(index);
+            }
+
+            public boolean hasNext() {
+                return nextIndex() < size;
+            }
+
+            public Object next() {
+                if(hasNext()) { // hasNext() di subList, che controlla indici
+                    return it.next(); // next usa l'hasNext() di List
+                }
+                else {
+                    throw new NoSuchElementException();
+                }
+            }
+
+            public boolean hasPrevious() {
+                return previousIndex() >= 0;
+            }
+
+            public Object previous() {
+                if(hasPrevious()) {
+                    return it.previous();
+                }
+                else {
+                    throw new NoSuchElementException();
+                }
+            }
+
+            public int nextIndex() {
+                return it.nextIndex() - offset;
+            }
+
+            public int previousIndex() {
+                return it.previousIndex() - offset;
+            }
+
+            public void remove() {
+                it.remove();
+                size--;
+            }
+
+            public void set(Object o) {
+                it.set(o);
+            }
+
+            public void add(Object o) {
+                it.add(o);
+                size++;
+            }
         }
 
         public Object remove(int index) {
