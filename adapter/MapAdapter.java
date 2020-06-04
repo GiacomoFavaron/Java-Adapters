@@ -84,7 +84,7 @@ public class MapAdapter implements HMap {
             return new EntryIterator();
         }
 
-        private class EntryIterator extends SetIterator implements HIterator {
+        private class EntryIterator implements HIterator {
 
             private Enumeration keys = h.keys();
             private Object lastRetKey = null;
