@@ -409,12 +409,18 @@ public class ListAdapter implements HList {
         }
 
         public boolean addAll(HCollection c) {
-            return super.addAll(offset + size, c);
+            return addAll(size, c);
         }
 
         public boolean addAll(int index, HCollection c) {
-            boundCheck(index);
-            return super.addAll(offset + index, c);
+            boundCheckForAdd(index);
+            int cSize = c.size();
+            if(cSize == 0) {
+                return false;
+            }
+            super.addAll(offset + index, c);
+            size += cSize;
+            return true;
         }
 
         public void clear() {
