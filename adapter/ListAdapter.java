@@ -372,32 +372,34 @@ public class ListAdapter implements HList {
         return new SubList(fromIndex, toIndex);
     }
 
-    public Object[] toArray() {
-        Object[] v = new Object[size()];
-        HIterator it = iterator();
-        int i = 0;
-        while(it.hasNext()) {
-            v[i] = it.next();
-            i++;
-        }
-        return v;
-    }
-
-    public Object[] toArray(Object[] a) {
-        return toArray();
-    }
-
     private class SubList extends ListAdapter {
-        int offset = 0;
-        int size = 0;
+        int offset = -1;
+        int size = -1;
         
-        public SubList(int from, int to) {
-            offset = from;
-            size = to;
+        public SubList(int fromIndex, int toIndex) {
+            if (fromIndex < 0 || toIndex > super.size() || fromIndex > toIndex) {
+                throw new IndexOutOfBoundsException();
+            }
+            offset = fromIndex;
+            size = toIndex - fromIndex;
+        }
+
+        private void boundCheck(int index) {
+            if(index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException();
+            }
+        }
+
+        private void boundCheckForAdd(int index) {
+            if(index < 0 || index > size) {
+                throw new IndexOutOfBoundsException();
+            }
         }
 
         public void add(int index, Object element) {
-            super.add(index + offset, element);
+            boundCheckForAdd(index);
+            super.add(offset + index, element);
+            size++;
         }
 
         public boolean add(Object o) {
@@ -411,93 +413,161 @@ public class ListAdapter implements HList {
         }
 
         public boolean addAll(int index, HCollection c) {
-            return super.addAll(index + size, c);
+            boundCheck(index);
+            return super.addAll(offset + index, c);
         }
 
         public void clear() {
-            int i = offset;
-            while(i < size) {
+            for(int i = offset; i < (offset + size); i++) {
                 super.remove(i);
-                i++;
             }
         }
 
-        public boolean contains(Object o) {
-            return true;
-        }
+        // public boolean contains(Object o) {
+        //     if(o == null) {
+        //         throw new NullPointerException();
+        //     }
+        //     HIterator it = iterator();
+        //     while(it.hasNext()) {
+        //         if(it.next().equals(o)) {
+        //             return true; 
+        //         }
+        //     }
+        //     return false;
+        // }
 
-        public boolean containsAll(HCollection c) {
-            return true;
-        }
-
-        public boolean equals(Object o) {
-            return true;
-        }
+        // public boolean containsAll(HCollection c) {
+        //     if(c == null) {
+        //         throw new NullPointerException();
+        //     }
+        //     HIterator it = c.iterator();
+        //     while(it.hasNext()) {
+        //         if(!contains(it.next())) {
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // }
 
         public Object get(int index) {
-            return null;
-        }
-
-        public int hashCode() {
-            return 0;
+            boundCheck(index);
+            return super.get(offset + index);
         }
 
         public int indexOf(Object o) {
-            return 0;
+            int index = super.indexOf(o);
+            if(index < offset || index >= size) {
+                return -1;
+            }
+            return index;
         }
 
         public boolean isEmpty() {
-            return offset == size;
+            return size == 0;
         }
 
-        public Iterator iterator() {
+        public HIterator iterator() {
+            // ...
             return null;
         }
 
         public int lastIndexOf(Object o) {
-            return 0;
+            int index = super.lastIndexOf(o);
+            if(index < offset || index >= size) {
+                return -1;
+            }
+            return index;
         }
 
         public HListIterator listIterator() {
+            // ...
             return null;
         }
 
         public HListIterator listIterator(int index) {
+            // ...
             return null;
         }
 
         public Object remove(int index) {
-            return super.remove(offset + index);
+            boundCheck(index);
+            Object o = super.remove(offset + index);
+            size--;
+            return o;
         }
 
         public boolean remove(Object o) {
-            return true;
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            HIterator it = iterator();
+            while(it.hasNext()) {
+                if(it.next().equals(o)) {
+                    it.remove();
+                    return true;
+                }
+            }
+            return false;
         }
 
         public boolean removeAll(HCollection c) {
-            return true;
+            if(c == null) {
+                throw new NullPointerException();
+            }
+            boolean flag = false;
+            HIterator it = c.iterator();
+            while(it.hasNext()) {
+                if(remove(it.next())) {
+                    size--;
+                    flag = true;
+                }
+            }
+            return flag;
         }
 
         public boolean retainAll(HCollection c) {
-            return true;
+            if(c == null) {
+                throw new NullPointerException();
+            }
+            boolean flag = false;
+            HIterator it = iterator();
+            while(it.hasNext()) {
+                Object o = it.next();
+                if(!c.contains(o)) {
+                    remove(o);
+                    size--;
+                    flag = true;
+                }
+            }
+            return flag;
         }
 
         public Object set(int index, Object element) {
-            return null;
+            if(element == null) {
+                throw new NullPointerException();
+            }
+            boundCheck(index);
+            return super.set(offset + index, element);
         }
 
         public int size() {
-            return offset - size;
+            return size;
         }
+    }
 
-        public Object[] toArray() {
-            return null;
+    public Object[] toArray() {
+        Object[] v = new Object[size()];
+        HIterator it = iterator();
+        int i = 0;
+        while(it.hasNext()) {
+            v[i] = it.next();
+            i++;
         }
+        return v;
+    }
 
-        public Object[] toArray(Object[] a) {
-            return null;
-        }
-
+    public Object[] toArray(Object[] a) {
+        return toArray();
     }
 
 }
