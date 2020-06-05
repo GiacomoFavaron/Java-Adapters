@@ -1,15 +1,28 @@
 package adapter;
 
 import org.junit.Test;
+import org.junit.Before;
 import static org.junit.Assert.*;
 
 public class TestListAdapter {
-    @Test
-	public void test3()
-	{
-		System.out.println("test3");
-		//String str= "Junit is still working fine";
-		String str= "Junit is working fine";
-		assertEquals("Junit is working fine",str);
+
+	private ListAdapter l = null;
+
+	@Before
+	public  void setUp() {
+		l = new ListAdapter();
+	}
+
+	@Test
+	public void TestAddWithParams() {
+		Object o = new Object();
+		l.add(0, o);
+		assertEquals(o, l.get(0));
+	}
+
+	@Test (expected = NullPointerException.class)
+	public void testAddWithParamsWithNullElement() {
+		//System.out.println("Testing add(int index, Object element) when adding a null element: ");
+		l.add(0, null);
 	}
 }

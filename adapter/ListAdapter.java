@@ -141,7 +141,7 @@ public class ListAdapter implements HList {
     @Override
     public Object get(int index) {
         try {
-            return get(index);
+            return v.elementAt(index);
         }
         catch(ArrayIndexOutOfBoundsException e) {
             throw new IndexOutOfBoundsException();
