@@ -8,10 +8,14 @@ public class TestListAdapter {
 
 	private ListAdapter l = null;
 
+	// Set up
+
 	@Before
 	public  void setUp() {
 		l = new ListAdapter();
 	}
+
+	// Tests
 
 	@Test
 	public void TestAddWithParams() {
@@ -25,4 +29,17 @@ public class TestListAdapter {
 		//System.out.println("Testing add(int index, Object element) when adding a null element: ");
 		l.add(0, null);
 	}
+
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testAddWithParamsIndexOutOfBounds() {
+		l.add(-1, new Object());
+	}
+
+
+
+	@Test
+	public void testGet() {
+
+	}
+
 }
