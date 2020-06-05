@@ -23,7 +23,6 @@ public class TestListAdapter {
 		Object o = new Object();
 		l.add(0, o);
 		assertEquals(o, l.get(0));
-		assertEquals(1, l.size());
 	}
 
 	@Test
@@ -34,7 +33,6 @@ public class TestListAdapter {
 		Object o = new Object();
 		l.add(l.size(), o);
 		assertEquals(o, l.get(l.size()-1));
-		assertEquals(6, l.size());
 	}
 
 	@Test (expected = NullPointerException.class)
@@ -63,7 +61,6 @@ public class TestListAdapter {
 		}
 		Object o = new Object();
 		assertTrue(l.add(o));
-		assertEquals(6, l.size());
 		assertEquals(o, l.get(l.size()-1));
 	}
 
@@ -81,7 +78,6 @@ public class TestListAdapter {
 		c.add(o1);
 		c.add(o2);
 		assertTrue(l.addAll(c));
-		assertEquals(2, l.size());
 		assertEquals(o1, l.get(0));
 		assertEquals(o2, l.get(1));
 	}
@@ -89,7 +85,7 @@ public class TestListAdapter {
 	@Test
 	public void TestAddAllEmptyCollection() {
 		HCollection c = new CollectionAdapter();
-		assertEquals(l.addAll(c), false);
+		assertFalse(l.addAll(c));
 	}
 
 	// @Test(expected = NullPointerException.class)
@@ -104,6 +100,96 @@ public class TestListAdapter {
 	@Test(expected = NullPointerException.class)
 	public void testAddAllWithNullCollection() {
 		l.addAll(null);
+	}
+
+	// addAll(index, c)
+	@Test
+	public void TestAddAllWithParamsFirstPosition() {
+		HCollection c = new CollectionAdapter();
+		Object o1 = new Object();
+		Object o2 = new Object();
+		Object o3 = new Object();
+		Object o4 = new Object();
+		l.add(o1);
+		l.add(o2);
+		c.add(o3);
+		c.add(o4);
+		assertTrue(l.addAll(0, c));
+		assertEquals(o3, l.get(0));
+		assertEquals(o4, l.get(1));
+	}
+
+	@Test
+	public void TestAddAllWithParamsLastPosition() {
+		HCollection c = new CollectionAdapter();
+		Object o1 = new Object();
+		Object o2 = new Object();
+		Object o3 = new Object();
+		Object o4 = new Object();
+		l.add(o1);
+		l.add(o2);
+		c.add(o3);
+		c.add(o4);
+		assertTrue(l.addAll(2, c));
+		assertEquals(o3, l.get(2));
+		assertEquals(o4, l.get(3));
+	}
+
+	@Test (expected = NullPointerException.class)
+	public void testAddAllWithParamsWithNullElement() {
+		l.addAll(0, null);
+	}
+
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testAddAllWithParamsIndexOutOfBoundsNegative() {
+		l.addAll(-1, new CollectionAdapter());
+	}
+
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testAddAllWithParamsIndexOutOfBoundsGreaterThanSize() {
+		for(int i = 0; i < 5; i++) {
+			l.add(new Object());
+		}
+		l.add(6, new CollectionAdapter());
+	}
+
+	// clear
+	@Test
+	public void testClear() {
+		for(int i = 0; i < 5; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+		l.clear();
+		assertEquals(0, l.size());
+		assertFalse(l.contains(o));
+	}
+
+	// contains
+	@Test
+	public void testContainsFirstPos() {
+		Object o = new Object();
+		l.add(o);
+		for(int i = 0; i < 5; i++) {
+			l.add(new Object());
+		}
+		assertTrue(l.contains(o));
+	}
+
+	@Test
+	public void testContainsLastPos() {
+		for(int i = 0; i < 5; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+		assertTrue(l.contains(o));
+	}
+
+	@Test (expected = NullPointerException.class)
+	public void testContainsWithNullObject() {
+		l.contains(null);
 	}
 
 }
