@@ -557,12 +557,27 @@ public class TestListAdapter {
         for(int i = 0; i < 5; i++) {
             l.add(new Object());
 		}
-		HIterator lit = l.listIterator();
+		HListIterator lit = l.listIterator();
 		lit.next();
         lit.remove();
         assertEquals(4, l.size());
 	}
 
+	/**
+     * Test listIterator(index)
+     */
 
+    @Test
+    public void testListIteratorIndex() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit1 = l.listIterator();
+		HListIterator lit2 = l.listIterator(2);
+		for(int i = 0; i < 2; i++) {
+            lit1.next();
+		}
+        assertEquals(lit1.next(), lit2.next());
+	}
 
 }
