@@ -252,6 +252,12 @@ public class ListAdapter implements HList {
             cursor = index;
         }
 
+        public void add(Object o) {
+            ListAdapter.this.add(cursor, o);
+            cursor++;
+            lastRet = -1;
+        }
+
         public boolean hasPrevious() {
             return cursor != 0;
         }
@@ -260,7 +266,8 @@ public class ListAdapter implements HList {
             if(!hasPrevious()) {
                 throw new NoSuchElementException();
             }
-            Object o = get(--cursor);
+            cursor--;
+            Object o = get(cursor);
             lastRet = cursor;
             return o;
         }
@@ -278,12 +285,6 @@ public class ListAdapter implements HList {
                 throw new IllegalStateException();
             }
             ListAdapter.this.set(lastRet, o); //Da testare indici limite
-        }
-
-        public void add(Object o) {
-            ListAdapter.this.add(cursor, o);
-            cursor++;
-            lastRet = -1;
         }
 
     }

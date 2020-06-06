@@ -19,14 +19,14 @@ public class TestListAdapter {
 
 	// Add(index, o)
 	@Test
-	public void TestAddWithParamsFirstPosition() {
+	public void testAddWithParamsFirstPosition() {
 		Object o = new Object();
 		l.add(0, o);
 		assertEquals(o, l.get(0));
 	}
 
 	@Test
-	public void TestAddWithParamsLastPosition() {
+	public void testAddWithParamsLastPosition() {
 		for(int i = 0; i < 5; i++) {
 			l.add(new Object());
 		}
@@ -135,7 +135,7 @@ public class TestListAdapter {
 		assertEquals(o4, l.get(3));
 	}
 
-	@Test (expected = NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testAddAllWithParamsWithNullElement() {
 		l.addAll(0, null);
 	}
@@ -241,7 +241,7 @@ public class TestListAdapter {
             otherList.add(o);
             l.add(o);
         }
-        assertTrue(l.equals(otherList));
+        assertEquals(l, otherList);
     }
 
     @Test
@@ -250,6 +250,17 @@ public class TestListAdapter {
 		otherList.add(new Object());
 		l.add(new Object());
         assertFalse(l.equals(otherList));
+	}
+
+	@Test
+    public void testEqualsEmptyList() {
+		HList otherList = new ListAdapter();
+        assertEquals(l, otherList);
+	}
+
+	@Test
+	public void testEqualsEqualToItself() {
+		assertTrue(l.equals(l));
 	}
 	
 	@Test
@@ -287,27 +298,58 @@ public class TestListAdapter {
      */
 
 	@Test
-    public void testhashCodeTrue() {
+    public void testHashCodeTrue() {
         HList otherList = new ListAdapter();
         for(int i = 0; i < 5; i++) {
 			Object o = new Object();
             otherList.add(o);
             l.add(o);
         }
-		assertTrue(l.equals(otherList));
+		assertEquals(l, otherList);
 		assertTrue(l.hashCode() == otherList.hashCode());
 	}
 	
 	@Test
-    public void testhashCodeFalse() {
+    public void testHashCodeFalse() {
         HList otherList = new ListAdapter();
         for(int i = 0; i < 5; i++) {
-			Object o = new Object();
-            l.add(o);
+            l.add(new Object());
         }
 		assertFalse(l.equals(otherList));
 		assertFalse(l.hashCode() == otherList.hashCode());
-    }
+	}
+	
+	/**
+     * Test indexOf
+     */
+
+	@Test
+    public void testIndexOfObjectContained() {
+        for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+		for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		l.add(o);
+		assertEquals(2, l.indexOf(o));
+	}
+
+	@Test
+    public void testIndexOfObjectNotContained() {
+        for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		assertEquals(-1, l.indexOf(o));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testIndexOfWithNull() {
+		l.indexOf(null);
+	}
 
 	/**
      * TestIsEmpty
@@ -329,7 +371,7 @@ public class TestListAdapter {
      */
 
     @Test
-    public void testIterator() {
+    public void testIteratorNextAndHasNext() {
         for(int i = 0; i < 5; i++) {
             l.add(new Object());
 		}
@@ -338,7 +380,189 @@ public class TestListAdapter {
         while(it.hasNext()) {
             otherList.add(it.next());
         }
-        assertTrue(l.equals(otherList));
-    }
+        assertEquals(l, otherList);
+	}
+	
+	@Test
+    public void testIteratorRemove() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HIterator it = l.iterator();
+		it.next();
+        it.remove();
+        assertEquals(4, l.size());
+	}
+	
+	/**
+     * Test lastIndexOf
+     */
+
+	@Test
+    public void testLastIndexOfObjectContained() {
+        for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+		for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		l.add(o);
+		assertEquals(5, l.lastIndexOf(o));
+	}
+
+	@Test
+    public void testLastIndexOfObjectNotContained() {
+        for(int i = 0; i < 2; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		assertEquals(-1, l.lastIndexOf(o));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testLastIndexOfWithNull() {
+		l.lastIndexOf(null);
+	}
+
+	/**
+     * Test listIterator
+     */
+
+    @Test
+    public void testListIteratorNextAndHasNext() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        HListIterator lit = l.listIterator();
+        HList otherList = new ListAdapter();
+        while(lit.hasNext()) {
+            otherList.add(lit.next());
+        }
+        assertEquals(l, otherList);
+	}
+
+	@Test
+    public void testListIteratorPreviousAndHasPrevious() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+        HListIterator lit = l.listIterator();
+        HList otherList = new ListAdapter();
+        while(lit.hasNext()) {
+           lit.next();
+		}
+		while(lit.hasPrevious()) {
+			otherList.add(lit.previous());
+		}
+		assertEquals(6, otherList.size());
+		assertEquals(o, otherList.get(0));
+	}
+
+	// Add
+	// need to test that call to next() isn't affected
+	// modifiche alla lista mentre c'e' un'iterazione in corso?
+	@Test
+	public void testListIteratorAdd() {
+		Object o1 = new Object();
+		l.add(o1);
+		HListIterator lit = l.listIterator();
+		assertEquals(o1, lit.next());
+		lit.previous(); // restore
+		for(int i = 0; i < 3; i++) {
+            lit.add(new Object());
+		}
+		Object o2 = new Object();
+		lit.add(o2);
+		assertEquals(5, l.size());
+		assertEquals(o2, lit.previous());
+		lit.next(); // restore
+		assertEquals(o1, lit.next()); // chiamata a next unaffected dagli add dell'iteratore
+	}
+
+	@Test (expected = NullPointerException.class)
+	public void testListIteratorAddWithNullElement() {
+		HListIterator lit = l.listIterator();
+		lit.add(null);
+	}
+
+	// nextIndex
+	@Test
+    public void testListIteratorNextIndexStart() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        HListIterator lit = l.listIterator();
+        assertEquals(0, lit.nextIndex());
+	}
+
+	@Test
+    public void testListIteratorNextIndexMiddle() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.next();
+        assertEquals(2, lit.nextIndex());
+	}
+
+	@Test
+    public void testListIteratorNextIndexEnd() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		while(lit.hasNext()) lit.next();
+        assertEquals(l.size(), lit.nextIndex());
+	}
+
+	// previousIndex
+	@Test
+    public void testListIteratorPreviousIndexStart() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        HListIterator lit = l.listIterator();
+        assertEquals(-1, lit.previousIndex());
+	}
+
+	@Test
+    public void testListIteratorPreviousIndexMiddle() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.next();
+        assertEquals(1, lit.previousIndex());
+	}
+
+	@Test
+    public void testListIteratorPreviousIndexEnd() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		while(lit.hasNext()) lit.next();
+        assertEquals(l.size()-1, lit.previousIndex());
+	}
+	
+	// remove
+	@Test
+    public void testListIteratorRemove() {
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		HIterator lit = l.listIterator();
+		lit.next();
+        lit.remove();
+        assertEquals(4, l.size());
+	}
+
+
 
 }
