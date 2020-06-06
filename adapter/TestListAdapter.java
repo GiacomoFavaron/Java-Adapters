@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 public class TestListAdapter {
 
 	private ListAdapter l = null;
@@ -382,6 +384,17 @@ public class TestListAdapter {
         }
         assertEquals(l, otherList);
 	}
+
+	@Test(expected = NoSuchElementException.class)
+    public void testIteratorNextNoMoreElements() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+        HIterator it = l.iterator();
+        for(int i = 0; i < 4; i++) {
+            it.next();
+		}
+	}
 	
 	@Test
     public void testIteratorRemove() {
@@ -443,6 +456,17 @@ public class TestListAdapter {
         assertEquals(l, otherList);
 	}
 
+	@Test(expected = NoSuchElementException.class)
+    public void testListIteratorNextNoMoreElements() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+        HListIterator lit = l.listIterator();
+        for(int i = 0; i < 4; i++) {
+            lit.next();
+		}
+	}
+
 	@Test
     public void testListIteratorPreviousAndHasPrevious() {
         for(int i = 0; i < 5; i++) {
@@ -462,8 +486,16 @@ public class TestListAdapter {
 		assertEquals(o, otherList.get(0));
 	}
 
+	@Test(expected = NoSuchElementException.class)
+    public void testListIteratorPreviousNoMoreElements() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+        HListIterator lit = l.listIterator();
+        lit.previous();
+	}
+
 	// Add
-	// need to test that call to next() isn't affected
 	// modifiche alla lista mentre c'e' un'iterazione in corso?
 	@Test
 	public void testListIteratorAdd() {
@@ -563,6 +595,111 @@ public class TestListAdapter {
         assertEquals(4, l.size());
 	}
 
+	@Test(expected = IllegalStateException.class)
+    public void testRemoveWithoutNextOrPrevious() {
+		for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+        lit.remove();
+	}
+	
+	@Test(expected = IllegalStateException.class)
+    public void testRemoveAfterAdd() {
+		for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.add(new Object());
+        lit.remove();
+	}
+
+	// set
+
+	@Test
+    public void testListIteratorSetAfterNextFirstPos() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		Object o = new Object();
+        lit.set(o);
+        assertEquals(o, l.get(0));
+	}
+
+	@Test
+    public void testListIteratorSetAfterNextLastPos() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		while(lit.hasNext())
+			lit.next();
+		Object o = new Object();
+        lit.set(o);
+        assertEquals(o, l.get(l.size()-1));
+	}
+
+	@Test
+    public void testListIteratorSetAfterPreviousFirstPos() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.previous();
+		Object o = new Object();
+        lit.set(o);
+        assertEquals(o, l.get(0));
+	}
+
+	@Test
+    public void testListIteratorSetAfterPreviousLastPos() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		while(lit.hasNext())
+			lit.next();
+		lit.previous();
+		Object o = new Object();
+        lit.set(o);
+        assertEquals(o, l.get(l.size()-1));
+	}
+
+	@Test(expected = IllegalStateException.class)
+    public void testSetWithoutNextOrPrevious() {
+		for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+        lit.set(new Object());
+	}
+	
+	@Test(expected = IllegalStateException.class)
+    public void testSetAfterAdd() {
+		for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.add(new Object());
+        lit.set(new Object());
+	}
+
+	@Test(expected = IllegalStateException.class)
+    public void testSetAfterRemove() {
+		for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		HListIterator lit = l.listIterator();
+		lit.next();
+		lit.remove();
+        lit.set(new Object());
+	}
+
 	/**
      * Test listIterator(index)
      */
@@ -579,5 +716,61 @@ public class TestListAdapter {
 		}
         assertEquals(lit1.next(), lit2.next());
 	}
+
+	/**
+     * Test remove(index)
+     */
+
+    @Test
+    public void testRemoveIndex() {
+		for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        Object o = new Object();
+        l.add(3, o);
+        l.remove(3);
+        assertFalse(l.contains(o));
+    }
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+    public void testRemoveOutOfBoundsNegative() {
+		for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        l.remove(-1);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+    public void testRemoveOutOfBoundsGreaterThanSize() {
+		for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        l.remove(5);
+    }
+
+	/**
+     * Test remove(o)
+     */
+
+    @Test
+    public void testRemove() {
+        Object o = new Object();
+        l.add(o);
+        assertTrue(l.remove(o));
+        assertEquals(false, l.contains(o));
+    }
+
+    @Test
+    public void testRemoveWithObjNotContained() {
+        Object o = new Object();
+        l.add(o);
+        assertFalse(l.remove(new Object()));
+        assertEquals(true, l.contains(o));
+	}
+	
+	@Test(expected = NullPointerException.class)
+    public void testRemoveNullOBject() {
+        l.remove(null);
+    }
 
 }
