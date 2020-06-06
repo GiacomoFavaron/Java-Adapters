@@ -283,6 +283,33 @@ public class TestListAdapter {
 	}
 
 	/**
+     * Test hashCode
+     */
+
+	@Test
+    public void testhashCodeTrue() {
+        HList otherList = new ListAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+            otherList.add(o);
+            l.add(o);
+        }
+		assertTrue(l.equals(otherList));
+		assertTrue(l.hashCode() == otherList.hashCode());
+	}
+	
+	@Test
+    public void testhashCodeFalse() {
+        HList otherList = new ListAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+            l.add(o);
+        }
+		assertFalse(l.equals(otherList));
+		assertFalse(l.hashCode() == otherList.hashCode());
+    }
+
+	/**
      * TestIsEmpty
      */
 
