@@ -19,10 +19,7 @@ public class TestSublistListAdapter {
 	@Before
 	public  void setUp() {
 		ListAdapter param = new ListAdapter();
-		for(int i = 0; i < 10; i++) {
-			param.add(new Object());
-		}
-        ListAdapter sublist = (ListAdapter) param.subList(3, 3);
+        ListAdapter sublist = (ListAdapter) param.subList(0, 0);
         l = sublist;
 	}
 
