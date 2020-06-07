@@ -862,7 +862,7 @@ public class TestSublistListAdapter {
         for(int i = 0; i < 5; i++) {
             l.add(new Object());
 		}
-		c.add(new Object());
+		//c.add(new Object());
 		assertTrue(l.retainAll(c));
 		assertEquals(0, l.size());
 	}
@@ -927,6 +927,6 @@ public class TestSublistListAdapter {
      * Test Sublist(fromIndex, toIndex)
      */
 
-	
+	// Classe test + vedere se i cambiamenti si ripercuotono su listra madre qui
 
 }

@@ -321,7 +321,9 @@ public class ListAdapter implements HList {
         boolean flag = false;
         HIterator it = c.iterator();
         while(it.hasNext()) {
-            flag = flag || remove(it.next()); // Contiene controllo null
+            if(remove(it.next())) { // Contiene controllo null
+                flag = true;
+            }
         }
         return flag;
     }
@@ -372,9 +374,9 @@ public class ListAdapter implements HList {
     }
 
     private class SubList extends ListAdapter {
-        int offset = -1;
-        int size = -1;
-        ListAdapter l = null;
+        private int offset = -1;
+        private int size = -1;
+        private ListAdapter l = null;
         
         public SubList(ListAdapter list, int fromIndex, int toIndex) {
             if (fromIndex < 0 || toIndex > list.size() || fromIndex > toIndex) {
@@ -477,7 +479,7 @@ public class ListAdapter implements HList {
             private HListIterator it = null;
     
             SubListIterator(int index) {
-                it = ListAdapter.this.listIterator(index);
+                it = ListAdapter.this.listIterator(index+offset);
             }
     
             public boolean hasNext() {
@@ -486,7 +488,7 @@ public class ListAdapter implements HList {
     
             public Object next() {
                 if(hasNext()) { // hasNext() di subList, che controlla indici
-                    return it.next(); // next usa l'hasNext() di List
+                    return it.next(); // next usa l'hasNext() di ListAdapter
                 }
                 else {
                     throw new NoSuchElementException();
@@ -555,10 +557,9 @@ public class ListAdapter implements HList {
                 throw new NullPointerException();
             }
             boolean flag = false;
-            HIterator it = c.iterator();
-            while(it.hasNext()) {
-                if(remove(it.next())) {
-                    size--;
+            HIterator cit = c.iterator();
+            while(cit.hasNext()) {
+                if(remove(cit.next())) {
                     flag = true;
                 }
             }
@@ -574,8 +575,7 @@ public class ListAdapter implements HList {
             while(it.hasNext()) {
                 Object o = it.next();
                 if(!c.contains(o)) {
-                    remove(o);
-                    size--;
+                    it.remove();
                     flag = true;
                 }
             }
