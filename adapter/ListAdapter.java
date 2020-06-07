@@ -425,8 +425,10 @@ public class ListAdapter implements HList {
         }
     
         public void clear() {
-            for(int i = offset; i < (offset + size); i++) {
-                l.remove(i);
+            HIterator it = iterator();
+            while(it.hasNext()) {
+                it.next();
+                it.remove();
             }
         }
 

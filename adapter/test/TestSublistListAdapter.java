@@ -22,7 +22,6 @@ public class TestSublistListAdapter {
 		for(int i = 0; i < 10; i++) {
 			param.add(new Object());
 		}
-		System.out.println("param " + param.size());
         ListAdapter sublist = (ListAdapter) param.subList(3, 3);
         l = sublist;
 	}
