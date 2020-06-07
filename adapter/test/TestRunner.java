@@ -1,4 +1,4 @@
-package adapter;
+package adapter.test;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -40,7 +40,7 @@ public class TestRunner
 		}
 		else
 		{
-			result = JUnitCore.runClasses(adapter.TestListAdapter.class);
+			result = JUnitCore.runClasses(adapter.test.TestListAdapter.class);
 
 			//what is "result"?
 			System.out.println(result);

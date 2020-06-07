@@ -171,8 +171,7 @@ public class SetAdapter implements HSet {
         boolean flag = false;
         HIterator it = c.iterator();
         while(it.hasNext()) {
-            remove(it.next());
-            flag = true;
+            flag = flag || remove(it.next());
         }
         return flag;
     }
@@ -188,7 +187,7 @@ public class SetAdapter implements HSet {
         HIterator it = c.iterator();
         while(it.hasNext()) {
             Object o = it.next();
-            if(!contains(o)) {
+            if(!c.contains(o)) {
                 remove(o);
                 flag = true;
             }
@@ -206,7 +205,7 @@ public class SetAdapter implements HSet {
     /**
      * Returns an array containing all of the elements in this set.
      */
-    public Object[] toArray(){
+    public Object[] toArray() {
         Object[] v = new Object[size()];
         HIterator it = iterator();
         int i = 0;

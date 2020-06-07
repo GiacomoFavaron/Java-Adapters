@@ -1,10 +1,13 @@
-package adapter;
+package adapter.test;
 
+import adapter.*;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
 
-
+/**
+ * Test case class for SetAdapter
+ */
 public class TestSetAdapter {
 
     private HSet set = null;
@@ -222,13 +225,27 @@ public class TestSetAdapter {
 
     @Test
     public void testRemoveAllWithHCollectionNotContained() {
-        HSet backup = set;
         HCollection c = new CollectionAdapter();
-        for(int i = 0; i < 5; i++) {
-            c.add(i);
-        }
-        assertTrue(set.equals(backup));
+        for(int i = 0; i < 3; i++) {
+            c.add(new Object());
+		}
+		set.add(new Object());
+		assertFalse(set.removeAll(c));
+		assertEquals(1, set.size());
     }
+
+    @Test
+    public void testRemoveAllCollectionPartiallyContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 3; i++) {
+            c.add(new Object());
+		}
+		Object o = new Object();
+		c.add(o);
+		set.add(o);
+		assertTrue(set.removeAll(c));
+		assertEquals(0, set.size());
+	}
 
     /**
      * TestRetainAll
@@ -239,21 +256,19 @@ public class TestSetAdapter {
         set.retainAll(null);
     }
 
-    /*
-    @Test
-    public void testRetainAllWithHCollectionContained() {
-        HCollection c = new CollectionAdapter();
-        HSet backup = new SetAdapter();
-        for(int i = 0; i < 5; i++) {
-            c.add(i);
-        }
-        for(int i = 0; i < 3; i++) {
-            backup.add(i);
-        }
-        set.retainAll(c);
-        assertTrue(set.equals(backup));
-    }
-    */
+    // @Test
+    // public void testRetainAllWithHCollectionContained() {
+    //     HCollection c = new CollectionAdapter();
+    //     HSet backup = new SetAdapter();
+    //     for(int i = 0; i < 5; i++) {
+    //         c.add(i);
+    //     }
+    //     for(int i = 0; i < 3; i++) {
+    //         backup.add(i);
+    //     }
+    //     set.retainAll(c);
+    //     assertTrue(set.equals(backup));
+    // }
 
     @Test
     public void testRetainAllWithHCollectionNotContained() {
@@ -272,10 +287,13 @@ public class TestSetAdapter {
 
     @Test
     public void testSize() {
-        for(int i = 0; i < 5; i++) {
-            set.add(i);
-        }
-        assertEquals(5, set.size());
+        assertTrue(set.size() == 0);
+    }
+
+    @Test
+    public void TestSizeIncremented() {
+        set.add(new Object());
+        assertTrue(set.size() == 1);
     }
 
     /**

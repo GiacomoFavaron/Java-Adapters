@@ -1,4 +1,6 @@
-package adapter;
+package adapter.test;
+
+import adapter.*;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -771,6 +773,150 @@ public class TestListAdapter {
 	@Test(expected = NullPointerException.class)
     public void testRemoveNullOBject() {
         l.remove(null);
+	}
+	
+	/**
+     * TestRemoveAll
+     */
+
+    @Test
+    public void testRemoveAllCollectionContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            c.add(new Object());
+        }
+        l.addAll(c);
+		assertTrue(l.removeAll(c));
+		HIterator it = c.iterator();
+		while(it.hasNext()) {
+			assertFalse(l.contains(it.next()));
+		}
+    }
+
+    @Test
+    public void testRemoveAllCollectionNotContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 3; i++) {
+            c.add(new Object());
+		}
+		l.add(new Object());
+		assertFalse(l.removeAll(c));
+		assertEquals(1, l.size());
+	}
+
+	@Test
+    public void testRemoveAllCollectionPartiallyContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 3; i++) {
+            c.add(new Object());
+		}
+		Object o = new Object();
+		c.add(o);
+		l.add(o);
+		assertTrue(l.removeAll(c));
+		assertEquals(0, l.size());
+	}
+	
+	@Test(expected = NullPointerException.class)
+    public void testRemoveAllWithNull() {
+        l.removeAll(null);
+    }
+
+	/**
+     * TestRetainAll
+     */
+
+    @Test
+    public void testRetainAllAllElementsRetained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+            c.add(o);
+            l.add(o);
+		}
+		c.add(new Object());
+		assertFalse(l.retainAll(c));
+		assertEquals(5, l.size());
+    }
+
+    @Test
+    public void testRetainAllSomeElementsRetained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+			if(i % 2 == 0)
+        		c.add(o);
+            l.add(o);
+		}
+		assertTrue(l.retainAll(c));
+		assertEquals(3, l.size());
+	}
+
+	@Test
+    public void testRetainAllNoElementsRetained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+		c.add(new Object());
+		assertTrue(l.retainAll(c));
+		assertEquals(0, l.size());
+	}
+	
+	@Test(expected = NullPointerException.class)
+    public void testRetainAllWithNull() {
+        l.retainAll(null);
+	}
+	
+	/**
+	 * Test set
+	*/
+
+	@Test
+    public void testSet() {
+        for(int i = 0; i < 3; i++) {
+            l.add(new Object());
+		}
+		Object o = new Object();
+		l.set(1, o);
+		assertEquals(o, l.get(1));
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+    public void testSetOutOfBoundsNegative() {
+		for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        l.set(-1, new Object());
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+    public void testSetOutOfBoundsGreaterOrEqualToSize() {
+		for(int i = 0; i < 5; i++) {
+            l.add(new Object());
+		}
+        l.set(5, new Object());
+	}
+	
+	@Test(expected = NullPointerException.class)
+    public void testSetWithNull() {
+        l.set(0, null);
+	}
+
+	 /**
+     * TestSize
+     */
+
+    @Test
+    public void testSizeZero() {
+        assertEquals(0, l.size());
+    }
+
+    @Test
+    public void TestSize() {
+		for(int i = 0; i < 4; i++)
+        	l.add(new Object());
+        assertEquals(4, l.size());
     }
 
 }

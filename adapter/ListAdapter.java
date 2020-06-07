@@ -321,9 +321,7 @@ public class ListAdapter implements HList {
         boolean flag = false;
         HIterator it = c.iterator();
         while(it.hasNext()) {
-            Object o = it.next();
-            remove(o); // Contiene controllo null
-            flag = true;
+            flag = flag || remove(it.next()); // Contiene controllo null
         }
         return flag;
     }
@@ -341,7 +339,7 @@ public class ListAdapter implements HList {
         while(it.hasNext()) {
             Object o = it.next();
             if(!c.contains(o)) {
-                remove(o); // Contiene controllo null
+                it.remove(); // Contiene controllo null
                 flag = true;
             }
         }
