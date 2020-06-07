@@ -10,7 +10,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.NoSuchElementException;
 
-public class TestListAdapter {
+public class TestSublistListAdapter {
 
 	private ListAdapter l = null;
 
@@ -18,7 +18,13 @@ public class TestListAdapter {
 
 	@Before
 	public  void setUp() {
-		l = new ListAdapter();
+		ListAdapter param = new ListAdapter();
+		for(int i = 0; i < 10; i++) {
+			param.add(new Object());
+		}
+		System.out.println("param " + param.size());
+        ListAdapter sublist = (ListAdapter) param.subList(3, 3);
+        l = sublist;
 	}
 
 	// Tests

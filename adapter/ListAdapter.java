@@ -368,114 +368,120 @@ public class ListAdapter implements HList {
     }
 
     public HList subList(int fromIndex, int toIndex) {
-        return new SubList(fromIndex, toIndex);
+        return new SubList(this, fromIndex, toIndex);
     }
 
     private class SubList extends ListAdapter {
         int offset = -1;
         int size = -1;
+        ListAdapter l = null;
         
-        public SubList(int fromIndex, int toIndex) {
-            if (fromIndex < 0 || toIndex > super.size() || fromIndex > toIndex) {
+        public SubList(ListAdapter list, int fromIndex, int toIndex) {
+            if (fromIndex < 0 || toIndex > list.size() || fromIndex > toIndex) {
                 throw new IndexOutOfBoundsException();
             }
+            l = list;
             offset = fromIndex;
             size = toIndex - fromIndex;
         }
-
+    
         private void boundCheck(int index) {
             if(index < 0 || index >= size) {
                 throw new IndexOutOfBoundsException();
             }
         }
-
+    
         private void boundCheckForAdd(int index) {
             if(index < 0 || index > size) {
                 throw new IndexOutOfBoundsException();
             }
         }
-
+    
         public void add(int index, Object element) {
             boundCheckForAdd(index);
-            super.add(offset + index, element);
+            l.add(offset + index, element);
             size++;
         }
-
+    
         public boolean add(Object o) {
-            super.add(offset + size, o);
+            l.add(offset + size, o);
             size++;
             return true;
         }
-
+    
         public boolean addAll(HCollection c) {
             return addAll(size, c);
         }
-
+    
         public boolean addAll(int index, HCollection c) {
             boundCheckForAdd(index);
             int cSize = c.size();
             if(cSize == 0) {
                 return false;
             }
-            super.addAll(offset + index, c);
+            l.addAll(offset + index, c);
             size += cSize;
             return true;
         }
-
+    
         public void clear() {
             for(int i = offset; i < (offset + size); i++) {
-                super.remove(i);
+                l.remove(i);
             }
         }
 
+        public boolean contains(Object o) {
+            return indexOf(o) != -1;
+        }
+    
         public Object get(int index) {
             boundCheck(index);
-            return super.get(offset + index);
+            return l.get(offset + index);
         }
-
+    
         public int indexOf(Object o) {
-            int index = super.indexOf(o);
+            int index = l.indexOf(o);
             if(index < offset || index >= size) {
                 return -1;
             }
             return index;
         }
-
+    
         public boolean isEmpty() {
             return size == 0;
         }
-
+    
         public HIterator iterator() {
             return new SubListIterator(0);
         }
-
+    
         public int lastIndexOf(Object o) {
-            int index = super.lastIndexOf(o);
+            int index = l.lastIndexOf(o);
             if(index < offset || index >= size) {
                 return -1;
             }
             return index;
         }
-
+    
         public HListIterator listIterator() {
             return new SubListIterator(0);
         }
-
+    
         public HListIterator listIterator(int index) {
             return new SubListIterator(index);
         }
-
+    
         private class SubListIterator implements HListIterator {
             private HListIterator it = null;
-
+    
             SubListIterator(int index) {
                 it = ListAdapter.this.listIterator(index);
             }
-
+    
             public boolean hasNext() {
                 return nextIndex() < size;
             }
-
+    
             public Object next() {
                 if(hasNext()) { // hasNext() di subList, che controlla indici
                     return it.next(); // next usa l'hasNext() di List
@@ -484,11 +490,11 @@ public class ListAdapter implements HList {
                     throw new NoSuchElementException();
                 }
             }
-
+    
             public boolean hasPrevious() {
                 return previousIndex() >= 0;
             }
-
+    
             public Object previous() {
                 if(hasPrevious()) {
                     return it.previous();
@@ -497,37 +503,37 @@ public class ListAdapter implements HList {
                     throw new NoSuchElementException();
                 }
             }
-
+    
             public int nextIndex() {
                 return it.nextIndex() - offset;
             }
-
+    
             public int previousIndex() {
                 return it.previousIndex() - offset;
             }
-
+    
             public void remove() {
                 it.remove();
                 size--;
             }
-
+    
             public void set(Object o) {
                 it.set(o);
             }
-
+    
             public void add(Object o) {
                 it.add(o);
                 size++;
             }
         }
-
+    
         public Object remove(int index) {
             boundCheck(index);
-            Object o = super.remove(offset + index);
+            Object o = l.remove(offset + index);
             size--;
             return o;
         }
-
+    
         public boolean remove(Object o) {
             if(o == null) {
                 throw new NullPointerException();
@@ -541,7 +547,7 @@ public class ListAdapter implements HList {
             }
             return false;
         }
-
+    
         public boolean removeAll(HCollection c) {
             if(c == null) {
                 throw new NullPointerException();
@@ -556,7 +562,7 @@ public class ListAdapter implements HList {
             }
             return flag;
         }
-
+    
         public boolean retainAll(HCollection c) {
             if(c == null) {
                 throw new NullPointerException();
@@ -573,20 +579,20 @@ public class ListAdapter implements HList {
             }
             return flag;
         }
-
+    
         public Object set(int index, Object element) {
             if(element == null) {
                 throw new NullPointerException();
             }
             boundCheck(index);
-            return super.set(offset + index, element);
+            return l.set(offset + index, element);
         }
-
+    
         public int size() {
             return size;
         }
     }
-
+    
     public Object[] toArray() {
         Object[] v = new Object[size()];
         HIterator it = iterator();
