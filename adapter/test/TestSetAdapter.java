@@ -192,6 +192,32 @@ public class TestSetAdapter {
     }
 
     /**
+     * Test hashCode
+     */
+
+	@Test
+    public void testHashCodeTrue() {
+        HSet otherSet = new SetAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+            otherSet.add(o);
+            s.add(o);
+        }
+		assertEquals(s, otherSet);
+		assertTrue(s.hashCode() == otherSet.hashCode());
+	}
+	
+	@Test
+    public void testHashCodeFalse() {
+        HSet otherSet = new SetAdapter();
+        for(int i = 0; i < 5; i++) {
+            s.add(new Object());
+        }
+		assertFalse(s.equals(otherSet));
+		assertFalse(s.hashCode() == otherSet.hashCode());
+	}
+
+    /**
      * TestIsEmpty
      */
 

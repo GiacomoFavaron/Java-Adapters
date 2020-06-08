@@ -5,14 +5,16 @@ import adapter.HMap.HEntry;
 
 import org.junit.Test;
 import org.junit.Before;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Test case class for MapAdapter
  */
 public class TestMapAdapter {
 
-    private HMap map = null;
+    private HMap m = null;
 
     /**
      * Bootstrap
@@ -20,7 +22,7 @@ public class TestMapAdapter {
 
     @Before
     public void start() {
-        map = new MapAdapter();
+        m = new MapAdapter();
     }
 
     /**
@@ -30,52 +32,55 @@ public class TestMapAdapter {
     @Test
     public void testClear() {
         for(int i = 0; i < 5; i++) {
-            map.put(i, new Object());
+            m.put(i, new Object());
         }
-        map.clear();
-        assertEquals(0, map.size());
+        m.clear();
+        assertEquals(0, m.size());
     }
 
     /**
      * TestContainsKey
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testContainsKeyWithNull() {
-        map.containsKey(null);
-    }
-
     @Test
     public void testContainsKeyWithObjContained() {
-        map.put(1, new Object());
-        assertTrue(map.containsKey(1));
+        m.put(1, new Object());
+        assertTrue(m.containsKey(1));
     }
 
     @Test
     public void testContainsKeyWithObjNotContained() {
-        assertFalse(map.containsKey(1));
+        for(int i = 0; i < 5; i++) {
+            m.put(i, new Object());
+        }
+        assertFalse(m.containsKey(5));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testContainsKeyWithNull() {
+        m.containsKey(null);
     }
 
     /**
      * TestContainsValue
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testContainsValueWithNull() {
-        map.containsValue(null);
-    }
-
     @Test
     public void testContainsValueWithObjContained() {
         Object o = new Object();
-        map.put(1, o);
-        assertTrue(map.containsValue(o));
+        m.put(1, o);
+        assertTrue(m.containsValue(o));
     }
 
     @Test
     public void testContainsValueWithObjNotContained() {
         Object o = new Object();
-        assertFalse(map.containsValue(o));
+        assertFalse(m.containsValue(o));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testContainsValueWithNull() {
+        m.containsValue(null);
     }
 
     /**
@@ -85,26 +90,13 @@ public class TestMapAdapter {
     @Test
     public void testEntrySet() {
         for(int i = 0; i < 5; i++)
-            map.put(i, i);
-        HSet s = map.entrySet();
-        HIterator iter = s.iterator();
-        while(iter.hasNext()) {
-            HEntry e = (HEntry)iter.next();
+            m.put(i, new Object());
+        HSet s = m.entrySet();
+        HIterator it = s.iterator();
+        while(it.hasNext()) {
+            HEntry e = (HEntry) it.next();
             Object key = e.getKey();
-            assertTrue(map.get(key).equals(e.getValue()));
-        }
-    }
-
-    @Test
-    public void testEntrySetFail() {
-        for(int i = 0; i < 5; i++)
-            map.put(i, i);
-        HSet s = map.entrySet();
-        HIterator iter = s.iterator();
-        while(iter.hasNext()) {
-            HEntry e = (HEntry)iter.next();
-            Object key = e.getKey();
-            assertFalse(map.get(key).equals(new Object()));
+            assertEquals(m.get(key), e.getValue());
         }
     }
 
@@ -112,45 +104,45 @@ public class TestMapAdapter {
      * TestEquals
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testEqualsWithNull() {
-        map.containsValue(null);
-    }
-
     @Test
     public void testEqualsWithEqualsMapping() {
-        HMap m = new MapAdapter();
-        assertTrue(map.equals(m));
+        HMap otherMap = new MapAdapter();
+        assertTrue(otherMap.equals(m));
     }
 
     @Test
-    public void testEqualsWithDifferentMapping() {
-        HMap m = new MapAdapter();
+    public void testEqualsFalse() {
+        HMap otherMap = new MapAdapter();
         m.put(0, new Object());
-        assertFalse(map.equals(m));
+        assertFalse(otherMap.equals(m));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testEqualsWithNull() {
+        m.containsValue(null);
     }
 
     /**
      * TestGet
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testGetWithNull() {
-        map.get(null);
-    }
-
     @Test
-    public void testGetWithKeyContained() {
+    public void testGet() {
         Object o = new Object();
-        map.put(0, o);
-        Object cmp = map.get(0);
+        m.put(0, o);
+        Object cmp = m.get(0);
         assertTrue(cmp.equals(o));
     }
 
     @Test
     public void testGetWithKeyNotContained() {
-        Object cmp = map.get(0);
+        Object cmp = m.get(0);
         assertTrue(cmp == null);   
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testGetWithNull() {
+        m.get(null);
     }
 
     /**
@@ -158,36 +150,41 @@ public class TestMapAdapter {
      */
 
     @Test
-    public void testHashCode() {
-        HMap m = new MapAdapter();
+    public void testHashCodeTrue() {
+        HMap otherMap = new MapAdapter();
         for(int i = 0; i < 5; i++) {
 			Object o = new Object();
+            otherMap.put(i, o);
             m.put(i, o);
-            map.put(i, o);
         }
-		assertEquals(map, m);
-		assertTrue(map.hashCode() == m.hashCode());
+		assertEquals(m, otherMap);
+		assertTrue(m.hashCode() == otherMap.hashCode());
     }
 
     @Test
-    public void testHashCodeFail() {
-        assertFalse(map.hashCode() == -1);
-    }
+    public void testHashCodeFalse() {
+        HMap otherMap = new MapAdapter();
+        for(int i = 0; i < 5; i++) {
+            m.put(i, new Object());
+        }
+		assertFalse(m.equals(otherMap));
+		assertFalse(m.hashCode() == otherMap.hashCode());
+	}
 
     /**
      * TestIsEmpty
      */
 
     @Test
-    public void testIsEmpty() {
-        assertTrue(map.isEmpty());
+    public void testIsEmptyTrue() {
+        assertTrue(m.isEmpty());
     }
 
     @Test
     public void testIsEmptyFalse() {
         Object o = new Object();
-        map.put(0, o);
-        assertFalse(map.isEmpty());
+        m.put(0, o);
+        assertFalse(m.isEmpty());
     }
 
     /**
@@ -196,12 +193,13 @@ public class TestMapAdapter {
 
     @Test
     public void testKeySet() {
-        for(int i = 0; i < 5; i++)
-            map.put(i, i);
-        HSet s = map.keySet();
-        HIterator iter = s.iterator();
-        while(iter.hasNext()) {
-            assertTrue(map.containsKey(iter.next()));
+        for(int i = 0; i < 5; i++) {
+            m.put(i, new Object());
+        }
+        HSet s = m.keySet();
+        HIterator it = s.iterator();
+        while(it.hasNext()) {
+            assertTrue(m.containsKey(it.next()));
         }
     }
 
@@ -209,72 +207,80 @@ public class TestMapAdapter {
      * TestPut
      */
 
+    @Test
+    public void testPutNewKey() {
+        Object o = new Object();
+        m.put(7, o);
+        assertTrue(m.get(7).equals(o));
+    }
+
+    @Test
+    public void testPutReplace() {
+        Object o1 = new Object();
+        m.put(7, o1);
+        assertTrue(m.get(7).equals(o1));
+        Object o2 = new Object();
+        m.put(7, o2);
+        assertTrue(m.get(7).equals(o2));
+    }
+
     @Test(expected = NullPointerException.class)
-    public void testPutWithNull() {
-        map.put(null, null);
+    public void testPutWithNullKey() {
+        m.put(null, new Object());
     }
 
-    @Test
-    public void testPut() {
-        map.put(0, 1);
-        assertTrue(map.get(0).equals(1));
+    @Test(expected = NullPointerException.class)
+    public void testPutWithNullValue() {
+        m.put(new Object(), null);
     }
-
-    @Test
-    public void testPutFail() {
-        map.put(0, 1);
-        assertFalse(map.get(0).equals(0));
+    
+    @Test(expected = NullPointerException.class)
+    public void testPutWithNullKeyAndValue() {
+        m.put(null, null);
     }
 
     /**
      * TestPutAll
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testPutAllWithNull() {
-        map.putAll(null);
-    }
-
     @Test
     public void testPutAll() {
-        HMap m = new MapAdapter();
-        for(int i = 0; i < 5; i++)
-            m.put(i, i);
-        map.putAll(m);
-        for(int i = 0; i < 5; i++)
-            assertTrue(map.get(i).equals(i));
+        HMap otherMap = new MapAdapter();
+        for(int i = 0; i < 5; i++) {
+            otherMap.put(i, new Object());
+        }
+        m.putAll(otherMap);
+        for(int i = 0; i < 5; i++) {
+            assertTrue(m.containsKey(i));
+        }
+        assertTrue(m.size() == 5);
     }
 
-    @Test
-    public void testPutAllFail() {
-        HMap m = new MapAdapter();
-        for(int i = 0; i < 5; i++)
-            m.put(i, i);
-        map.putAll(m);
-        for(int i = 0; i < 5; i++)
-            assertFalse(map.get(i).equals(new Object()));
+    @Test(expected = NullPointerException.class)
+    public void testPutAllWithNull() {
+        m.putAll(null);
     }
 
     /**
      * TestRemove
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testRemoveWithNull() {
-        map.remove(null);
-    }
-
     @Test
     public void testRemoveWithObjContained() {
         Object o = new Object();
-        map.put(0, o);
-        map.remove(0);
-        assertFalse(map.containsKey(0));
+        m.put(0, o);
+        m.remove(0);
+        assertFalse(m.containsKey(0));
     }
 
     @Test
     public void testRemoveWithObjNotContained() {
-        assertTrue(map.remove(0) == null);
+        assertEquals(m.remove(0), null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testRemoveWithNull() {
+        m.remove(null);
     }
 
     /**
