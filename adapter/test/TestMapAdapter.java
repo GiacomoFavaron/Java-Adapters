@@ -288,19 +288,17 @@ public class TestMapAdapter {
      */
 
     @Test
+    public void testSizeEmpty() {
+        assertEquals(0, m.size());
+    }
+
+    @Test
     public void testSize() {
-        assertTrue(map.size() == 0);
-    }
-
-    @Test
-    public void testSizeIncremented() {
-        map.put(0, new Object());
-        assertTrue(map.size() == 1);
-    }
-
-    @Test
-    public void testSizeFail() {
-        assertFalse(map.size() == -1);
+        for(int i = 0; i < 4; i++) {
+			m.put(i, new Object());
+        }
+        m.put(2, new Object());
+        assertEquals(4, m.size());
     }
 
     /**
@@ -310,23 +308,11 @@ public class TestMapAdapter {
     @Test
     public void testValues() {
         for(int i = 0; i < 5; i++)
-            map.put(i, i);
-        HCollection c = map.values();
-        HIterator iter = c.iterator();
-        while(iter.hasNext()) {
-            assertTrue(map.containsValue(iter.next()));
-        }
-    }
-
-    @Test
-    public void testValuesFail() {
-        for(int i = 0; i < 5; i++)
-            map.put(i, i);
-        HCollection c = map.values();
-        HIterator iter = c.iterator();
-        while(iter.hasNext()) {
-            iter.next();
-            assertFalse(map.containsValue(new Object()));
+            m.put(i, new Object());
+        HCollection c = m.values();
+        HIterator cit = c.iterator();
+        while(cit.hasNext()) {
+            assertTrue(m.containsValue(cit.next()));
         }
     }
 
