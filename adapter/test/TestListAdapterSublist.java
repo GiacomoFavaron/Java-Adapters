@@ -7,12 +7,13 @@ import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
 
-public class TestSublistListAdapter {
+public class TestListAdapterSublist {
 
-	private ListAdapter l = null;
+	private HList l = null;
 
 	// Set up
 
@@ -21,7 +22,7 @@ public class TestSublistListAdapter {
 		ListAdapter list = new ListAdapter();
 		list.add(Integer.valueOf(5));
 		list.add(Integer.valueOf(10));
-        ListAdapter sublist = (ListAdapter) list.subList(1, 1);
+        HList sublist = list.subList(1, 1);
         l = sublist;
 	}
 
@@ -98,15 +99,6 @@ public class TestSublistListAdapter {
 		HCollection c = new CollectionAdapter();
 		assertFalse(l.addAll(c));
 	}
-
-	// @Test(expected = NullPointerException.class)
-	// public void TestAddAllNullElements() {
-	// 	HCollection c = new CollectionAdapter();
-	// 	c.add(new Object());
-	// 	c.add(null);
-	// 	l.addAll(c)
-	// }
-	// IL C.ADD(NULL) LANCIA GIA' NULLPOINTER PERCHE' LA COLLECTION STESSA NON AMMETTE ELEMENTI NULL, NON RIESCO A TESTARE CHE LA LANCI ADDALL.
 
 	@Test(expected = NullPointerException.class)
 	public void testAddAllWithNullCollection() {
@@ -259,7 +251,6 @@ public class TestSublistListAdapter {
     public void testEqualsFalse() {
 		HList otherList = new ListAdapter();
 		otherList.add(new Object());
-		l.add(new Object());
         assertFalse(l.equals(otherList));
 	}
 
@@ -762,15 +753,15 @@ public class TestSublistListAdapter {
      */
 
     @Test
-    public void testRemove() {
+    public void testRemoveTrue() {
         Object o = new Object();
         l.add(o);
         assertTrue(l.remove(o));
-        assertEquals(false, l.contains(o));
+        assertFalse(l.contains(o));
     }
 
     @Test
-    public void testRemoveWithObjNotContained() {
+    public void testRemoveFalse() {
         Object o = new Object();
         l.add(o);
         assertFalse(l.remove(new Object()));
@@ -794,9 +785,9 @@ public class TestSublistListAdapter {
         }
         l.addAll(c);
 		assertTrue(l.removeAll(c));
-		HIterator it = c.iterator();
-		while(it.hasNext()) {
-			assertFalse(l.contains(it.next()));
+		HIterator cit = c.iterator();
+		while(cit.hasNext()) {
+			assertFalse(l.contains(cit.next()));
 		}
     }
 
@@ -865,7 +856,7 @@ public class TestSublistListAdapter {
         for(int i = 0; i < 5; i++) {
             l.add(new Object());
 		}
-		//c.add(new Object());
+		c.add(new Object());
 		assertTrue(l.retainAll(c));
 		assertEquals(0, l.size());
 	}
@@ -915,7 +906,7 @@ public class TestSublistListAdapter {
      */
 
     @Test
-    public void testSizeZero() {
+    public void testSizeEmpty() {
         assertEquals(0, l.size());
     }
 
@@ -959,10 +950,53 @@ public class TestSublistListAdapter {
 		assertFalse(l.contains(o));
 	}
 
-	/**
+    /**
      * TestToArray
      */
 
-	//aaaaaaa
+    @Test
+    public void testToArray() {
+        for(int i = 0; i < 5; i++) {
+            l.add(i);
+        }
+        Object[] setArray = l.toArray();
+        for(int i = 0; i < l.size(); i++) {
+            assertEquals(l.get(i), setArray[i]);
+        }
+    }
+
+    @Test
+    public void testToArrayWithParameterSizeSmaller() {
+        for(int i = 0; i < 10; i++) {
+            l.add(i);
+        }
+        Object[] param = new Object[5];
+        Object[] setArray = l.toArray(param);
+        assertEquals(10, setArray.length);
+        for(int i = 0; i < setArray.length; i++) {
+            assertEquals(l.get(i), setArray[i]);
+        }
+    }
+
+    @Test
+    public void testToArrayWithParameterSizeLonger() {
+        for(int i = 0; i < 5; i++) {
+            l.add(i);
+        }
+        Object[] param = new Object[10];
+        Object[] setArray = l.toArray(param);
+        assertEquals(10, setArray.length);
+        for(int i = 0; i < l.size(); i++) {
+            assertEquals(l.get(i), setArray[i]);
+        }
+        for(int i = l.size(); i < param.length; i++) {
+            assertEquals(setArray[i], null);
+        }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testToArrayWithNull() {
+        l.toArray(null);
+    }
 
 }

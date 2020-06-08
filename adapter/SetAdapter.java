@@ -30,12 +30,15 @@ public class SetAdapter implements HSet {
         if(c == null) {
             throw new NullPointerException();
         }
+        boolean flag = false;
         HIterator it = c.iterator();
         while(it.hasNext()) {
             Object o = it.next();
-            add(o);
+            if(add(o)) {
+                flag = true;
+            }
         }
-        return true;
+        return flag;
     }
 
     /**
@@ -162,7 +165,13 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Removes from this set all of its elements that are contained in the specified collection (optional operation).
+     * {@inheritDoc}
+     *
+     * <p>This implementation....
+     *
+     * @throws UnsupportedOperationException   {@inheritDoc}
+     * @throws ClassCastException   {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean removeAll(HCollection c) {
         if(c == null) {
@@ -186,11 +195,11 @@ public class SetAdapter implements HSet {
             throw new NullPointerException();
         }
         boolean flag = false;
-        HIterator it = c.iterator();
+        HIterator it = iterator();
         while(it.hasNext()) {
             Object o = it.next();
             if(!c.contains(o)) {
-                remove(o);
+                it.remove();
                 flag = true;
             }
         }
@@ -200,7 +209,7 @@ public class SetAdapter implements HSet {
     /**
      * Returns the number of elements in this set (its cardinality).
      */
-    public int size(){
+    public int size() {
         return hashtable.size();
     }
 
@@ -245,5 +254,5 @@ public class SetAdapter implements HSet {
         }
         return v;
     }
-    
+
 }

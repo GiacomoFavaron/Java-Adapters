@@ -1,70 +1,104 @@
 package adapter.test;
 
 import adapter.*;
+
 import org.junit.Test;
 import org.junit.Before;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.NoSuchElementException;
 
 /**
  * Test case class for SetAdapter
  */
 public class TestSetAdapter {
 
-    private HSet set = null;
+    private HSet s = null;
 
     /**
-     * Bootstrap
+     * Set up
      */
 
     @Before
     public void start() {
-        set = new SetAdapter();
+        s = new SetAdapter();
     }
 
     /**
      * TestAdd
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testAddWithNull() {
-        set.add(null);
-    }
-
     @Test()
     public void testAddWithObjNotContained() {
         Object o = new Object();
-        assertTrue(set.add(o));
-        assertEquals(true, set.contains(o));
+        assertTrue(s.add(o));
+        assertEquals(1, s.size());
+        assertTrue(s.contains(o));
     }
 
 
     @Test()
     public void testAddWithObjContained() {
         Object o = new Object();
-        assertTrue(set.add(o));
-        assertFalse(set.add(o));
-        assertEquals(true, set.contains(o));
+        assertTrue(s.add(o));
+        assertFalse(s.add(o));
+        assertEquals(1, s.size());
+        assertTrue(s.contains(o));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAddWithNull() {
+        s.add(null);
     }
 
     /**
      * TestAddAll
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testAddAllWithNull() {
-        set.addAll(null);
+    @Test
+    public void testAddAllCollectionNotContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            c.add(new Object());
+        }
+        assertTrue(s.addAll(c));
+        assertEquals(5, s.size());
     }
 
     @Test
-    public void testAddAllWithHCollection() {
+    public void testAddAllCollectionPartiallyContained() {
         HCollection c = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            c.add(i);
+            Object o = new Object();
+            c.add(o);
+            if(i % 2 == 0)
+                s.add(o);
         }
-        assertTrue(set.addAll(c));
-        for(int i = 0; i < c.size(); i++) {
-            assertTrue(set.contains(i));
+        assertTrue(s.addAll(c));
+    }
+
+    @Test
+    public void testAddAllCollectionContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            Object o = new Object();
+            c.add(o);
+            s.add(o);
         }
+        assertFalse(s.addAll(c));
+    }
+
+    @Test
+	public void TestAddAllEmptyCollection() {
+		HCollection c = new CollectionAdapter();
+		assertFalse(s.addAll(c));
+	}
+
+    @Test(expected = NullPointerException.class)
+    public void testAddAllWithNull() {
+        s.addAll(null);
     }
 
     /**
@@ -74,53 +108,51 @@ public class TestSetAdapter {
     @Test
     public void testClear() {
         for(int i = 0; i < 5; i++) {
-            set.add(i);
+            s.add(new Object());
         }
-        set.clear();
-        assertEquals(0, set.size());
+        Object o = new Object();
+        s.add(o);
+        s.clear();
+        assertEquals(0, s.size());
+        assertFalse(s.contains(o));
     }
 
     /**
      * TestContains
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testContainsWithNull() {
-        set.contains(null);
-    }
-
     @Test
     public void testContainsWithObjContained() {
         Object o = new Object();
-        set.add(o);
-        assertTrue(set.contains(o));
+        s.add(o);
+        assertTrue(s.contains(o));
     }
 
     @Test
     public void testContainsWithObjNotContained() {
         Object o = new Object();
-        set.add(o);
+        s.add(o);
         Object o2 = new Object();
-        assertFalse(set.contains(o2));
+        assertFalse(s.contains(o2));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testContainsWithNull() {
+        s.contains(null);
     }
 
     /**
      * TestContainsAll
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testContainsAllWithNull() {
-        set.containsAll(null);
-    }
-
     @Test
     public void testContainsAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            c.add(i);
+            c.add(new Object());
         }
-        set.addAll(c);
-        assertTrue(set.containsAll(c));
+        s.addAll(c);
+        assertTrue(s.containsAll(c));
     }
 
     @Test
@@ -129,7 +161,12 @@ public class TestSetAdapter {
         for(int i = 0; i < 5; i++) {
             c.add(i);
         }
-        assertFalse(set.containsAll(c));
+        assertFalse(s.containsAll(c));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testContainsAllWithNull() {
+        s.containsAll(null);
     }
 
     /**
@@ -137,20 +174,21 @@ public class TestSetAdapter {
      */
 
     @Test
-    public void testEqualsWithEqualObject() {
-        HSet set2 = new SetAdapter();
+    public void testEqualsTrue() {
+        HSet otherSet = new SetAdapter();
         for(int i = 0; i < 5; i++) {
-            set2.add(i);
-            set.add(i);
+            Object o = new Object();
+            otherSet.add(o);
+            s.add(o);
         }
-        assertTrue(set.equals(set2));
+        assertTrue(s.equals(otherSet));
     }
 
     @Test
-    public void testEqualsWithNotEqualObject() {
-        HSet set2 = new SetAdapter();
-        set2.add(new Object());
-        assertFalse(set.equals(set2));
+    public void testEqualsFalse() {
+        HSet otherSet = new SetAdapter();
+        otherSet.add(new Object());
+        assertFalse(s.equals(otherSet));
     }
 
     /**
@@ -158,69 +196,96 @@ public class TestSetAdapter {
      */
 
     @Test
-    public void TestIsEmpty() {
-        assertTrue(set.isEmpty());
+    public void TestIsEmptyTrue() {
+        assertTrue(s.isEmpty());
     }
+
+    @Test
+    public void testIsEmptyFalse() {
+		s.add(new Object());
+        assertFalse(s.isEmpty());
+	}
 
     /**
      * TestIterator
      */
 
     @Test
-    public void TestIterator() {
+    public void testIteratorNextAndHasNext() {
+        for(int i = 0; i < 5; i++) {
+            s.add(new Object());
+		}
+        HIterator it = s.iterator();
+        HSet otherSet = new SetAdapter();
+        while(it.hasNext()) {
+            otherSet.add(it.next());
+        }
+        assertEquals(s, otherSet);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+    public void testIteratorNextNoMoreElements() {
         for(int i = 0; i < 3; i++) {
-            set.add(i);
-        }
-        HIterator iter = set.iterator();
-        HSet set2 = new SetAdapter();
-        while(iter.hasNext()) {
-            set2.add(iter.next());
-        }
-        assertTrue(set.equals(set2));
-    }
+            s.add(new Object());
+		}
+        HIterator it = s.iterator();
+        for(int i = 0; i < 4; i++) {
+            it.next();
+		}
+	}
+	
+	@Test
+    public void testIteratorRemove() {
+        for(int i = 0; i < 5; i++) {
+            s.add(new Object());
+		}
+		HIterator it = s.iterator();
+		it.next();
+        it.remove();
+        assertEquals(4, s.size());
+	}
     
     /**
      * TestRemove
      */
 
+    @Test
+    public void testRemoveTrue() {
+        Object o = new Object();
+        s.add(o);
+        assertTrue(s.remove(o));
+        assertEquals(false, s.contains(o));
+    }
+
+    @Test
+    public void testRemoveFalse() {
+        Object o = new Object();
+        s.add(o);
+        assertFalse(s.remove(new Object()));
+        assertTrue(s.contains(o));
+    }
+
     @Test(expected = NullPointerException.class)
     public void testRemoveWithNull() {
-        set.remove(null);
-    }
-
-    @Test
-    public void testRemoveWithObjContained() {
-        Object o = new Object();
-        assertTrue(set.add(o));
-        assertTrue(set.remove(o));
-        assertEquals(false, set.contains(o));
-    }
-
-    @Test
-    public void testRemoveWithObjNotContained() {
-        Object o = new Object();
-        set.add(o);
-        set.remove(new Object());
-        assertEquals(true, set.contains(o));
+        s.remove(null);
     }
 
     /**
      * TestRemoveAll
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testRemoveAllWithNull() {
-        set.removeAll(null);
-    }
-
     @Test
     public void testRemoveAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            c.add(i);
+            c.add(new Object());
         }
-        set.addAll(c);
-        assertTrue(set.removeAll(c));
+        s.addAll(c);
+		assertTrue(s.removeAll(c));
+		HIterator cit = c.iterator();
+		while(cit.hasNext()) {
+			assertFalse(s.contains(cit.next()));
+		}
     }
 
     @Test
@@ -229,9 +294,9 @@ public class TestSetAdapter {
         for(int i = 0; i < 3; i++) {
             c.add(new Object());
 		}
-		set.add(new Object());
-		assertFalse(set.removeAll(c));
-		assertEquals(1, set.size());
+		s.add(new Object());
+		assertFalse(s.removeAll(c));
+        assertEquals(1, s.size());
     }
 
     @Test
@@ -242,58 +307,77 @@ public class TestSetAdapter {
 		}
 		Object o = new Object();
 		c.add(o);
-		set.add(o);
-		assertTrue(set.removeAll(c));
-		assertEquals(0, set.size());
-	}
+		s.add(o);
+		assertTrue(s.removeAll(c));
+		assertEquals(0, s.size());
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testRemoveAllWithNull() {
+        s.removeAll(null);
+    }
 
     /**
      * TestRetainAll
      */
 
-    @Test(expected = NullPointerException.class)
-    public void testRetainAllWithNull() {
-        set.retainAll(null);
+    @Test
+    public void testRetainAllAllElementsRetained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+			Object o = new Object();
+            c.add(o);
+            s.add(o);
+		}
+		c.add(new Object());
+		assertFalse(s.retainAll(c));
+		assertEquals(5, s.size());
     }
-
-    // @Test
-    // public void testRetainAllWithHCollectionContained() {
-    //     HCollection c = new CollectionAdapter();
-    //     HSet backup = new SetAdapter();
-    //     for(int i = 0; i < 5; i++) {
-    //         c.add(i);
-    //     }
-    //     for(int i = 0; i < 3; i++) {
-    //         backup.add(i);
-    //     }
-    //     set.retainAll(c);
-    //     assertTrue(set.equals(backup));
-    // }
 
     @Test
-    public void testRetainAllWithHCollectionNotContained() {
+    public void testRetainAllSomeElementsRetained() {
         HCollection c = new CollectionAdapter();
-        HSet backup = set;
         for(int i = 0; i < 5; i++) {
-            c.add(i);
-        }
-        set.retainAll(c);
-        assertTrue(set.equals(backup));
-    }
+			Object o = new Object();
+			if(i % 2 == 0)
+        		c.add(o);
+            s.add(o);
+		}
+		assertTrue(s.retainAll(c));
+		assertEquals(3, s.size());
+	}
+
+	@Test
+    public void testRetainAllNoElementsRetained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            s.add(new Object());
+		}
+		c.add(new Object());
+		assertTrue(s.retainAll(c));
+		assertEquals(0, s.size());
+	}
+	
+	@Test(expected = NullPointerException.class)
+    public void testRetainAllWithNull() {
+        s.retainAll(null);
+	}
 
     /**
      * TestSize
      */
 
     @Test
-    public void testSize() {
-        assertTrue(set.size() == 0);
+    public void testSizeEmpty() {
+        assertTrue(s.size() == 0);
     }
 
     @Test
-    public void TestSizeIncremented() {
-        set.add(new Object());
-        assertTrue(set.size() == 1);
+    public void testSize() {
+        for(int i = 0; i < 4; i++) {
+			s.add(new Object());
+		}
+        assertEquals(4, s.size());
     }
 
     /**
@@ -303,30 +387,46 @@ public class TestSetAdapter {
     @Test
     public void testToArray() {
         for(int i = 0; i < 5; i++) {
-            set.add(i);
+            s.add(i);
         }
-        Object[] setArray = set.toArray();
-        for(int i = 0; i < set.size(); i++) {
-            assertTrue(set.contains(setArray[i]));
+        Object[] setArray = s.toArray();
+        for(int i = 0; i < s.size(); i++) {
+            assertTrue(s.contains(setArray[i]));
         }
     }
 
     @Test
-    public void testToArrayWithParameter() {
-        for(int i = 0; i < 5; i++) {
-            set.add(i);
+    public void testToArrayWithParameterSizeSmaller() {
+        for(int i = 0; i < 10; i++) {
+            s.add(i);
         }
-        Object[] param = new Object[3];
-        Object[] setArray = set.toArray(param);
-        assertEquals(setArray.length, param.length);
+        Object[] param = new Object[5];
+        Object[] setArray = s.toArray(param);
+        assertEquals(10, setArray.length);
         for(int i = 0; i < setArray.length; i++) {
-            assertTrue(set.contains(setArray[i]));
+            assertTrue(s.contains(setArray[i]));
+        }
+    }
+
+    @Test
+    public void testToArrayWithParameterSizeLonger() {
+        for(int i = 0; i < 5; i++) {
+            s.add(i);
+        }
+        Object[] param = new Object[10];
+        Object[] setArray = s.toArray(param);
+        assertEquals(10, setArray.length);
+        for(int i = 0; i < s.size(); i++) {
+            assertTrue(s.contains(setArray[i]));
+        }
+        for(int i = s.size(); i < param.length; i++) {
+            assertEquals(setArray[i], null);
         }
     }
 
     @Test(expected = NullPointerException.class)
-    public void testToArrayWithParamWithNull() {
-        set.toArray(null);
+    public void testToArrayWithNull() {
+        s.toArray(null);
     }
 
 }

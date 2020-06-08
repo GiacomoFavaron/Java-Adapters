@@ -2,6 +2,7 @@ package adapter;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
 // Notes:
 // Modifiche "invalide" di entrySet, keySet, values...
@@ -111,6 +112,10 @@ public class MapAdapter implements HMap {
                 lastRetKey = null;  // Reset to null after removing
             }
             
+        }
+
+        public int size() {
+            return MapAdapter.this.size();
         }
 
         // HO COPIATO IMPLEMENTAZIONE DA LIST, CHE E' "LA STESSA DI SET",
