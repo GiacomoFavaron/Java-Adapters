@@ -68,6 +68,7 @@ public class TestListAdapter {
 		Object o = new Object();
 		assertTrue(l.add(o));
 		assertEquals(o, l.get(l.size()-1));
+		assertTrue(l.contains(o));
 	}
 
 	@Test (expected = NullPointerException.class)
@@ -769,7 +770,7 @@ public class TestListAdapter {
         Object o = new Object();
         l.add(o);
         assertFalse(l.remove(new Object()));
-        assertEquals(true, l.contains(o));
+        assertTrue(l.contains(o));
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -860,7 +861,7 @@ public class TestListAdapter {
         for(int i = 0; i < 5; i++) {
             l.add(new Object());
 		}
-		c.add(new Object());
+		//c.add(new Object());
 		assertTrue(l.retainAll(c));
 		assertEquals(0, l.size());
 	}
@@ -925,6 +926,38 @@ public class TestListAdapter {
      * Test Sublist(fromIndex, toIndex)
      */
 
-	
+	// Classe test + vedere se i cambiamenti si ripercuotono su lista madre
+
+	@Test
+    public void TestSubListChangesPropagation() {
+		for(int i = 0; i < 10; i++) {
+			l.add(new Object());
+		}
+		HList subList = l.subList(2, 7);
+		Object o = new Object();
+		subList.add(o);
+		assertEquals(6, subList.size());
+		assertEquals(11, l.size());
+		assertEquals(o, subList.get(5));
+		assertEquals(o, l.get(7));
+	}
+
+	@Test
+    public void TestSubListChangesPropagationClear() {
+		for(int i = 0; i < 9; i++) {
+			l.add(new Object());
+		}
+		Object o = new Object();
+		l.add(o);
+		l.subList(5, 10).clear();
+		assertEquals(5, l.size());
+		assertFalse(l.contains(o));
+	}
+
+	/**
+     * TestToArray
+     */
+
+	//aaaaaaa
 
 }

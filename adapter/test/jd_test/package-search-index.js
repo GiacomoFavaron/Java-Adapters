@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"adapter.test"},{"l":"All Packages","url":"allpackages-index.html"}]

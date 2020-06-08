@@ -169,9 +169,11 @@ public class SetAdapter implements HSet {
             throw new NullPointerException();
         }
         boolean flag = false;
-        HIterator it = c.iterator();
-        while(it.hasNext()) {
-            flag = flag || remove(it.next());
+        HIterator cit = c.iterator();
+        while(cit.hasNext()) {
+            if(remove(cit.next())) {
+                flag = true;
+            }
         }
         return flag;
     }
@@ -204,22 +206,44 @@ public class SetAdapter implements HSet {
 
     /**
      * Returns an array containing all of the elements in this set.
+     * @return an array containing all of the elements in this set.
+     * @throws NullPointerException if the specified array is null.
      */
-    public Object[] toArray() {
+    public Object[] toArray(){
         Object[] v = new Object[size()];
         HIterator it = iterator();
-        int i = 0;
-        while(it.hasNext()) {
+        for(int i = 0; it.hasNext(); i++) {
             v[i] = it.next();
-            i++;
         }
         return v;
     }
 
     /**
      * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
+     * @param a the array into which the elements of this set are to be stored, if it is big enough; otherwise, a new array of the same runtime type is allocated for this purpose. 
+     * @return an array containing the elements of this set.
+     * @throws NullPointerException if the specified array is null.
      */
     public Object[] toArray(Object[] a) {
-        return toArray();
+        if(a == null) {
+            throw new NullPointerException();
+        }
+        Object[] v = new Object[a.length];
+        HIterator it = iterator();
+        if(a.length >= size()) {
+            for(int i = 0; i < a.length && it.hasNext(); i++) {
+                v[i] = it.next();
+            }
+            return v;
+        }
+        v = new Object[size()];
+        for(int i = 0; i < size(); i++) {
+            if(it.hasNext())
+                v[i] = it.next();
+            else
+                v[i] = null;
+        }
+        return v;
     }
+    
 }
