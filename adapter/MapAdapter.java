@@ -438,6 +438,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation doesn't allow entries with null keys and values.
      */
     static class Entry implements HMap.HEntry {
         
