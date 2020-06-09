@@ -3,14 +3,18 @@ package adapter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-// Non ammette elementi null
+/**
+ * Adapter class from CLDC 1.1 Hashtable to JSE 1.4.2 Set (interface HSet).
+ * This implementation does not allow null elements.
+ */
 
 public class SetAdapter implements HSet {
 
     private Hashtable hashtable = new Hashtable();
 
     /**
-     * Adds the specified element to this set if it is not already present (optional operation).
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean add(Object o) {
         if(o == null) {
@@ -24,7 +28,8 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Adds all of the elements in the specified collection to this set if they're not already present (optional operation).
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean addAll(HCollection c) {
         if(c == null) {
@@ -42,14 +47,15 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Removes all of the elements from this set (optional operation).
+     * {@inheritDoc}
      */
     public void clear() {
         hashtable.clear();
     }
 
     /**
-     * Returns true if this set contains the specified element.
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean contains(Object o) {
         if(o == null) {
@@ -59,7 +65,8 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Returns true if this set contains all of the elements of the specified collection.
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean containsAll(HCollection c) {
         if(c == null) {
@@ -76,7 +83,7 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Compares the specified object with this set for equality.
+     * {@inheritDoc}
      */
     public boolean equals(Object o){
         if (o == this) {
@@ -101,7 +108,7 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Returns the hash code value for this set.
+     * {@inheritDoc}
      */
     public int hashCode(){
         int hashCode = 0;
@@ -113,14 +120,14 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Returns true if this set contains no elements.
+     * {@inheritDoc}
      */
     public boolean isEmpty(){
         return hashtable.isEmpty();
     }
 
     /**
-     * Returns an iterator over the elements in this set.
+     * {@inheritDoc}
      */
     public HIterator iterator(){
         return new SetIterator();
@@ -151,7 +158,8 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Removes the specified element from this set if it is present (optional operation).
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean remove(Object o) {
         if(o == null) {
@@ -166,11 +174,6 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
-     *
-     * <p>This implementation....
-     *
-     * @throws UnsupportedOperationException   {@inheritDoc}
-     * @throws ClassCastException   {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean removeAll(HCollection c) {
@@ -188,7 +191,8 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Retains only the elements in this set that are contained in the specified collection (optional operation).
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public boolean retainAll(HCollection c){
         if(c == null) {
@@ -207,16 +211,14 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Returns the number of elements in this set (its cardinality).
+     * {@inheritDoc}
      */
     public int size() {
         return hashtable.size();
     }
 
     /**
-     * Returns an array containing all of the elements in this set.
-     * @return an array containing all of the elements in this set.
-     * @throws NullPointerException if the specified array is null.
+     * {@inheritDoc}
      */
     public Object[] toArray(){
         Object[] v = new Object[size()];
@@ -228,10 +230,8 @@ public class SetAdapter implements HSet {
     }
 
     /**
-     * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
-     * @param a the array into which the elements of this set are to be stored, if it is big enough; otherwise, a new array of the same runtime type is allocated for this purpose. 
-     * @return an array containing the elements of this set.
-     * @throws NullPointerException if the specified array is null.
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public Object[] toArray(Object[] a) {
         if(a == null) {

@@ -3,18 +3,19 @@ package adapter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-// Notes:
-// Modifiche "invalide" di entrySet, keySet, values...
-// Metodo toString()
-// Non ho fatto nessun cast a generico
-// Non ammette chiavi o valori null
+
+/**
+ * Adapter class from CLDC 1.1 Vector to JSE 1.4.2 List (interface HList).
+ * This implementation does not allow null keys and values.
+ */
+
 
 public class MapAdapter implements HMap {
 
     private Hashtable h = new Hashtable();
 
     /**
-     * Removes all of the mappings from this map (optional operation). The map will be empty after this call returns.
+     * {@inheritDoc}
      */
     @Override
     public void clear() {
@@ -22,15 +23,17 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean containsKey(Object key) {
         return h.containsKey(key);
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public boolean containsValue(Object value) {
@@ -38,7 +41,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public HSet entrySet() {
@@ -127,7 +130,8 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {
@@ -136,7 +140,8 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public Object get(Object key) {
@@ -148,7 +153,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -163,7 +168,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public boolean isEmpty() {
@@ -171,7 +176,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public HSet keySet() {
@@ -233,7 +238,8 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public Object put(Object key, Object value) {
@@ -244,7 +250,8 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public void putAll(HMap m) {
@@ -260,7 +267,8 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public Object remove(Object key) {
@@ -271,7 +279,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public int size() {
@@ -279,7 +287,7 @@ public class MapAdapter implements HMap {
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
     @Override
     public HCollection values() {
@@ -398,8 +406,9 @@ public class MapAdapter implements HMap {
 
     }
 
-    // Class Entry
-
+    /**
+     * {@inheritDoc}
+     */
     static class Entry implements HMap.HEntry {
         
         private Object key = null;

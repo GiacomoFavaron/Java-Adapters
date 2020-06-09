@@ -3,14 +3,18 @@ package adapter;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-// Questa lista non accetta elementi null
+/**
+ * Adapter class from CLDC 1.1 Vector to JSE 1.4.2 List (interface HList).
+ * This implementation does not allow null elements.
+ */
 
 public class ListAdapter implements HList {
 
     private Vector v = new Vector();
 
     /**
-     *
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public void add(int index, Object element) {
@@ -25,8 +29,9 @@ public class ListAdapter implements HList {
         }
     }
 
-     /**
-     *
+    /**
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     @Override
     public boolean add(Object o) {
@@ -38,8 +43,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean addAll(HCollection c) {
         if(c == null) {
@@ -56,8 +62,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean addAll(int index, HCollection c) {
         if(c == null) {
@@ -78,16 +85,17 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         v.removeAllElements();
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean contains(Object o) {
         if(o == null) {
@@ -97,8 +105,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean containsAll(HCollection c) {
         if(c == null) {
@@ -113,8 +122,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if(o == this) {
@@ -136,8 +146,8 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public Object get(int index) {
         try {
@@ -149,8 +159,8 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int hashCode = 1;
@@ -163,8 +173,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public int indexOf(Object o) {
         if(o == null) {
@@ -174,16 +185,16 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return v.isEmpty();
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public HIterator iterator() {
         return new Iterator();
@@ -220,8 +231,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public int lastIndexOf(Object o) {
         if(o == null) {
@@ -231,16 +243,16 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public HListIterator listIterator() {
         return new ListIterator(0);
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public HListIterator listIterator(int index) {
         return new ListIterator(index);
@@ -290,8 +302,8 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public Object remove(int index) {
         Object o = get(index);  // Contiene controllo bounds
@@ -300,8 +312,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean remove(Object o) {
         if(o == null) {
@@ -311,8 +324,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean removeAll(HCollection c) {
         if(c == null) {
@@ -329,8 +343,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public boolean retainAll(HCollection c) {
         if(c == null) {
@@ -349,8 +364,9 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     */
     @Override
     public Object set(int index, Object element) {
         if(element == null) {
@@ -362,13 +378,16 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * 
-    */
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return v.size();    //Integer.maxValue??
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public HList subList(int fromIndex, int toIndex) {
         return new SubList(this, fromIndex, toIndex);
     }
@@ -596,9 +615,7 @@ public class ListAdapter implements HList {
     }
     
     /**
-     * Returns an array containing all of the elements in this set.
-     * @return an array containing all of the elements in this set.
-     * @throws NullPointerException if the specified array is null.
+     * {@inheritDoc}
      */
     public Object[] toArray(){
         Object[] v = new Object[size()];
@@ -610,10 +627,8 @@ public class ListAdapter implements HList {
     }
 
     /**
-     * Returns an array containing all of the elements in this set; the runtime type of the returned array is that of the specified array.
-     * @param a the array into which the elements of this set are to be stored, if it is big enough; otherwise, a new array of the same runtime type is allocated for this purpose. 
-     * @return an array containing the elements of this set.
-     * @throws NullPointerException if the specified array is null.
+     * {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
      */
     public Object[] toArray(Object[] a) {
         if(a == null) {
