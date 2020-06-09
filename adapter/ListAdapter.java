@@ -366,6 +366,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the list and removes from the list the elements which are not contained in the collection (using the iterator's remove() method).
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -387,6 +388,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the get(int) method and the vector's setElementAt(Object, int) method and then returns the object returned by get(int).
      * @throws NullPointerException {@inheritDoc}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
@@ -402,6 +404,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the vector's size() method.
      */
     @Override
     public int size() {
@@ -410,6 +413,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive. The returned list is backed by this list, so non-structural changes in the returned list are reflected in this list, and vice-versa. The behavior of the list returned by this method becomes inconsistent with the backing list (i.e., this list) if the latter is structurally modified in any way other than via the returned list. The sublist is, in fact, implemented with an inner class wich stores the offset and the size of the sublist, which are not updated by the methods of the backing list. The sublists won't be invalidated when structural changes are made to the backing list.
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public HList subList(int fromIndex, int toIndex) {
@@ -640,6 +644,7 @@ public class ListAdapter implements HList {
     
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the list and adds the elements returned by next() to the array. The length of the array is equal to the size of the list.
      */
     public Object[] toArray(){
         Object[] v = new Object[size()];
@@ -652,6 +657,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the list and adds the elements returned by next() to the array. The length of the array is equal to the one of the array passed as the parameter. If it's length is greater than the list's size the elements whose index is greater or equal to the list's size are set to null.
      * @throws NullPointerException {@inheritDoc}
      */
     public Object[] toArray(Object[] a) {

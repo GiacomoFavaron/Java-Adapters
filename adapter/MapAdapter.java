@@ -44,7 +44,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
-     * <p>This implementation returns a set containing the entries of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
+     * <p>This implementation returns a set containing the entries of the map and which is backed by the map, so changes to the map are reflected in the set, and vice-versa. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HSet entrySet() {
@@ -201,7 +201,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
-     * <p>This implementation returns a set containing the keys of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
+     * <p>This implementation returns a set containing the keys of the map and which is backed by the map, so changes to the map are reflected in the set, and vice-versa. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HSet keySet() {
@@ -317,7 +317,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
-     * <p>This implementation returns a collection containing the values of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
+     * <p>This implementation returns a collection containing the values of the map and which is backed by the map, so changes to the map are reflected in the set, and vice-versa. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HCollection values() {
