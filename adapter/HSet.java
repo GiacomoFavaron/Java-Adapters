@@ -6,7 +6,7 @@ package adapter;
 public interface HSet extends HCollection {
 
     /**
-     * Adds the specified element to this set if it is not already present (optional operation).
+     * Adds the specified element to this set if it is not already present.
      * @param o element to be added to this set.
      * @return true if this set did not already contain the specified element.
      * @throws UnsupportedOperationException if the add method is not supported by this set. 
@@ -17,7 +17,7 @@ public interface HSet extends HCollection {
     public boolean add(Object o);
 
     /**
-     * Adds all of the elements in the specified collection to this set if they're not already present (optional operation).
+     * Adds all of the elements in the specified collection to this set if they're not already present.
      * @param c  collection whose elements are to be added to this set.
      * @return true if this set changed as a result of the call.
      * @throws UnsupportedOperationException if the addAll method is not supported by this set. 
@@ -28,7 +28,7 @@ public interface HSet extends HCollection {
     public boolean addAll(HCollection c);
 
     /**
-     * Removes all of the elements from this set (optional operation).
+     * Removes all of the elements from this set.
      * @throws UnsupportedOperationException if the clear method is not supported by this set.
      */
     public void clear();
@@ -78,7 +78,7 @@ public interface HSet extends HCollection {
     public HIterator iterator();
 
     /**
-     * Removes the specified element from this set if it is present (optional operation).
+     * Removes the specified element from this set if it is present.
      * @param o object to be removed from this set, if present.
      * @return true if the set contained the specified element.
      * @throws ClassCastException if the type of the specified element is incompatible with this set (optional).
@@ -88,7 +88,7 @@ public interface HSet extends HCollection {
     public boolean remove(Object o);
 
     /**
-     * Removes from this set all of its elements that are contained in the specified collection (optional operation).
+     * Removes from this set all of its elements that are contained in the specified collection.
      * @param c collection that defines which elements will be removed from this set.
      * @return true if this set changed as a result of the call.
      * @throws UnsupportedOperationException if the removeAll method is not supported by this Collection. 
@@ -99,7 +99,7 @@ public interface HSet extends HCollection {
     public boolean removeAll(HCollection c);
 
     /**
-     * Retains only the elements in this set that are contained in the specified collection (optional operation).
+     * Retains only the elements in this set that are contained in the specified collection.
      * @param c collection that defines which elements this set will retain.
      * @return true if this collection changed as a result of the call.
      * @throws UnsupportedOperationException if the retainAll method is not supported by this Collection. 

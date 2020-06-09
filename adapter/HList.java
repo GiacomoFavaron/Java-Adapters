@@ -6,7 +6,7 @@ package adapter;
 public interface HList extends HCollection {
 
     /**
-     * Inserts the specified element at the specified position in this list (optional operation). Shifts the element currently at that position (if any) and any subsequent elements to the right (adds one to their indices). 
+     * Inserts the specified element at the specified position in this list. Shifts the element currently at that position (if any) and any subsequent elements to the right (adds one to their indices). 
      * @param index  index at which the specified element is to be inserted.
      * @param element  element to be inserted.
      * @throws UnsupportedOperationException if the add method is not supported by this list. 
@@ -18,7 +18,7 @@ public interface HList extends HCollection {
     public void add(int index, Object element);
 
     /**
-     * Inserts the specified element at the specified position in this list (optional operation).
+     * Inserts the specified element at the specified position in this list.
      * @param o element to be appended to this list.
      * @return true (as per the general contract of the Collection.add method).
      * @throws UnsupportedOperationException if the add method is not supported by this list.
@@ -29,7 +29,7 @@ public interface HList extends HCollection {
     public boolean add(Object o);
 
     /**
-     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator (optional operation).
+     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator.
      * @param c collection whose elements are to be added to this list. 
      * @return true if this list changed as a result of the call.
      * @throws UnsupportedOperationException if the addAll method is not supported by this list. 
@@ -40,7 +40,7 @@ public interface HList extends HCollection {
     public boolean addAll(HCollection c);
 
     /**
-     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator (optional operation).
+     * Appends all of the elements in the specified collection to the end of this list, in the order that they are returned by the specified collection's iterator.
      * @param index index at which to insert first element from the specified collection.
      * @param c elements to be inserted into this list. 
      * @return true if this list changed as a result of the call. 
@@ -53,7 +53,7 @@ public interface HList extends HCollection {
     public boolean addAll(int index, HCollection c);
 
     /**
-     * Removes all of the elements from this list (optional operation).
+     * Removes all of the elements from this list.
      * @throws UnsupportedOperationException if the clear method is not supported by this list.
      */
     public void clear();
@@ -144,7 +144,7 @@ public interface HList extends HCollection {
     public HListIterator listIterator(int index);
 
     /**
-     * Removes the element at the specified position in this list (optional operation).
+     * Removes the element at the specified position in this list.
      * @param index  the index of the element to removed. 
      * @return the element previously at the specified position.
      * @throws ClassCastException if the type of the specified element is incompatible with this list (optional). 
@@ -153,7 +153,7 @@ public interface HList extends HCollection {
     public Object remove(int index);
 
     /**
-     * Removes the first occurrence in this list of the specified element (optional operation).
+     * Removes the first occurrence in this list of the specified element.
      * @param o element to be removed from this list, if present. 
      * @return true if this list contained the specified element. 
      * @throws ClassCastException if the type of the specified element is incompatible with this list (optional). 
@@ -163,7 +163,7 @@ public interface HList extends HCollection {
     public boolean remove(Object o);
 
     /**
-     * Removes from this list all the elements that are contained in the specified collection (optional operation).
+     * Removes from this list all the elements that are contained in the specified collection.
      * @param c collection that defines which elements will be removed from this list.
      * @return true if this list changed as a result of the call. 
      * @throws UnsupportedOperationException if the removeAll method is not supported by this list. 
@@ -174,7 +174,7 @@ public interface HList extends HCollection {
     public boolean removeAll(HCollection c);
 
     /**
-     * Retains only the elements in this list that are contained in the specified collection (optional operation).
+     * Retains only the elements in this list that are contained in the specified collection.
      * @param c collection that defines which elements this set will retain.
      * @return true if this list changed as a result of the call. 
      * @throws UnsupportedOperationException if the retainAll method is not supported by this list. 
@@ -185,9 +185,9 @@ public interface HList extends HCollection {
     public boolean retainAll(HCollection c);
 
     /**
-     * Replaces the element at the specified position in this list with the specified element (optional operation).
-     * @param index Replaces the element at the specified position in this list with the specified element (optional operation).
-     * @param element Replaces the element at the specified position in this list with the specified element (optional operation).
+     * Replaces the element at the specified position in this list with the specified element.
+     * @param index Replaces the element at the specified position in this list with the specified element.
+     * @param element Replaces the element at the specified position in this list with the specified element.
      * @return the element previously at the specified position.
      * @throws UnsupportedOperationException if the set method is not supported by this list. 
      * @throws ClassCastException if the class of the specified element prevents it from being added to this list. 

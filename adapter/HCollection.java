@@ -6,7 +6,7 @@ package adapter;
 public interface HCollection {
 
     /**
-     * Ensures that this collection contains the specified element (optional operation).
+     * Ensures that this collection contains the specified element.
      * @param o element whose presence in this collection is to be ensured. 
      * @return true if this collection changed as a result of the call
      * @throws UnsupportedOperationException some aspect of this element prevents it from being added to this collection.some aspect of this element prevents it from being added to this collection.
@@ -17,7 +17,7 @@ public interface HCollection {
     public boolean add(Object o);
 
     /**
-     * Adds all of the elements in the specified collection to this collection (optional operation).
+     * Adds all of the elements in the specified collection to this collection.
      * @param c elements to be inserted into this collection. 
      * @return elements to be inserted into this collection.
      * @throws UnsupportedOperationException if this collection does not support the addAll method.
@@ -28,7 +28,7 @@ public interface HCollection {
     public boolean addAll(HCollection c);
 
     /**
-     * Removes all of the elements from this collection (optional operation).
+     * Removes all of the elements from this collection.
      * @throws UnsupportedOperationException if the clear method is not supported by this collection.
      */
     public void clear();
@@ -78,7 +78,7 @@ public interface HCollection {
     public HIterator iterator();
 
     /**
-     * Removes a single instance of the specified element from this collection, if it is present (optional operation).
+     * Removes a single instance of the specified element from this collection, if it is present.
      * @param o element to be removed from this collection, if present. 
      * @return true if this collection changed as a result of the call
      * @throws ClassCastException if the type of the specified element is incompatible with this collection (optional).
@@ -88,7 +88,7 @@ public interface HCollection {
     public boolean remove(Object o);
 
     /**
-     * Removes all this collection's elements that are also contained in the specified collection (optional operation).
+     * Removes all this collection's elements that are also contained in the specified collection.
      * @param c elements to be removed from this collection. 
      * @return true if this collection changed as a result of the call
      * @throws UnsupportedOperationException if the removeAll method is not supported by this collection.
@@ -99,7 +99,7 @@ public interface HCollection {
     public boolean removeAll(HCollection c);
 
     /**
-     * Retains only the elements in this collection that are contained in the specified collection (optional operation).
+     * Retains only the elements in this collection that are contained in the specified collection.
      * @param c elements to be retained in this collection. 
      * @return true if this collection changed as a result of the call 
      * @throws UnsupportedOperationException if the retainAll method is not supported by this Collection. 

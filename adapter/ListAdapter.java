@@ -4,8 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 /**
- * Adapter class from CLDC 1.1 Vector to JSE 1.4.2 List (interface HList).
- * This implementation does not allow null elements.
+ * Adapter class from CLDC 1.1 Vector to JSE 1.4.2 List (interface HList). This class implements an Object Adapter, therefore it stores a Vector instance which is used by the List's methods. This implementation does not allow null elements.
  */
 
 public class ListAdapter implements HList {

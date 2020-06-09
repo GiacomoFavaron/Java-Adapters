@@ -6,7 +6,7 @@ package adapter;
 public interface HMap {
 
     /**
-     * Removes all mappings from this map (optional operation).
+     * Removes all mappings from this map.
      * @throws UnsupportedOperationException clear is not supported by this map.
      */
     public void clear();
@@ -71,7 +71,7 @@ public interface HMap {
     public HSet keySet();
 
     /**
-     * Associates the specified value with the specified key in this map (optional operation).
+     * Associates the specified value with the specified key in this map.
      * @param key key with which the specified value is to be associated.
      * @param value value to be associated with the specified key. 
      * @return previous value associated with specified key, or null if there was no mapping for key. A null return can also indicate that the map previously associated null with the specified key, if the implementation supports null values. 
@@ -83,7 +83,7 @@ public interface HMap {
     public Object put(Object key, Object value);
 
     /**
-     * Copies all of the mappings from the specified map to this map (optional operation). The effect of this call is equivalent to that of calling put(k, v) on this map once for each mapping from key k to value v in the specified map. The behavior of this operation is unspecified if the specified map is modified while the operation is in progress. 
+     * Copies all of the mappings from the specified map to this map. The effect of this call is equivalent to that of calling put(k, v) on this map once for each mapping from key k to value v in the specified map. The behavior of this operation is unspecified if the specified map is modified while the operation is in progress. 
      * @param t Mappings to be stored in this map. 
      * @throws UnsupportedOperationException if the putAll method is not supported by this map. 
      * @throws ClassCastException if the class of a key or value in the specified map prevents it from being stored in this map. 
@@ -93,7 +93,7 @@ public interface HMap {
     public void putAll(HMap t);
 
     /**
-     * Removes the mapping for this key from this map if it is present (optional operation).
+     * Removes the mapping for this key from this map if it is present.
      * @param key key whose mapping is to be removed from the map. 
      * @return previous value associated with specified key, or null if there was no mapping for key. 
      * @throws ClassCastException if the key is of an inappropriate type for this map (optional).
@@ -145,7 +145,7 @@ public interface HMap {
         public int hashCode();
 
         /**
-         * Replaces the value corresponding to this entry with the specified value (optional operation).
+         * Replaces the value corresponding to this entry with the specified value.
          * @param value  new value to be stored in this entry.
          * @return old value corresponding to the entry. 
          * @throws UnsupportedOperationException if the put operation is not supported by the backing map. 

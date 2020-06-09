@@ -5,8 +5,7 @@ import java.util.Hashtable;
 
 
 /**
- * Adapter class from CLDC 1.1 Vector to JSE 1.4.2 List (interface HList).
- * This implementation does not allow null keys and values.
+ * Adapter class from CLDC 1.1 Hashtable to JSE 1.4.2 Map (interface HMap). This class implements an Object Adapter, therefore it stores a Hastable instance which is used by the Map's methods. This implementation does not allow null keys and values.
  */
 
 
@@ -141,6 +140,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's get(Object o) method.
      * @throws NullPointerException {@inheritDoc}
      */
     @Override

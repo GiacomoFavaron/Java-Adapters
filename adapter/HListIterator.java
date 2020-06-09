@@ -7,7 +7,7 @@ package adapter;
 public interface HListIterator extends HIterator{
 
     /**
-     * Inserts the specified element into the list (optional operation).
+     * Inserts the specified element into the list.
      * @param o the element to insert.
      * @throws UnsupportedOperationException if the add method is not supported by this list iterator.
      * @throws ClassCastException if the class of the specified element prevents it from being added to this list. 
@@ -40,7 +40,7 @@ public interface HListIterator extends HIterator{
     public int previousIndex();
 
     /**
-     * Replaces the last element returned by next or previous with the specified element (optional operation).
+     * Replaces the last element returned by next or previous with the specified element.
      * @param o  the element with which to replace the last element returned by next or previous. 
      * @throws UnsupportedOperationException if the set operation is not supported by this list iterator. 
      * @throws ClassCastException if the class of the specified element prevents it from being added to this list. 

@@ -1,5 +1,7 @@
 package adapter;
 
+import java.util.NoSuchElementException;
+
 /**
  * An iterator over a collection.
  */
@@ -19,7 +21,7 @@ public interface HIterator {
     public Object next();
 
     /**
-     * Removes from the underlying collection the last element returned by the iterator (optional operation).
+     * Removes from the underlying collection the last element returned by the iterator.
      * @throws IllegalStateException if the next method has not yet been called, or the remove method has already been called after the last call to the next method.
      */
     public void remove();

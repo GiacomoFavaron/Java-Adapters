@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 /**
  * Adapter class from CLDC 1.1 Hashtable to JSE 1.4.2 Set (interface HSet).
- * This implementation does not allow null elements.
+This class implements an Object Adapter, therefore it stores a Hastable instance which is used by the Set's methods. This implementation does not allow null elements.
  */
 
 public class SetAdapter implements HSet {
@@ -14,6 +14,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementations checks if the object is already contained in the set using contains(Object), and if it isn't it adds the object to the set calling the hashtable's put(Object, Object) method.
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean add(Object o) {
@@ -29,6 +30,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the collection and adds the elements to the set using add(Object).
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean addAll(HCollection c) {
@@ -48,6 +50,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's clear() method.
      */
     public void clear() {
         hashtable.clear();
@@ -55,6 +58,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation call's the hashtable's containsKey(Object) method.
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean contains(Object o) {
@@ -66,6 +70,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the collection and checks if the elements are already in the set using contains(Object).
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean containsAll(HCollection c) {
@@ -84,6 +89,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation first checks if the specified object is this set, if so it returns true. Then, it checks if the specified object is a set whose size is identical to the size of this set, if not, it it returns false. If so, it returns containsAll((Collection) o).
      */
     public boolean equals(Object o){
         if (o == this) {
@@ -109,6 +115,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the set, adding up each element's haschode and returning the result.
      */
     public int hashCode(){
         int hashCode = 0;
@@ -121,6 +128,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's isEmpty() method.
      */
     public boolean isEmpty(){
         return hashtable.isEmpty();
