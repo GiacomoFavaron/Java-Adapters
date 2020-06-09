@@ -81,6 +81,12 @@ public class MapAdapter implements HMap {
             return MapAdapter.this.containsKey(e.getKey());
         }
 
+        @Override
+        public boolean isEmpty() {
+            return size() == 0;
+        }
+
+        @Override
         public HIterator iterator() {
             return new EntryIterator();
         }
@@ -114,52 +120,19 @@ public class MapAdapter implements HMap {
             
         }
 
+        @Override
+        public boolean remove(Object o) {
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            HMap.HEntry e = (HMap.HEntry) o;
+            return MapAdapter.this.remove(e.getKey()) != null;
+        }
+
+        @Override
         public int size() {
             return MapAdapter.this.size();
         }
-
-        // HO COPIATO IMPLEMENTAZIONE DA LIST, CHE E' "LA STESSA DI SET",
-        // QUINDI SE ESTENDO SETADAPTER DEVE FUNZIONARE, ORA BISOGNA CAPIRE
-        // PERO' SE L'IMPLEMENTAZIONE DI SET INFLUISCE.
-        // @Override
-        // public boolean containsAll(HCollection c) {
-        //     if(c == null) {
-        //         throw new NullPointerException();
-        //     }
-        //     HIterator it = c.iterator();
-        //     while(it.hasNext()) {
-        //         if(!contains(it.next()))
-        //             return false;
-        //     }
-        //     return true;
-        // }
-
-        // @Override
-        // public boolean equals(Object o) {
-        //     if(o == null) {
-        //         throw new NullPointerException();
-        //     }
-        //     HSet s = null;
-        //     try {
-        //         s = (HSet) o;
-        //     }
-        //     catch(ClassCastException cce) {
-        //         return false;
-        //     }
-        //     if(size() != s.size()) {
-        //         return false;
-        //     }
-        //     int index = 0;
-        //     HIterator it = s.iterator();
-        //     while(it.hasNext()) {
-        //         Object e1 = get(index);
-        //         Object e2 = it.next();
-        //         if(e1 != e2) {
-        //             return false;
-        //         }
-        //     }
-        //     return true;
-        // }
     
     }
 

@@ -30,7 +30,7 @@ public class TestSetAdapter {
      * TestAdd
      */
 
-    @Test()
+    @Test
     public void testAddWithObjNotContained() {
         Object o = new Object();
         assertTrue(s.add(o));
@@ -39,7 +39,7 @@ public class TestSetAdapter {
     }
 
 
-    @Test()
+    @Test
     public void testAddWithObjContained() {
         Object o = new Object();
         assertTrue(s.add(o));
@@ -122,14 +122,14 @@ public class TestSetAdapter {
      */
 
     @Test
-    public void testContainsWithObjContained() {
+    public void testContainsTrue() {
         Object o = new Object();
         s.add(o);
         assertTrue(s.contains(o));
     }
 
     @Test
-    public void testContainsWithObjNotContained() {
+    public void testContainsFalse() {
         Object o = new Object();
         s.add(o);
         Object o2 = new Object();
@@ -149,9 +149,10 @@ public class TestSetAdapter {
     public void testContainsAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            c.add(new Object());
+            Object o = new Object();
+            c.add(o);
+            s.add(o);
         }
-        s.addAll(c);
         assertTrue(s.containsAll(c));
     }
 
@@ -159,7 +160,19 @@ public class TestSetAdapter {
     public void testContainsAllWithHCollectionNotContained() {
         HCollection c = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            c.add(i);
+            c.add(new Object());
+        }
+        assertFalse(s.containsAll(c));
+    }
+
+    @Test
+    public void testContainsAllWithHCollectionPartiallyContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            Object o = new Object();
+			if(i % 2 == 0)
+        		s.add(o);
+            c.add(o);
         }
         assertFalse(s.containsAll(c));
     }
@@ -395,7 +408,7 @@ public class TestSetAdapter {
 
     @Test
     public void testSizeEmpty() {
-        assertTrue(s.size() == 0);
+        assertEquals(0, s.size());
     }
 
     @Test

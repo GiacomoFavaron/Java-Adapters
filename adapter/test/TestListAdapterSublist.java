@@ -224,7 +224,19 @@ public class TestListAdapterSublist {
             c.add(new Object());
         }
         assertFalse(l.containsAll(c));
-	}
+    }
+    
+    @Test
+    public void testContainsAllWithHCollectionPartiallyContained() {
+        HCollection c = new CollectionAdapter();
+        for(int i = 0; i < 5; i++) {
+            Object o = new Object();
+			if(i % 2 == 0)
+        		l.add(o);
+            c.add(o);
+        }
+        assertFalse(l.containsAll(c));
+    }
 	
 	@Test(expected = NullPointerException.class)
     public void testContainsAllWithNull() {
