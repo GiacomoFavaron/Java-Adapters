@@ -100,6 +100,17 @@ public class TestMapAdapter {
         }
     }
 
+    @Test
+    public void testEntrySetPropagation() {
+        m.put(Integer.valueOf(1), Integer.valueOf(2));
+        m.put(Integer.valueOf(4), Integer.valueOf(5));
+        HSet set = m.entrySet();
+        HIterator it = set.iterator();
+        it.next();
+        it.remove();
+        assertEquals(1, m.size());
+    }
+
     /**
      * TestEquals
      */
@@ -201,6 +212,17 @@ public class TestMapAdapter {
         while(it.hasNext()) {
             assertTrue(m.containsKey(it.next()));
         }
+    }
+
+    @Test
+    public void testKeySetPropagation() {
+        m.put(Integer.valueOf(1), Integer.valueOf(2));
+        m.put(Integer.valueOf(4), Integer.valueOf(5));
+        HSet set = m.keySet();
+        HIterator it = set.iterator();
+        it.next();
+        it.remove();
+        assertEquals(1, m.size());
     }
 
     /**

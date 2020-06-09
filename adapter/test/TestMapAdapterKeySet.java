@@ -10,13 +10,13 @@ import java.util.NoSuchElementException;
 /**
  * Test case class for SetAdapter
  */
-public class TestMapAdapterEntrySet {
+public class TestMapAdapterKeySet {
 
     private HSet s = null;
-    private HMap.HEntry k1 = null;
-    private HMap.HEntry k2 = null;
-    private HMap.HEntry key1 = null;
-    private HMap.HEntry key2 = null;
+    private Object e1 = null;
+    private Object e2 = null;
+    private Object entry1 = null;
+    private Object entry2 = null;
 
     /**
      * Set up
@@ -27,17 +27,17 @@ public class TestMapAdapterEntrySet {
         MapAdapter map = new MapAdapter();
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
-        s = map.entrySet();
+        s = map.keySet();
         HIterator it = s.iterator();
-        k1 = (HMap.HEntry) it.next();
-        k2 = (HMap.HEntry) it.next();
+        e1 = it.next();
+        e2 = it.next();
         MapAdapter map2 = new MapAdapter();
         map2.put(Integer.valueOf(10), Integer.valueOf(11));
         map2.put(Integer.valueOf(11), Integer.valueOf(12));
-        HSet set2 = map2.entrySet();
+        HSet set2 = map2.keySet();
         HIterator it2 = set2.iterator();
-        key1 = (HMap.HEntry) it2.next();
-        key2 = (HMap.HEntry) it2.next();
+        entry1 = it2.next();
+        entry2 = it2.next();
     }
 
     /**
@@ -74,17 +74,12 @@ public class TestMapAdapterEntrySet {
 
     @Test
     public void testContainsTrue() {
-        assertTrue(s.contains(k1));
+        assertTrue(s.contains(e1));
     }
 
     @Test
     public void testContainsFalse() {
-        assertFalse(s.contains(key1));
-    }
-
-    @Test(expected = ClassCastException.class)
-    public void testContainsClassCast() {
-        s.contains(new Object());
+        assertFalse(s.contains(entry1));
     }
 
     @Test(expected = NullPointerException.class)
@@ -99,32 +94,25 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testContainsAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
-        c.add(k1);
-        c.add(k2);
+        c.add(e1);
+        c.add(e2);
         assertTrue(s.containsAll(c));
     }
 
     @Test
     public void testContainsAllWithHCollectionNotContained() {
         HCollection c = new CollectionAdapter();
-        c.add(key1);
-        c.add(key2);
+        c.add(entry1);
+        c.add(entry2);
         assertFalse(s.containsAll(c));
     }
 
     @Test
     public void testContainsAllWithHCollectionPartiallyContained() {
         HCollection c = new CollectionAdapter();
-        c.add(k1);
-        c.add(key1);
+        c.add(e1);
+        c.add(entry1);
         assertFalse(s.containsAll(c));
-    }
-
-    @Test(expected = ClassCastException.class)
-    public void testContainsAllClassCast() {
-        HCollection c = new CollectionAdapter();
-        c.add(new Object());
-        s.containsAll(c);
     }
 
     @Test(expected = NullPointerException.class)
@@ -141,7 +129,7 @@ public class TestMapAdapterEntrySet {
         MapAdapter map = new MapAdapter();
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
-        HSet otherSet = map.entrySet();
+        HSet otherSet = map.keySet();
         assertEquals(s, otherSet);
     }
 
@@ -161,7 +149,7 @@ public class TestMapAdapterEntrySet {
         MapAdapter map = new MapAdapter();
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
-        HSet otherSet = map.entrySet();
+        HSet otherSet = map.keySet();
 		assertEquals(s, otherSet);
 		assertTrue(s.hashCode() == otherSet.hashCode());
 	}
@@ -227,18 +215,13 @@ public class TestMapAdapterEntrySet {
 
     @Test
     public void testRemoveTrue() {
-        assertTrue(s.remove(k1));
-        assertEquals(false, s.contains(k1));
+        assertTrue(s.remove(e1));
+        assertEquals(false, s.contains(e1));
     }
 
     @Test
     public void testRemoveFalse() {
-        assertFalse(s.remove(key1));
-    }
-
-    @Test(expected = ClassCastException.class)
-    public void testRemoveClassCast() {
-        s.remove(new Object());
+        assertFalse(s.remove(entry1));
     }
 
     @Test(expected = NullPointerException.class)
@@ -253,7 +236,7 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testRemoveAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
-        c.add(k1);
+        c.add(e1);
 		assertTrue(s.removeAll(c));
 		HIterator cit = c.iterator();
 		while(cit.hasNext()) {
@@ -264,8 +247,8 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testRemoveAllWithHCollectionNotContained() {
         HCollection c = new CollectionAdapter();
-        c.add(key1);
-        c.add(key2);
+        c.add(entry1);
+        c.add(entry2);
 		assertFalse(s.removeAll(c));
         assertEquals(2, s.size());
     }
@@ -273,17 +256,10 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testRemoveAllCollectionPartiallyContained() {
         HCollection c = new CollectionAdapter();
-        c.add(key1);
-        c.add(k2);
+        c.add(entry1);
+        c.add(e2);
 		assertTrue(s.removeAll(c));
 		assertEquals(1, s.size());
-    }
-
-    @Test(expected = ClassCastException.class)
-    public void testRemoveAllClassCast() {
-        HCollection c = new CollectionAdapter();
-        c.add(new Object());
-        s.removeAll(c);
     }
 
     @Test(expected = NullPointerException.class)
@@ -298,8 +274,8 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testRetainAllAllElementsRetained() {
         HCollection c = new CollectionAdapter();
-        c.add(k1);
-        c.add(k2);
+        c.add(e1);
+        c.add(e2);
 		assertFalse(s.retainAll(c));
 		assertEquals(2, s.size());
     }
@@ -307,7 +283,7 @@ public class TestMapAdapterEntrySet {
     @Test
     public void testRetainAllSomeElementsRetained() {
         HCollection c = new CollectionAdapter();
-        c.add(k1);
+        c.add(e1);
 		assertTrue(s.retainAll(c));
 		assertEquals(1, s.size());
 	}
@@ -315,17 +291,10 @@ public class TestMapAdapterEntrySet {
 	@Test
     public void testRetainAllNoElementsRetained() {
         HCollection c = new CollectionAdapter();
-		c.add(key1);
+		c.add(entry1);
 		assertTrue(s.retainAll(c));
 		assertEquals(0, s.size());
 	}
-    
-    @Test(expected = ClassCastException.class)
-    public void testRetainAllClassCast() {
-        HCollection c = new CollectionAdapter();
-        c.add(new Object());
-        s.retainAll(c);
-    }
 
 	@Test(expected = NullPointerException.class)
     public void testRetainAllWithNull() {

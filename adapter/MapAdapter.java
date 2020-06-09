@@ -43,19 +43,10 @@ public class MapAdapter implements HMap {
      */
     @Override
     public HSet entrySet() {
-        // HSet s = new SetAdapter();
-        // Enumeration keys = h.keys();
-        // while(keys.hasMoreElements())
-		// {
-        //     Object k = keys.nextElement();
-        //     Hmap.HEntry e = new Entry(k, h.get(k));
-		// 	   s.add(e);
-        // }
-        // return s;
         return new EntrySet();
     }
 
-    private class EntrySet extends SetAdapter implements HSet {
+    private class EntrySet extends SetAdapter {
     
         @Override
         public boolean add(Object o) {
@@ -185,14 +176,61 @@ public class MapAdapter implements HMap {
      */
     @Override
     public HSet keySet() {
-        HSet es = entrySet();
-        HIterator it = es.iterator();
-        HSet ks = new SetAdapter();
-        while(it.hasNext()) {
-            HEntry e = (HEntry) it.next();
-            ks.add(e.getKey());
+        return new KeySet();
+    }
+
+    private class KeySet extends EntrySet {
+
+        @Override
+        public boolean contains(Object o) {
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            return MapAdapter.this.containsKey(o);
         }
-        return ks;
+
+        @Override
+        public HIterator iterator() {
+            return new KeyIterator();
+        }
+
+        private class KeyIterator implements HIterator {
+
+            private Enumeration keys = h.keys();
+            private Object lastRetKey = null;
+
+            @Override
+            public boolean hasNext() {
+                return keys.hasMoreElements();
+            }
+
+            @Override
+            public Object next() {
+                lastRetKey = keys.nextElement(); // Lancia NoSuchElementException
+                return lastRetKey;
+            }
+
+            @Override
+            public void remove() {
+                // Se next non e' mai stato chiamato o remove e' gia' stato
+                // chiamato dopo l'ultima chiamata a next.
+                if(lastRetKey == null) {
+                    throw new IllegalStateException();
+                }
+                MapAdapter.this.remove(lastRetKey);
+                lastRetKey = null;  // Reset to null after removing
+            }
+            
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            return MapAdapter.this.remove(o) != null;
+        }
+
     }
 
     /**
