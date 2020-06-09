@@ -12,11 +12,11 @@ import java.util.NoSuchElementException;
  */
 public class TestMapAdapterValues {
 
-    private HCollection s = null;
-    private Object e1 = null;
-    private Object e2 = null;
-    private Object entry1 = null;
-    private Object entry2 = null;
+    private HCollection c = null;
+    private Object v1 = null;
+    private Object v2 = null;
+    private Object value1 = null;
+    private Object value2 = null;
 
     /**
      * Set up
@@ -27,17 +27,17 @@ public class TestMapAdapterValues {
         MapAdapter map = new MapAdapter();
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
-        s = map.values();
-        HIterator it = s.iterator();
-        e1 = it.next();
-        e2 = it.next();
+        c = map.values();
+        HIterator it = c.iterator();
+        v1 = it.next();
+        v2 = it.next();
         MapAdapter map2 = new MapAdapter();
         map2.put(Integer.valueOf(10), Integer.valueOf(11));
         map2.put(Integer.valueOf(11), Integer.valueOf(12));
         HCollection s2 = map2.values();
         HIterator it2 = s2.iterator();
-        entry1 = it2.next();
-        entry2 = it2.next();
+        value1 = it2.next();
+        value2 = it2.next();
     }
 
     /**
@@ -46,7 +46,7 @@ public class TestMapAdapterValues {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAdd() {
-        s.add(new Object());
+        c.add(new Object());
     }
 
     /**
@@ -55,7 +55,7 @@ public class TestMapAdapterValues {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAll() {
-        s.add(new CollectionAdapter());
+        c.add(new CollectionAdapter());
     }
 
     /**
@@ -64,8 +64,8 @@ public class TestMapAdapterValues {
 
     @Test
     public void testClear() {
-        s.clear();
-        assertEquals(0, s.size());
+        c.clear();
+        assertEquals(0, c.size());
     }
 
     /**
@@ -74,17 +74,17 @@ public class TestMapAdapterValues {
 
     @Test
     public void testContainsTrue() {
-        assertTrue(s.contains(e1));
+        assertTrue(c.contains(v1));
     }
 
     @Test
     public void testContainsFalse() {
-        assertFalse(s.contains(entry1));
+        assertFalse(c.contains(value1));
     }
 
     @Test(expected = NullPointerException.class)
     public void testContainsWithNull() {
-        s.contains(null);
+        c.contains(null);
     }
 
     /**
@@ -93,31 +93,31 @@ public class TestMapAdapterValues {
 
     @Test
     public void testContainsAllWithHCollectionContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(e1);
-        c.add(e2);
-        assertTrue(s.containsAll(c));
+        HCollection coll = new CollectionAdapter();
+        coll.add(v1);
+        coll.add(v2);
+        assertTrue(c.containsAll(coll));
     }
 
     @Test
     public void testContainsAllWithHCollectionNotContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(entry1);
-        c.add(entry2);
-        assertFalse(s.containsAll(c));
+        HCollection coll = new CollectionAdapter();
+        coll.add(value1);
+        coll.add(value2);
+        assertFalse(c.containsAll(coll));
     }
 
     @Test
     public void testContainsAllWithHCollectionPartiallyContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(e1);
-        c.add(entry1);
-        assertFalse(s.containsAll(c));
+        HCollection coll = new CollectionAdapter();
+        coll.add(v1);
+        coll.add(value1);
+        assertFalse(c.containsAll(coll));
     }
 
     @Test(expected = NullPointerException.class)
     public void testContainsAllWithNull() {
-        s.containsAll(null);
+        c.containsAll(null);
     }
 
     /**
@@ -130,14 +130,14 @@ public class TestMapAdapterValues {
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
         HCollection otherCollection = map.values();
-        assertEquals(s, otherCollection);
+        assertEquals(c, otherCollection);
     }
 
     @Test
     public void testEqualsFalse() {
         HSet otherSet = new SetAdapter();
         otherSet.add(new Object());
-        assertFalse(s.equals(otherSet));
+        assertFalse(c.equals(otherSet));
     }
 
     /**
@@ -150,8 +150,8 @@ public class TestMapAdapterValues {
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
         HCollection otherCollection = map.values();
-        assertEquals(s, otherCollection);
-		assertTrue(s.hashCode() == otherCollection.hashCode());
+        assertEquals(c, otherCollection);
+		assertTrue(c.hashCode() == otherCollection.hashCode());
 	}
 	
 	@Test
@@ -160,8 +160,8 @@ public class TestMapAdapterValues {
         for(int i = 0; i < 5; i++) {
             otherSet.add(new Object());
         }
-		assertFalse(s.equals(otherSet));
-		assertFalse(s.hashCode() == otherSet.hashCode());
+		assertFalse(c.equals(otherSet));
+		assertFalse(c.hashCode() == otherSet.hashCode());
 	}
 
     /**
@@ -170,13 +170,13 @@ public class TestMapAdapterValues {
 
     @Test
     public void TestIsEmptyTrue() {
-        s.clear();
-        assertTrue(s.isEmpty());
+        c.clear();
+        assertTrue(c.isEmpty());
     }
 
     @Test
     public void testIsEmptyFalse() {
-        assertFalse(s.isEmpty());
+        assertFalse(c.isEmpty());
 	}
 
     /**
@@ -185,17 +185,17 @@ public class TestMapAdapterValues {
 
     @Test
     public void testIteratorNextAndHasNext() {
-        HIterator it = s.iterator();
+        HIterator it = c.iterator();
         HCollection otherCollection = new CollectionAdapter();
         while(it.hasNext()) {
             otherCollection.add(it.next());
         }
-        assertEquals(s, otherCollection);
+        assertEquals(c, otherCollection);
 	}
 
 	@Test(expected = NoSuchElementException.class)
     public void testIteratorNextNoMoreElements() {
-        HIterator it = s.iterator();
+        HIterator it = c.iterator();
         for(int i = 0; i < 3; i++) {
             it.next();
 		}
@@ -203,10 +203,10 @@ public class TestMapAdapterValues {
 	
 	@Test
     public void testIteratorRemove() {
-		HIterator it = s.iterator();
+		HIterator it = c.iterator();
 		it.next();
         it.remove();
-        assertEquals(1, s.size());
+        assertEquals(1, c.size());
 	}
     
     /**
@@ -215,18 +215,18 @@ public class TestMapAdapterValues {
 
     @Test
     public void testRemoveTrue() {
-        assertTrue(s.remove(e1));
-        assertEquals(false, s.contains(e1));
+        assertTrue(c.remove(v1));
+        assertEquals(false, c.contains(v1));
     }
 
     @Test
     public void testRemoveFalse() {
-        assertFalse(s.remove(entry1));
+        assertFalse(c.remove(value1));
     }
 
     @Test(expected = NullPointerException.class)
     public void testRemoveWithNull() {
-        s.remove(null);
+        c.remove(null);
     }
 
     /**
@@ -235,36 +235,36 @@ public class TestMapAdapterValues {
 
     @Test
     public void testRemoveAllWithHCollectionContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(e1);
-		assertTrue(s.removeAll(c));
-		HIterator cit = c.iterator();
+        HCollection coll = new CollectionAdapter();
+        coll.add(v1);
+		assertTrue(c.removeAll(coll));
+		HIterator cit = coll.iterator();
 		while(cit.hasNext()) {
-			assertFalse(s.contains(cit.next()));
+			assertFalse(c.contains(cit.next()));
 		}
     }
 
     @Test
     public void testRemoveAllWithHCollectionNotContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(entry1);
-        c.add(entry2);
-		assertFalse(s.removeAll(c));
-        assertEquals(2, s.size());
+        HCollection coll = new CollectionAdapter();
+        coll.add(value1);
+        coll.add(value2);
+		assertFalse(c.removeAll(coll));
+        assertEquals(2, c.size());
     }
 
     @Test
     public void testRemoveAllCollectionPartiallyContained() {
-        HCollection c = new CollectionAdapter();
-        c.add(entry1);
-        c.add(e2);
-		assertTrue(s.removeAll(c));
-		assertEquals(1, s.size());
+        HCollection coll = new CollectionAdapter();
+        coll.add(value1);
+        coll.add(v2);
+		assertTrue(c.removeAll(coll));
+		assertEquals(1, c.size());
     }
 
     @Test(expected = NullPointerException.class)
     public void testRemoveAllWithNull() {
-        s.removeAll(null);
+        c.removeAll(null);
     }
 
     /**
@@ -273,32 +273,32 @@ public class TestMapAdapterValues {
 
     @Test
     public void testRetainAllAllElementsRetained() {
-        HCollection c = new CollectionAdapter();
-        c.add(e1);
-        c.add(e2);
-		assertFalse(s.retainAll(c));
-		assertEquals(2, s.size());
+        HCollection coll = new CollectionAdapter();
+        coll.add(v1);
+        coll.add(v2);
+		assertFalse(c.retainAll(coll));
+		assertEquals(2, c.size());
     }
 
     @Test
     public void testRetainAllSomeElementsRetained() {
-        HCollection c = new CollectionAdapter();
-        c.add(e1);
-		assertTrue(s.retainAll(c));
-		assertEquals(1, s.size());
+        HCollection coll = new CollectionAdapter();
+        coll.add(v1);
+		assertTrue(c.retainAll(coll));
+		assertEquals(1, c.size());
 	}
 
 	@Test
     public void testRetainAllNoElementsRetained() {
-        HCollection c = new CollectionAdapter();
-		c.add(entry1);
-		assertTrue(s.retainAll(c));
-		assertEquals(0, s.size());
+        HCollection coll = new CollectionAdapter();
+		coll.add(value1);
+		assertTrue(c.retainAll(coll));
+		assertEquals(0, c.size());
 	}
 
 	@Test(expected = NullPointerException.class)
     public void testRetainAllWithNull() {
-        s.retainAll(null);
+        c.retainAll(null);
 	}
 
     /**
@@ -307,13 +307,13 @@ public class TestMapAdapterValues {
 
     @Test
     public void testSizeEmpty() {
-        s.clear();
-        assertEquals(0, s.size());
+        c.clear();
+        assertEquals(0, c.size());
     }
 
     @Test
     public void testSize() {
-        assertEquals(2, s.size());
+        assertEquals(2, c.size());
     }
 
     /**
@@ -322,38 +322,38 @@ public class TestMapAdapterValues {
 
     @Test
     public void testToArray() {
-        Object[] setArray = s.toArray();
-        for(int i = 0; i < s.size(); i++) {
-            assertTrue(s.contains(setArray[i]));
+        Object[] setArray = c.toArray();
+        for(int i = 0; i < c.size(); i++) {
+            assertTrue(c.contains(setArray[i]));
         }
     }
 
     @Test
     public void testToArrayWithParameterSizeSmaller() {
         Object[] param = new Object[1];
-        Object[] setArray = s.toArray(param);
+        Object[] setArray = c.toArray(param);
         assertEquals(2, setArray.length);
         for(int i = 0; i < setArray.length; i++) {
-            assertTrue(s.contains(setArray[i]));
+            assertTrue(c.contains(setArray[i]));
         }
     }
 
     @Test
     public void testToArrayWithParameterSizeLonger() {
         Object[] param = new Object[10];
-        Object[] setArray = s.toArray(param);
+        Object[] setArray = c.toArray(param);
         assertEquals(10, setArray.length);
-        for(int i = 0; i < s.size(); i++) {
-            assertTrue(s.contains(setArray[i]));
+        for(int i = 0; i < c.size(); i++) {
+            assertTrue(c.contains(setArray[i]));
         }
-        for(int i = s.size(); i < param.length; i++) {
+        for(int i = c.size(); i < param.length; i++) {
             assertEquals(setArray[i], null);
         }
     }
 
     @Test(expected = NullPointerException.class)
     public void testToArrayWithNull() {
-        s.toArray(null);
+        c.toArray(null);
     }
 
 }
