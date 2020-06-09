@@ -14,6 +14,7 @@ public class ListAdapter implements HList {
     /**
      * {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public void add(int index, Object element) {
@@ -63,6 +64,7 @@ public class ListAdapter implements HList {
     /**
      * {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public boolean addAll(int index, HCollection c) {
@@ -146,6 +148,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public Object get(int index) {
@@ -302,6 +305,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public Object remove(int index) {
@@ -365,6 +369,7 @@ public class ListAdapter implements HList {
     /**
      * {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     @Override
     public Object set(int index, Object element) {
@@ -386,6 +391,7 @@ public class ListAdapter implements HList {
 
     /**
      * {@inheritDoc}
+     * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public HList subList(int fromIndex, int toIndex) {
         return new SubList(this, fromIndex, toIndex);
@@ -633,20 +639,20 @@ public class ListAdapter implements HList {
         if(a == null) {
             throw new NullPointerException();
         }
-        Object[] v = new Object[a.length];
+        Object[] v;
         HIterator it = iterator();
         if(a.length >= size()) {
-            for(int i = 0; i < a.length && it.hasNext(); i++) {
+            v = new Object[a.length];
+            int i = 0;
+            while(it.hasNext()) {
+                v[i++] = it.next();
+            }
+        }
+        else {
+            v = new Object[size()];
+            for(int i = 0; i < size() && it.hasNext(); i++) {
                 v[i] = it.next();
             }
-            return v;
-        }
-        v = new Object[size()];
-        for(int i = 0; i < size(); i++) {
-            if(it.hasNext())
-                v[i] = it.next();
-            else
-                v[i] = null;
         }
         return v;
     }

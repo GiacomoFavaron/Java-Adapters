@@ -30,7 +30,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
-     * <p>This implementation iterates over the collection and adds the elements to the set using add(Object).
+     * <p>This implementation iterates over the collection and adds its elements to the set using add(Object).
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean addAll(HCollection c) {
@@ -136,6 +136,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation uses the enumeration returned by the hashtable's keys() method to iterate over the set. If the set is modified in any way other than through the iterator's remove() method while an iteration is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the set when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     public HIterator iterator(){
         return new SetIterator();
@@ -167,6 +168,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementations checks if the object is already contained in the set using contains(Object), and if it isn't it removes the object from the set calling the hashtable's remove(Object) method.
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean remove(Object o) {
@@ -182,6 +184,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the collection and removes its elements from the set using remove(Object).
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean removeAll(HCollection c) {
@@ -200,6 +203,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the set and removes from the set the elements which are not contained in the collection (using the iterator's remove() method).
      * @throws NullPointerException {@inheritDoc}
      */
     public boolean retainAll(HCollection c){
@@ -220,6 +224,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's size() method.
      */
     public int size() {
         return hashtable.size();
@@ -227,6 +232,7 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the set and adds the elements returned by next() to the array. The length of the array is equal to the size of the set.
      */
     public Object[] toArray(){
         Object[] v = new Object[size()];
@@ -239,26 +245,27 @@ public class SetAdapter implements HSet {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the set and adds the elements returned by next() to the array. The length of the array is equal to the one of the array passed as the parameter. If it's length is greater than the set's size the elements whose index is greater or equal to the set's size are set to null.
      * @throws NullPointerException {@inheritDoc}
      */
     public Object[] toArray(Object[] a) {
         if(a == null) {
             throw new NullPointerException();
         }
-        Object[] v = new Object[a.length];
+        Object[] v;
         HIterator it = iterator();
         if(a.length >= size()) {
-            for(int i = 0; i < a.length && it.hasNext(); i++) {
+            v = new Object[a.length];
+            int i = 0;
+            while(it.hasNext()) {
+                v[i++] = it.next();
+            }
+        }
+        else {
+            v = new Object[size()];
+            for(int i = 0; i < size() && it.hasNext(); i++) {
                 v[i] = it.next();
             }
-            return v;
-        }
-        v = new Object[size()];
-        for(int i = 0; i < size(); i++) {
-            if(it.hasNext())
-                v[i] = it.next();
-            else
-                v[i] = null;
         }
         return v;
     }

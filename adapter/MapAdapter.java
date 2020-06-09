@@ -15,6 +15,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's size() method
      */
     @Override
     public void clear() {
@@ -23,6 +24,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's containsKey(Object) method
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -32,6 +34,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's contains(Object) method
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -41,6 +44,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation returns a set containing the entries of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HSet entrySet() {
@@ -130,12 +134,30 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation first checks if the specified object is this map, if so it returns true. Then, it checks if the specified object is a map whose size is identical to the size of this map, if not, it it returns false. If so, it returns entrySet().equals(m.entrySet()), where m is the other map.
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        HMap m = (HMap) obj;
-        return entrySet().equals(m.entrySet());
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HMap)) {
+            return false;
+        }
+        HMap m = (HMap) o;
+        if (m.size() != size()) {
+            return false;
+        }
+        try {
+            return entrySet().equals(m.entrySet());
+        }
+        catch (ClassCastException cce)   {
+            return false;
+        }
+        catch (NullPointerException npe) {
+            return false;
+        }
     }
 
     /**
@@ -154,6 +176,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the entrySet, adding up each element's haschode and returning the result.
      */
     @Override
     public int hashCode() {
@@ -169,6 +192,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's isEmpty() method.
      */
     @Override
     public boolean isEmpty() {
@@ -177,6 +201,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation returns a set containing the keys of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HSet keySet() {
@@ -239,6 +264,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's put(Object, Object) method.
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -251,6 +277,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation iterates over the entrySet of the map passed as the parameter and calls the hashtable's put(Object, Object) method for each of the elements of that entrySet.
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -268,6 +295,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's remove(Object) method.
      * @throws NullPointerException {@inheritDoc}
      */
     @Override
@@ -280,6 +308,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation calls the hashtable's size() method.
      */
     @Override
     public int size() {
@@ -288,6 +317,7 @@ public class MapAdapter implements HMap {
 
     /**
      * {@inheritDoc}
+     * <p>This implementation returns a collection containing the values of the map and which is backed by the map. If the map is modified in any way other than through the iterator's remove() method while an iteration of the set is in progress, the changes won't be reflected in the iterator but the latter will not be invalidated. The iterator, in fact, keeps an enumeration of the keys present in the map when the iterator is instantiated. Therefore even if structural changes are made to the map, the iterator will continue to operate on the same enumeration of keys.
      */
     @Override
     public HCollection values() {

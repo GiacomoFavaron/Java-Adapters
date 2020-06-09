@@ -17,11 +17,11 @@ public class TestMapAdapter {
     private HMap m = null;
 
     /**
-     * Bootstrap
+     * Set Up
      */
 
     @Before
-    public void start() {
+    public void setUp() {
         m = new MapAdapter();
     }
 
@@ -116,7 +116,7 @@ public class TestMapAdapter {
      */
 
     @Test
-    public void testEqualsWithEqualsMapping() {
+    public void testEqualsTrue() {
         HMap otherMap = new MapAdapter();
         assertTrue(otherMap.equals(m));
     }
