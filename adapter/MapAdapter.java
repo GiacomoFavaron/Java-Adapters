@@ -2,7 +2,6 @@ package adapter;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Map;
 
 // Notes:
 // Modifiche "invalide" di entrySet, keySet, values...
@@ -284,15 +283,122 @@ public class MapAdapter implements HMap {
      */
     @Override
     public HCollection values() {
-        HSet es = entrySet();
-        HIterator it = es.iterator();
-        HCollection vc = new CollectionAdapter(); // Se avess usato un set sarebbe stato errato (no elementi duplicati)
-        while(it.hasNext()) {
-            HEntry e = (HEntry) it.next();
-            vc.add(e.getValue());
-        }
-        return vc;
+        return new ValueCollection();
     }
+
+    private class ValueCollection extends CollectionAdapter {
+
+        @Override
+        public boolean add(Object o) {
+            throw new UnsupportedOperationException();
+        }
+    
+        @Override
+        public boolean addAll(HCollection c) {
+            throw new UnsupportedOperationException();
+        }
+    
+        @Override
+        public void clear() {
+            MapAdapter.this.clear();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            return MapAdapter.this.containsValue(o);
+        }
+
+        public boolean equals(Object o){
+            if (o == this) {
+                return true;
+            }
+            if (!(o instanceof HCollection)) {
+                return false;
+            }
+            HCollection c = (HCollection) o;
+            if (c.size() != size()) {
+                return false;
+            }
+            try {
+                return containsAll(c);
+            }
+            catch (ClassCastException cce)   {
+                return false;
+            }
+            catch (NullPointerException npe) {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return size() == 0;
+        }
+
+        @Override
+        public HIterator iterator() {
+            return new ValueIterator();
+        }
+
+        private class ValueIterator implements HIterator {
+
+            private Enumeration keys = h.keys();
+            private Object lastRetKey = null;
+
+            @Override
+            public boolean hasNext() {
+                return keys.hasMoreElements();
+            }
+
+            @Override
+            public Object next() {
+                lastRetKey = keys.nextElement(); // Lancia NoSuchElementException
+                return MapAdapter.this.get(lastRetKey);
+            }
+
+            @Override
+            public void remove() {
+                // Se next non e' mai stato chiamato o remove e' gia' stato
+                // chiamato dopo l'ultima chiamata a next.
+                if(lastRetKey == null) {
+                    throw new IllegalStateException();
+                }
+                MapAdapter.this.remove(lastRetKey);
+                lastRetKey = null;  // Reset to null after removing
+            }
+            
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            if(o == null) {
+                throw new NullPointerException();
+            }
+            boolean flag = false;
+            HSet es = MapAdapter.this.entrySet();
+            HIterator it = es.iterator();
+            while(it.hasNext()) {
+                HMap.HEntry e = (HMap.HEntry) it.next();
+                if(e.getValue().equals(o)) {
+                    if(MapAdapter.this.remove(e.getKey()) != null) {
+                        flag = true;
+                    }
+                } 
+            }
+            return flag;
+        }
+
+        @Override
+        public int size() {
+            return MapAdapter.this.size();
+        }
+
+    }
+
+    // Class Entry
 
     static class Entry implements HMap.HEntry {
         

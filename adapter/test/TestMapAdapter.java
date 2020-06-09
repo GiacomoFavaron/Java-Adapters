@@ -338,4 +338,15 @@ public class TestMapAdapter {
         }
     }
 
+    @Test
+    public void testValuesPropagation() {
+        m.put(Integer.valueOf(1), Integer.valueOf(2));
+        m.put(Integer.valueOf(4), Integer.valueOf(5));
+        HCollection coll = m.values();
+        HIterator it = coll.iterator();
+        it.next();
+        it.remove();
+        assertEquals(1, m.size());
+    }
+
 }
