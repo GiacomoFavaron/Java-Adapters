@@ -715,10 +715,10 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator add
+     * @safe.precondition List initialized, one object added
+     * @safe.postcondition The list iterator has added 4 elements to the list
+     * @safe.testcases Test that after calling the add method of the list iterator the elements are added in the right position, the size has been increased and that calls to next are unaffected by the add operation.
      */
 	@Test
 	public void testListIteratorAdd() {
@@ -750,7 +750,12 @@ public class TestListAdapter {
 		lit.add(null);
 	}
 
-	// nextIndex
+	/**
+     * Test listIterator nextIndex start
+     * @safe.precondition List initialized, listIterator initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that nextIndex returns 0
+     */
 	@Test
     public void testListIteratorNextIndexStart() {
         for(int i = 0; i < 5; i++) {
@@ -761,27 +766,10 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
-     */
-	@Test
-    public void testListIteratorNextIndexMiddle() {
-        for(int i = 0; i < 5; i++) {
-            l.add(new Object());
-		}
-		HListIterator lit = l.listIterator();
-		lit.next();
-		lit.next();
-        assertEquals(2, lit.nextIndex());
-	}
-
-	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator nextIndex end
+     * @safe.precondition List initialized, listIterator initialized, 5 objects added, iterator moved to the end of the list
+     * @safe.postcondition None
+     * @safe.testcases Test that nextIndex returns the list size (5)
      */
 	@Test
     public void testListIteratorNextIndexEnd() {
@@ -794,42 +782,22 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator previousIndex start
+     * @safe.precondition List initialized, listIterator initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that perviousIndex returns -1
      */
 	@Test
     public void testListIteratorPreviousIndexStart() {
-        for(int i = 0; i < 5; i++) {
-            l.add(new Object());
-		}
         HListIterator lit = l.listIterator();
         assertEquals(-1, lit.previousIndex());
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
-     */
-	@Test
-    public void testListIteratorPreviousIndexMiddle() {
-        for(int i = 0; i < 5; i++) {
-            l.add(new Object());
-		}
-		HListIterator lit = l.listIterator();
-		lit.next();
-		lit.next();
-        assertEquals(1, lit.previousIndex());
-	}
-
-	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator previousIndex end
+     * @safe.precondition List initialized, listIterator initialized, 5 objects added, iterator moved to the end of the list
+     * @safe.postcondition None
+     * @safe.testcases Test that perviousIndex returns the lsit size minus one
      */
 	@Test
     public void testListIteratorPreviousIndexEnd() {
@@ -842,10 +810,10 @@ public class TestListAdapter {
 	}
 	
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator remove
+     * @safe.precondition List initialized, listIterator initialized, 5 objects added
+     * @safe.postcondition Element removed from the list
+     * @safe.testcases Test that calling remove after a call to next removes that element (the size has been decreased)
      */
 	@Test
     public void testListIteratorRemove() {
@@ -859,10 +827,10 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator remove without next or previous
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition IllegalStateException thrown
+     * @safe.testcases Test that calling remove without first calling next or previous throws IllegalStateException.
      */
 	@Test(expected = IllegalStateException.class)
     public void testRemoveWithoutNextOrPrevious() {
@@ -874,10 +842,10 @@ public class TestListAdapter {
 	}
 	
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test listIterator remove after add
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition IllegalStateException thrown
+     * @safe.testcases Test that calling remove after calling add throws IllegalStateException.
      */
 	@Test(expected = IllegalStateException.class)
     public void testRemoveAfterAdd() {
@@ -890,15 +858,14 @@ public class TestListAdapter {
         lit.remove();
 	}
 
-/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+	/**
+     * Test listIterator set after next
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition Element has been set
+     * @safe.testcases Test that calling set after next sets the element to the value passed to the set method
      */
-
 	@Test
-    public void testListIteratorSetAfterNextFirstPos() {
+    public void testListIteratorSetAfterNext() {
         for(int i = 0; i < 3; i++) {
             l.add(new Object());
 		}
@@ -909,22 +876,14 @@ public class TestListAdapter {
         assertEquals(o, l.get(0));
 	}
 
-
+	/**
+     * Test listIterator set after previous
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition Element has been set
+     * @safe.testcases Test that calling set after previous sets the element to the value passed to the set method
+     */
 	@Test
-    public void testListIteratorSetAfterNextLastPos() {
-        for(int i = 0; i < 3; i++) {
-            l.add(new Object());
-		}
-		HListIterator lit = l.listIterator();
-		while(lit.hasNext())
-			lit.next();
-		Object o = new Object();
-        lit.set(o);
-        assertEquals(o, l.get(l.size()-1));
-	}
-
-	@Test
-    public void testListIteratorSetAfterPreviousFirstPos() {
+    public void testListIteratorSetAfterPrevious() {
         for(int i = 0; i < 3; i++) {
             l.add(new Object());
 		}
@@ -936,20 +895,12 @@ public class TestListAdapter {
         assertEquals(o, l.get(0));
 	}
 
-	@Test
-    public void testListIteratorSetAfterPreviousLastPos() {
-        for(int i = 0; i < 3; i++) {
-            l.add(new Object());
-		}
-		HListIterator lit = l.listIterator();
-		while(lit.hasNext())
-			lit.next();
-		lit.previous();
-		Object o = new Object();
-        lit.set(o);
-        assertEquals(o, l.get(l.size()-1));
-	}
-
+	/**
+     * Test listIterator set withoud next or previous
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition IllegalStateException thrown
+     * @safe.testcases Test that calling set without first calling next or previous throws IllegalStateException
+     */
 	@Test(expected = IllegalStateException.class)
     public void testSetWithoutNextOrPrevious() {
 		for(int i = 0; i < 3; i++) {
@@ -958,7 +909,13 @@ public class TestListAdapter {
 		HListIterator lit = l.listIterator();
         lit.set(new Object());
 	}
-	
+
+	/**
+     * Test listIterator set after add
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition IllegalStateException thrown
+     * @safe.testcases Test that calling set after calling the add method of the listIterator throws IllegalStateException
+     */
 	@Test(expected = IllegalStateException.class)
     public void testSetAfterAdd() {
 		for(int i = 0; i < 3; i++) {
@@ -970,6 +927,12 @@ public class TestListAdapter {
         lit.set(new Object());
 	}
 
+	/**
+     * Test listIterator set after remove
+     * @safe.precondition List initialized, listIterator initialized, 3 objects added
+     * @safe.postcondition IllegalStateException thrown
+     * @safe.testcases Test that calling set after calling the remove method of the listIterator throws IllegalStateException
+     */
 	@Test(expected = IllegalStateException.class)
     public void testSetAfterRemove() {
 		for(int i = 0; i < 3; i++) {
@@ -981,11 +944,11 @@ public class TestListAdapter {
         lit.set(new Object());
 	}
 
-/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+	/**
+     * Test that listIterator(int) is consistent with listIterator()
+     * @safe.precondition List initialized, 5 objects added to the list, listIterator with no parameters initialized, listIterator with parameter int 2 initialized
+     * @safe.postcondition The two iterators are in the same position
+     * @safe.testcases Test that after calling next twice on the first iterator, the subsequent calls to next for the two iterators return the same element.
      */
     @Test
     public void testListIteratorIndex() {
@@ -1001,10 +964,10 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test remove(int)
+     * @safe.precondition List initialized, 5 objects added to the list, object o added at index 3
+     * @safe.postcondition object o has been removed from the list
+     * @safe.testcases Test that calling remove(3) removes object o from the list (contains(o) returns false)
      */
     @Test
     public void testRemoveIndex() {
@@ -1016,7 +979,13 @@ public class TestListAdapter {
         l.remove(3);
         assertFalse(l.contains(o));
     }
-	
+
+	/**
+     * Test remove(int) with negative index
+     * @safe.precondition List initialized, 5 objects added to the list
+     * @safe.postcondition IndexOutOfBoundsException thrown
+     * @safe.testcases Test that calling remove(-1) throws IndexOutOfBoundsException
+     */
 	@Test(expected = IndexOutOfBoundsException.class)
     public void testRemoveOutOfBoundsNegative() {
 		for(int i = 0; i < 5; i++) {
@@ -1025,6 +994,12 @@ public class TestListAdapter {
         l.remove(-1);
 	}
 	
+	/**
+     * Test remove(int) with index greater than size
+     * @safe.precondition List initialized, 5 objects added to the list
+     * @safe.postcondition IndexOutOfBoundsException thrown
+     * @safe.testcases Test that calling remove(5) throws IndexOutOfBoundsException
+     */
 	@Test(expected = IndexOutOfBoundsException.class)
     public void testRemoveOutOfBoundsGreaterThanSize() {
 		for(int i = 0; i < 5; i++) {
@@ -1033,11 +1008,11 @@ public class TestListAdapter {
         l.remove(5);
     }
 
-/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+	/**
+     * Test remove(Object) when object is contained
+     * @safe.precondition List initialized, Object o added to the list
+     * @safe.postcondition Object o has been removed from the list
+     * @safe.testcases Test that calling remove(o) removes that element from the list and returns true (contains(o) returns false)
      */
     @Test
     public void testRemoveTrue() {
@@ -1047,6 +1022,12 @@ public class TestListAdapter {
         assertFalse(l.contains(o));
     }
 
+	/**
+     * Test remove(Object) when object isn't contained
+     * @safe.precondition List initialized, Object o added to the list
+     * @safe.postcondition Object o is still in the list
+     * @safe.testcases Test that calling remove(new Object()) returns false and contains(o) returns true
+     */
     @Test
     public void testRemoveFalse() {
         Object o = new Object();
@@ -1056,23 +1037,22 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test  
-     * @safe.precondition 
+     * Test remove(Object) with null
+     * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that 
+     * @safe.testcases Test that calling remove(null) throws NullPointerException
      */
 	@Test(expected = NullPointerException.class)
     public void testRemoveNullOBject() {
         l.remove(null);
 	}
 	
-/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+	/**
+     * Test removeAll with collection contained in the list
+     * @safe.precondition List initialized, collection c initailized, 5 objects added both to the collection and the list
+     * @safe.postcondition 5 objects have been removed from the list
+     * @safe.testcases Test that calling remove(c) removes the elements of the collection from the list (iterating over the list and calling contains on the elements of the collection return false)
      */
-
     @Test
     public void testRemoveAllCollectionContained() {
         HCollection c = new CollectionAdapter();
@@ -1087,6 +1067,12 @@ public class TestListAdapter {
 		}
     }
 
+	/**
+     * Test removeAll with collection not contained in the list
+     * @safe.precondition List initialized, collection c initailized, 3 objects added to the collection, one different object added to the list
+     * @safe.postcondition 5 objects have been removed from the list
+     * @safe.testcases Test that calling remove(c) removes the elements of the collection from the list (iterating over the list and calling contains on the elements of the collection return false)
+     */
     @Test
     public void testRemoveAllCollectionNotContained() {
         HCollection c = new CollectionAdapter();
