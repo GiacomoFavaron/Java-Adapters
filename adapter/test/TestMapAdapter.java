@@ -322,10 +322,10 @@ public class TestMapAdapter {
     }
 
     /**
-	* Test entrySet propagation to backing map
+	* Test keySet propagation to backing map
 	* @safe.precondition set initialized, two elements added to the map, call m.keySet and put the returned set in variable s
 	* @safe.postcondition The map's size is 1
-	* @safe.testcases Test that removing an element from the map's keySet affects the entryset's backing map (the size decreases)
+	* @safe.testcases Test that removing an element from the map's keySet affects the kerySet's backing map (the size decreases)
 	*/
     @Test
     public void testKeySetPropagation() {
@@ -380,7 +380,7 @@ public class TestMapAdapter {
     }
 
 	/**
-     * Test put with null key
+     * Test put with null value
      * @safe.precondition set initialized
      * @safe.postcondition NullPointerException thrown
      * @safe.testcases Test that calling put(Object, null) throws NullPointerException
@@ -390,81 +390,119 @@ public class TestMapAdapter {
         m.put(new Object(), null);
     }
     
+	/**
+     * Test put with null key and value
+     * @safe.precondition set initialized
+     * @safe.postcondition NullPointerException thrown
+     * @safe.testcases Test that calling put(null, null) throws NullPointerException
+     */
     @Test(expected = NullPointerException.class)
     public void testPutWithNullKeyAndValue() {
         m.put(null, null);
     }
 
     /**
-     * TestPutAll
+     * Test putAll
+     * @safe.precondition Set m initialized, otherMap initialized, 3 elements added to otherMap
+     * @safe.postcondition key/value pair added to the map m
+     * @safe.testcases Test when using putAll all the key/values are added or replaced in the map
      */
-
     @Test
     public void testPutAll() {
         HMap otherMap = new MapAdapter();
-        for(int i = 0; i < 5; i++) {
-            otherMap.put(i, new Object());
+        for(int i = 0; i < 3; i++) {
+            otherMap.put(Integer.valueOf(i), new Object());
         }
+        m.put(Integer.valueOf(2), new Object());
         m.putAll(otherMap);
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 3; i++) {
             assertTrue(m.containsKey(i));
         }
-        assertTrue(m.size() == 5);
     }
 
+	/**
+     * Test putAll with null
+     * @safe.precondition set initialized
+     * @safe.postcondition NullPointerException thrown
+     * @safe.testcases Test that calling putAll(null) throws NullPointerException
+     */
     @Test(expected = NullPointerException.class)
     public void testPutAllWithNull() {
         m.putAll(null);
     }
 
-    /**
-     * TestRemove
+	/**
+     * Test remove when object is contained
+     * @safe.precondition set initialized, element added to the map
+     * @safe.postcondition Element has been removed from the set
+     * @safe.testcases Test that calling remove with the key of the element inserted removes that element from the set (contains returns false)
      */
-
     @Test
-    public void testRemoveWithObjContained() {
+    public void testRemoveContained() {
         Object o = new Object();
-        m.put(0, o);
-        m.remove(0);
+        m.put(Integer.valueOf(1), o);
+        m.remove(Integer.valueOf(1));
         assertFalse(m.containsKey(0));
     }
 
+	/**
+     * Test remove when object is not contained
+     * @safe.precondition set initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that calling remove with a key not present in the map returns null
+     */
     @Test
-    public void testRemoveWithObjNotContained() {
-        assertEquals(m.remove(0), null);
+    public void testRemoveNotContained() {
+        assertEquals(m.remove(new Object()), null);
     }
 
+	/**
+     * Test putAll with null
+     * @safe.precondition set initialized
+     * @safe.postcondition NullPointerException thrown
+     * @safe.testcases Test that calling remove(null) throws NullPointerException
+     */
     @Test(expected = NullPointerException.class)
     public void testRemoveWithNull() {
         m.remove(null);
     }
 
-    /**
-     * TestSize
+  	 /**
+     * Test size with an empty set 
+     * @safe.precondition set initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that calling size with an empty set returns 0
      */
-
     @Test
     public void testSizeEmpty() {
         assertEquals(0, m.size());
     }
 
+     /**
+     * Test size
+     * @safe.precondition set initialized, 5 elements added to the set
+     * @safe.postcondition None
+     * @safe.testcases Test that calling size retrns 5
+     */
     @Test
     public void testSize() {
-        for(int i = 0; i < 4; i++) {
-			m.put(i, new Object());
+        for(int i = 0; i < 5; i++) {
+			m.put(new Object(), new Object());
         }
-        m.put(2, new Object());
-        assertEquals(4, m.size());
+        assertEquals(5, m.size());
     }
 
-    /**
-     * TestValues
-     */
-
+	/**
+	* Test values
+	* @safe.precondition set initialized, call m.values and put the returned collection in variable c
+	* @safe.postcondition c contains the collection view of the values of the map
+	* @safe.testcases Iterate over the collection and check that all the elements of the collection are contained in the map
+	*/
     @Test
     public void testValues() {
-        for(int i = 0; i < 5; i++)
-            m.put(i, new Object());
+        for(int i = 0; i < 5; i++) {
+            m.put(Integer.valueOf(i), new Object());
+        }
         HCollection c = m.values();
         HIterator cit = c.iterator();
         while(cit.hasNext()) {
@@ -472,12 +510,18 @@ public class TestMapAdapter {
         }
     }
 
+    /**
+	* Test values propagation to backing map
+	* @safe.precondition set initialized, two elements added to the map, call m.values and put the returned collection in variable c
+	* @safe.postcondition The map's size is 1
+	* @safe.testcases Test that removing an element from the map's values collection affects the backing map (the size decreases)
+	*/
     @Test
     public void testValuesPropagation() {
         m.put(Integer.valueOf(1), Integer.valueOf(2));
         m.put(Integer.valueOf(4), Integer.valueOf(5));
-        HCollection coll = m.values();
-        HIterator it = coll.iterator();
+        HCollection c = m.values();
+        HIterator it = c.iterator();
         it.next();
         it.remove();
         assertEquals(1, m.size());

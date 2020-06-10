@@ -617,7 +617,7 @@ public class TestSetAdapter {
 
      /**
      * Test size
-     * @safe.precondition set initialized, 4 objects to the set
+     * @safe.precondition set initialized, 4 objects added to the set
      * @safe.postcondition None
      * @safe.testcases Test that calling size retrns 4
      */
