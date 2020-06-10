@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapter entrySet, tests all functionalities of the EntrySet as a set.
+ * Test case class for MapAdapter entrySet, tests all functionalities of the set of entries as a HSet.
  */
 public class TestMapAdapterEntrySet {
 
@@ -19,7 +19,7 @@ public class TestMapAdapterEntrySet {
     private HMap.HEntry entry2 = null;
 
     /**
-     * Setup (for all tests): initializes the EntrySet s with two elements, and saves 4 entries, 2 contained in the entrySet (e1, e2), 2 not contained in the entrySet (entry1, entry2).
+     * Setup (for all tests): initializes the HSet s returned by the method entrySet and containing 2 entries. It also saves 4 entries, 2 contained in s (e1, e2), 2 not contained in s (entry1, entry2).
      */
 
     @Before

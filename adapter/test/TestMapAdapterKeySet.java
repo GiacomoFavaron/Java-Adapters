@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapter keySet, tests all functionalities of the KeySet as a set.
+ * Test case class for MapAdapter keySet, tests all functionalities of the set of keys as a HSet.
  */
 public class TestMapAdapterKeySet {
 
@@ -19,7 +19,7 @@ public class TestMapAdapterKeySet {
     private Object key2 = null;
 
     /**
-     * Setup (for all tests): initializes the EntrySet s with two elements, and saves 4 entries, 2 contained in the entrySet (k1, k2), 2 not contained in the entrySet (key1, key2).
+     * Setup (for all tests): initializes the HSet s returned by the method keySet and containing 2 keys. It also saves 4 keys, 2 contained in s (k1, k2), 2 not contained in s (key1, key2).
      */
 
     @Before
@@ -86,7 +86,7 @@ public class TestMapAdapterKeySet {
     }
 
     /**
-     * Test contains entry not contained
+     * Test contains key not contained
      * @safe.precondition setup
      * @safe.postcondition None
      * @safe.testcases Test that contains(key1) returns false.
@@ -312,7 +312,7 @@ public class TestMapAdapterKeySet {
      * Test remove when object is contained
      * @safe.precondition setup
      * @safe.postcondition key k1 has been removed from the set
-     * @safe.testcases Test that calling remove(k1) removes that entry from the set and returns true (contains(k1) returns false)
+     * @safe.testcases Test that calling remove(k1) removes that key from the set and returns true (contains(k1) returns false)
      */
     @Test
     public void testRemoveTrue() {
@@ -419,7 +419,7 @@ public class TestMapAdapterKeySet {
      * Test retainAll in a condition when some elements are retained
      * @safe.precondition setup, collection c initailized, k1 added to the collection
      * @safe.postcondition One element retained
-     * @safe.testcases Test that calling retainAll(c) retains the one entry of the collection and removes the other one (retainAll returns true, since the set has been modified and the size of the set is now 1)
+     * @safe.testcases Test that calling retainAll(c) retains the one key of the collection and removes the other one (retainAll returns true, since the set has been modified and the size of the set is now 1)
      */
     @Test
     public void testRetainAllSomeElementsRetained() {

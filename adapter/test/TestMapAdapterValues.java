@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for SetAdapter
+ * Test case class for MapAdapter values, tests all functionalities of the Collection of values as a HCollection.
  */
 public class TestMapAdapterValues {
 
@@ -19,7 +19,7 @@ public class TestMapAdapterValues {
     private Object value2 = null;
 
     /**
-     * Set up
+     * Setup (for all tests): initializes the HSet s returned by the method entrySet and containing 2 values. It also saves 4 values, 2 contained in s (v1, v2), 2 not contained in s (value1, value2).
      */
 
     @Before
@@ -41,27 +41,33 @@ public class TestMapAdapterValues {
     }
 
     /**
-     * TestAdd
+     * Test add
+     * @safe.precondition Setup
+     * @safe.postcondition UnsupportedOperationException thrown
+     * @safe.testcases Test that when calling add UnsupportedOperationException is thrown
      */
-
     @Test(expected = UnsupportedOperationException.class)
     public void testAdd() {
         c.add(new Object());
     }
 
-    /**
-     * TestAddAll
+     /**
+     * Test addAll
+     * @safe.precondition Setup
+     * @safe.postcondition UnsupportedOperationException thrown
+     * @safe.testcases Test that when calling addAll UnsupportedOperationException is thrown
      */
-
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAll() {
         c.add(new CollectionAdapter());
     }
 
     /**
-     * TestClear
+     * Test clear
+     * @safe.precondition setup
+     * @safe.postcondition collection is empty, size is 0
+     * @safe.testcases Tests that after calling clear size is 0
      */
-
     @Test
     public void testClear() {
         c.clear();
@@ -69,9 +75,11 @@ public class TestMapAdapterValues {
     }
 
     /**
-     * TestContains
+     * Test contains key contained
+     * @safe.precondition setup
+     * @safe.postcondition None
+     * @safe.testcases Test that contains(k1) returns true.
      */
-
     @Test
     public void testContainsTrue() {
         assertTrue(c.contains(v1));
