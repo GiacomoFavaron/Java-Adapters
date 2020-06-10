@@ -19,7 +19,7 @@ public class TestMapAdapterValues {
     private Object value2 = null;
 
     /**
-     * Setup (for all tests): initializes the HSet s returned by the method entrySet and containing 2 values. It also saves 4 values, 2 contained in s (v1, v2), 2 not contained in s (value1, value2).
+     * Setup (for all tests): initializes the HCollection c returned by the method values and containing 2 values. It also saves 4 values, 2 contained in c (v1, v2), 2 not contained in c (value1, value2).
      */
 
     @Before
@@ -176,23 +176,23 @@ public class TestMapAdapterValues {
     }
 
     /**
-     * Test equals with different sets
-     * @safe.precondition setup, otherSet initialized, one object added to otherSet
+     * Test equals with different collections
+     * @safe.precondition setup, otherCollection initialized, one object added to otherCollection
      * @safe.postcondition None
-     * @safe.testcases Test that c.equals(otherSet) returns false.
+     * @safe.testcases Test that c.equals(otherCollection) returns false.
      */
     @Test
     public void testEqualsFalse() {
-        HSet otherSet = new SetAdapter();
-        otherSet.add(new Object());
-        assertFalse(c.equals(otherSet));
+        HCollection otherCollection = new CollectionAdapter();
+        otherCollection.add(new Object());
+        assertFalse(c.equals(otherCollection));
     }
 
     /**
-     * Test hashcode equal sets
+     * Test hashcode equal collections
      * @safe.precondition setup, calls values to create otherCollection from map with the same values
      * @safe.postcondition None
-     * @safe.testcases Test that if sets are equal also hashcodes are equal 
+     * @safe.testcases Test that if collections are equal also hashcodes are equal 
      */
 	@Test
     public void testHashCodeTrue() {
@@ -205,19 +205,19 @@ public class TestMapAdapterValues {
 	}
     
     /**
-     * Test hashcode different sets
-     * @safe.precondition set s initialized, otherSet initialized, objects added to s
+     * Test hashcode different collections
+     * @safe.precondition collection c initialized, otherCollection initialized, objects added to s
      * @safe.postcondition None
-     * @safe.testcases Test that if sets are not equal also hashcodes are not equal 
+     * @safe.testcases Test that if collections are not equal also hashcodes are not equal 
      */
 	@Test
     public void testHashCodeFalse() {
-        HSet otherSet = new SetAdapter();
+        HCollection otherCollection = new CollectionAdapter();
         for(int i = 0; i < 5; i++) {
-            otherSet.add(new Object());
+            otherCollection.add(new Object());
         }
-		assertFalse(c.equals(otherSet));
-		assertFalse(c.hashCode() == otherSet.hashCode());
+		assertFalse(c.equals(otherCollection));
+		assertFalse(c.hashCode() == otherCollection.hashCode());
 	}
 
    /**
@@ -245,9 +245,9 @@ public class TestMapAdapterValues {
 
     /**
      * Test iterator next and hasNext
-     * @safe.precondition setup, iterator initialized, otherSet initialized
-     * @safe.postcondition set s copied into otherSet
-     * @safe.testcases Test that after iterating over the set s with the iterator's methods next and hasNext and copying the elements returned by next into otherSet, otherSet is equal to s.
+     * @safe.precondition setup, iterator initialized, otherCollection initialized
+     * @safe.postcondition collection c copied into otherCollection
+     * @safe.testcases Test that after iterating over the collection c with the iterator's methods next and hasNext and copying the elements returned by next into otherCollection, otherCollection is equal to c.
      */
     @Test
     public void testIteratorNextAndHasNext() {
@@ -277,7 +277,7 @@ public class TestMapAdapterValues {
      * Test iterator remove
      * @safe.precondition setup
      * @safe.postcondition One element removed from the set
-     * @safe.testcases Test that calling it.next() and it.remove() causes the size of the set to decrease by one
+     * @safe.testcases Test that calling it.next() and it.remove() causes the size of the collection to decrease by one
 	 */
 	@Test
     public void testIteratorRemove() {
@@ -291,7 +291,7 @@ public class TestMapAdapterValues {
      * Test remove when object is contained
      * @safe.precondition setup
      * @safe.postcondition value v1 has been removed from the set
-     * @safe.testcases Test that calling remove(v1) removes that value from the set and returns true (contains(v1) returns false)
+     * @safe.testcases Test that calling remove(v1) removes that value from the collection and returns true (contains(v1) returns false)
      */
     @Test
     public void testRemoveTrue() {
@@ -302,7 +302,7 @@ public class TestMapAdapterValues {
 	/**
      * Test remove when object isn't contained
      * @safe.precondition setup
-     * @safe.postcondition s hasn't been modified
+     * @safe.postcondition c hasn't been modified
      * @safe.testcases Test that calling remove(value1) returns false
      */
     @Test
@@ -383,7 +383,7 @@ public class TestMapAdapterValues {
      * Test retainAll in a condition when all elements are retained
      * @safe.precondition setup, collection coll initailized, v1 and v2 added to coll
      * @safe.postcondition all objects are still in the set
-     * @safe.testcases Test that calling retainAll(coll) retains all the elements of coll in the set (retainAll returns false, since the set hasn't been modified and the size of the set is still 2)
+     * @safe.testcases Test that calling retainAll(coll) retains all the elements of coll in the collection (retainAll returns false, since the collection hasn't been modified and the size of the collection is still 2)
      */
     @Test
     public void testRetainAllAllElementsRetained() {
@@ -398,7 +398,7 @@ public class TestMapAdapterValues {
      * Test retainAll in a condition when some elements are retained
      * @safe.precondition setup, collection coll initailized, v1 added to coll
      * @safe.postcondition One element retained
-     * @safe.testcases Test that calling retainAll(coll) retains the one value in coll and removes the other one (retainAll returns true, since the set has been modified and the size of the set is now 1)
+     * @safe.testcases Test that calling retainAll(coll) retains the one value in coll and removes the other one (retainAll returns true, since the collection has been modified and the size of the collection is now 1)
      */
     @Test
     public void testRetainAllSomeElementsRetained() {
@@ -411,8 +411,8 @@ public class TestMapAdapterValues {
     /**
      * Test retainAll in a condition when no elements are retained
      * @safe.precondition setup, collection coll initailized, value1 added to coll
-     * @safe.postcondition The set is empty
-     * @safe.testcases Test that calling retainAll(coll) retains no elements (retainAll returns true, since the set has been modified and the size of the set is now 0)
+     * @safe.postcondition The collection is empty
+     * @safe.testcases Test that calling retainAll(coll) retains no elements (retainAll returns true, since the collection has been modified and the size of the collection is now 0)
      */
 	@Test
     public void testRetainAllNoElementsRetained() {
@@ -434,10 +434,10 @@ public class TestMapAdapterValues {
 	}
 
    	 /**
-     * Test size with an empty set 
+     * Test size with an empty collection 
      * @safe.precondition setup, call to clear
      * @safe.postcondition None
-     * @safe.testcases Test that calling size with an empty set returns 0
+     * @safe.testcases Test that calling size with an empty collection returns 0
      */
     @Test
     public void testSizeEmpty() {
@@ -459,16 +459,16 @@ public class TestMapAdapterValues {
     /**
      * Test toArray 
      * @safe.precondition setup
-     * @safe.postcondition setArray contains the array view of the set
-     * @safe.testcases Test that calling toArray returns an array with the same elements as the set in the same order returned by the set iterator.
+     * @safe.postcondition collectionArray contains the array view of the set
+     * @safe.testcases Test that calling toArray returns an array with the same elements as the collection in the same order returned by the collection iterator.
      */
     @Test
     public void testToArray() {
-        Object[] setArray = c.toArray();
+        Object[] collectionArray = c.toArray();
         HIterator it = c.iterator();
 		int j = 0;
         while(it.hasNext()) {
-			assertEquals(it.next(), setArray[j]);
+			assertEquals(it.next(), collectionArray[j]);
 			j++;
         }
     }
@@ -476,18 +476,18 @@ public class TestMapAdapterValues {
     /**
      * Test toArray(Object[]) with an array of length smaller than the size of the set
      * @safe.precondition setup, Object array param of length 1 initialized
-     * @safe.postcondition setArray contains the array view of the set
-     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the set in the same order returned by the set iterator and of length the size of the set.
+     * @safe.postcondition collectionArray contains the array view of the set
+     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the collection in the same order returned by the collection iterator and of length the size of the set.
      */
     @Test
     public void testToArrayWithParameterSizeSmaller() {
         Object[] param = new Object[1];
-        Object[] setArray = c.toArray(param);
-        assertEquals(2, setArray.length);
+        Object[] collectionArray = c.toArray(param);
+        assertEquals(2, collectionArray.length);
         HIterator it = c.iterator();
 		int j = 0;
         while(it.hasNext()) {
-			assertEquals(it.next(), setArray[j]);
+			assertEquals(it.next(), collectionArray[j]);
 			j++;
         }
     }
@@ -495,22 +495,22 @@ public class TestMapAdapterValues {
     /**
      * Test toArray(Object[]) with an array of length greater than the size of the set
      * @safe.precondition setup, Object array param of length 10 initialized
-     * @safe.postcondition setArray contains the array view of the set
-     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the set in the same order returned by the set iterator and of length the length of param. The elements of the array after the index s.size()-1 are set to null.
+     * @safe.postcondition collectionArray contains the array view of the set
+     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the collection in the same order returned by the collection iterator and of length the length of param. The elements of the array after the index c.size()-1 are collection to null.
      */
     @Test
     public void testToArrayWithParameterSizeLonger() {
         Object[] param = new Object[10];
-        Object[] setArray = c.toArray(param);
-        assertEquals(10, setArray.length);
+        Object[] collectionArray = c.toArray(param);
+        assertEquals(10, collectionArray.length);
         HIterator it = c.iterator();
 		int j = 0;
         while(it.hasNext()) {
-			assertEquals(it.next(), setArray[j]);
+			assertEquals(it.next(), collectionArray[j]);
 			j++;
         }
         for(int i = c.size(); i < param.length; i++) {
-            assertEquals(setArray[i], null);
+            assertEquals(collectionArray[i], null);
         }
     }
 
