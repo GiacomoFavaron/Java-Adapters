@@ -1181,12 +1181,11 @@ public class TestListAdapter {
 	}
 	
 	/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test set
+     * @safe.precondition List initialized, 3 objects added to the list
+     * @safe.postcondition Element has been set
+     * @safe.testcases Test that calling set sets the element to the value passed to the set method
      */
-
 	@Test
     public void testSet() {
         for(int i = 0; i < 3; i++) {
@@ -1197,14 +1196,23 @@ public class TestListAdapter {
 		assertEquals(o, l.get(1));
 	}
 
+	/**
+     * Test set with negative index
+     * @safe.precondition List initialized
+     * @safe.postcondition IndexOutOfBoundsException thrown
+     * @safe.testcases Test that calling set with a negative index throws IndexOutOfBoundsException
+     */
 	@Test(expected = IndexOutOfBoundsException.class)
     public void testSetOutOfBoundsNegative() {
-		for(int i = 0; i < 5; i++) {
-            l.add(new Object());
-		}
         l.set(-1, new Object());
 	}
 	
+	/**
+     * Test set with index equal to size
+     * @safe.precondition List initialized, 5 Objects added to the list
+     * @safe.postcondition IndexOutOfBoundsException thrown
+     * @safe.testcases Test that calling set with an index equal to the size of the list throws IndexOutOfBoundsException
+     */
 	@Test(expected = IndexOutOfBoundsException.class)
     public void testSetOutOfBoundsGreaterOrEqualToSize() {
 		for(int i = 0; i < 5; i++) {
@@ -1214,10 +1222,10 @@ public class TestListAdapter {
 	}
 	
 	/**
-     * Test  
-     * @safe.precondition 
+     * Test set with null
+     * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that 
+     * @safe.testcases Test that calling set with a null object throws NullPointerException
      */
 	@Test(expected = NullPointerException.class)
     public void testSetWithNull() {
@@ -1225,17 +1233,22 @@ public class TestListAdapter {
 	}
 
 	 /**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test size with an empty list 
+     * @safe.precondition List initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that calling size with an empty list retrns 0
      */
-
     @Test
     public void testSizeEmpty() {
         assertEquals(0, l.size());
     }
 
+	 /**
+     * Test size
+     * @safe.precondition List initialized, 4 objects to the list
+     * @safe.postcondition None
+     * @safe.testcases Test that calling size retrns 4
+     */
     @Test
     public void TestSize() {
 		for(int i = 0; i < 4; i++) {
@@ -1246,9 +1259,9 @@ public class TestListAdapter {
 	
 	/**
      * Test Sublist changes propagation to the backing list 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * @safe.precondition List initialized, 10 Objects added to the list, sublist initialized, object o added to the sublist
+     * @safe.postcondition sublist and backing list sizes have been increased, object o is contained in both lists at the right index
+     * @safe.testcases Test that modifying the sublist also affects the backing list
      */
 	@Test
     public void TestSubListChangesPropagation() {
@@ -1264,6 +1277,12 @@ public class TestListAdapter {
 		assertEquals(o, l.get(7));
 	}
 
+	/**
+     * Test Sublist for range operations
+     * @safe.precondition List initialized, 9 Objects added to the list, object o added to the list, sublist(5, 10) initialized
+     * @safe.postcondition sublist and backing list sizes have been increased, object o is contained in both lists at the right index
+     * @safe.testcases Test that calling clear on the sublist removes the elements of the sublist from both the sublist and the backing list (size is decreased and o isn't contained anymore in the list)
+     */
 	@Test
     public void TestSubListChangesPropagationClear() {
 		for(int i = 0; i < 9; i++) {
@@ -1277,22 +1296,31 @@ public class TestListAdapter {
 	}
 
     /**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+     * Test toArray 
+     * @safe.precondition List initialized, 5 objects added to the list
+     * @safe.postcondition setArray contains the array view of the list
+     * @safe.testcases Test that calling toArray returns an array with the same elements as the list in the same order returned by the list iterator.
      */
     @Test
     public void testToArray() {
         for(int i = 0; i < 5; i++) {
             l.add(i);
         }
-        Object[] setArray = l.toArray();
-        for(int i = 0; i < l.size(); i++) {
-            assertEquals(l.get(i), setArray[i]);
+		Object[] setArray = l.toArray();
+		HIterator it = l.iterator();
+		int j = 0;
+        while(it.hasNext()) {
+			assertEquals(it.next(), setArray[j]);
+			j++;
         }
     }
 
+	/**
+     * Test toArray(Object[]) with an array of length smaller than the size of the list
+     * @safe.precondition List initialized, 10 objects added to the list, Object array param of length 5 initialized
+     * @safe.postcondition setArray contains the array view of the list
+     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the list in the same order returned by the list iterator and of length the size of the list.
+     */
     @Test
     public void testToArrayWithParameterSizeSmaller() {
         for(int i = 0; i < 10; i++) {
@@ -1301,11 +1329,20 @@ public class TestListAdapter {
         Object[] param = new Object[5];
         Object[] setArray = l.toArray(param);
         assertEquals(10, setArray.length);
-        for(int i = 0; i < setArray.length; i++) {
-            assertEquals(l.get(i), setArray[i]);
+        HIterator it = l.iterator();
+		int j = 0;
+        while(it.hasNext()) {
+			assertEquals(it.next(), setArray[j]);
+			j++;
         }
     }
 
+	/**
+     * Test toArray(Object[]) with an array of length greater than the size of the list
+     * @safe.precondition List initialized, 5 objects added to the list, Object array param of length 10 initialized
+     * @safe.postcondition setArray contains the array view of the list
+     * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the list in the same order returned by the list iterator and of length the length of param. The elements of the array after the index l.size()-1 are set to null.
+     */
     @Test
     public void testToArrayWithParameterSizeLonger() {
         for(int i = 0; i < 5; i++) {
@@ -1314,8 +1351,11 @@ public class TestListAdapter {
         Object[] param = new Object[10];
         Object[] setArray = l.toArray(param);
         assertEquals(10, setArray.length);
-        for(int i = 0; i < l.size(); i++) {
-            assertEquals(l.get(i), setArray[i]);
+        HIterator it = l.iterator();
+		int j = 0;
+        while(it.hasNext()) {
+			assertEquals(it.next(), setArray[j]);
+			j++;
         }
         for(int i = l.size(); i < param.length; i++) {
             assertEquals(setArray[i], null);
@@ -1323,10 +1363,10 @@ public class TestListAdapter {
     }
 
 	/**
-     * Test  
-     * @safe.precondition 
+     * Test toArray with null
+     * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that 
+     * @safe.testcases Test that calling toArray(null) throws NullPointerException.
      */
     @Test(expected = NullPointerException.class)
     public void testToArrayWithNull() {
