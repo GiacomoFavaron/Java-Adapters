@@ -19,7 +19,7 @@ public class TestListAdapter {
 	private ListAdapter l = null;
 
     /**
-     * Metodo di setup
+     * Setup method, initializes the list
      */
 
 	@Before
@@ -45,7 +45,7 @@ public class TestListAdapter {
 
 	/**
      * Test add(int, object) in last position
-     * @safe.precondition List initialized
+     * @safe.precondition List initialized, 5 objects added to the list
      * @safe.postcondition Element inserted
      * @safe.testcases Adds an element to the list and checks that the size has increased and the element is present in the last position.
      */
@@ -56,7 +56,7 @@ public class TestListAdapter {
 		}
 		Object o = new Object();
 		l.add(l.size(), o);
-		assertEquals(1, l.size());
+		assertEquals(6, l.size());
 		assertEquals(o, l.get(l.size()-1));
 	}
 
@@ -96,21 +96,21 @@ public class TestListAdapter {
 
     /**
      * Test add
-     * @safe.precondition List initialized
+     * @safe.precondition List initialized, 5 elements inserted in the list
      * @safe.postcondition Element added to the list
      * @safe.testcases Test that when adding an object the method returns true, the size has increased and the object is present in the last position.
      */
 	@Test
 	public void TestAdd() {
 		for(int i = 0; i < 5; i++) {
-			l.add(new Object());
+			l.add(i, new Object());
 		}
 		Object o = new Object();
 		assertTrue(l.add(o));
-		assertEquals(1, l.size());
+		assertEquals(6, l.size());
 		assertEquals(o, l.get(l.size()-1));
-		
 	}
+
     /**
      * Test add
      * @safe.precondition List initialized
