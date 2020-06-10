@@ -11,7 +11,8 @@ import static org.junit.Assert.assertFalse;
 import java.util.NoSuchElementException;
 
 /**
- * Test case TestListAdapterSublist
+ * Test case class for ListAdapter sublist
+ * @safe.summary This classes tests all the methods of a sublist (which implements HList) of a ListAdapter
  */
 
 public class TestListAdapterSublist {

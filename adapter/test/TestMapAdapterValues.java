@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapter values, tests all functionalities of the Collection of values as a HCollection.
+ * Test case class for MapAdapter values
+ * @safe.summary This class tests all functionalities of the collection returned by the method values() of a MapAdapter
  */
 public class TestMapAdapterValues {
 

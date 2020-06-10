@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapter keySet, tests all functionalities of the set of keys as a HSet.
+ * Test case class for MapAdapter keySet
+ * @safe.summary This class tests all functionalities of the set returned by the method keySet() of a MapAdapter
  */
 public class TestMapAdapterKeySet {
 

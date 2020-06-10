@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapter entrySet, tests all functionalities of the set of entries as a HSet.
+ * Test case class for MapAdapter entrySet
+ * @safe.summary This class tests all functionalities of the set returned by the method entrySet() of a MapAdapter
  */
 public class TestMapAdapterEntrySet {
 

@@ -11,7 +11,8 @@ import static org.junit.Assert.assertFalse;
 import java.util.NoSuchElementException;
 
 /**
- * Test case TestListAdapter
+ * Test case class for ListAdapter
+ * @safe.summary This classes tests all the methods of the ListAdapter class
  */
 
 public class TestListAdapter {
@@ -19,7 +20,7 @@ public class TestListAdapter {
 	private ListAdapter l = null;
 
     /**
-     * Setup method, initializes the list
+     * Setup method, initializes the ListAdapter
      */
 
 	@Before

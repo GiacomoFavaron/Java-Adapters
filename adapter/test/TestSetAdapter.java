@@ -12,13 +12,14 @@ import java.util.NoSuchElementException;
 
 /**
  * Test case class for SetAdapter
+ * @safe.summary This classes tests all the methods of the SetAdapter class
  */
 public class TestSetAdapter {
 
     private HSet s = null;
 
     /**
-     * Setup method, initializes the set
+     * Setup method, initializes the SetAdapter
      */
 
     @Before
@@ -29,11 +30,11 @@ public class TestSetAdapter {
     /**
      * Test add object not contained in the set
      * @safe.precondition Set initialized
-     * @safe.postcondition Element added to the list
+     * @safe.postcondition Element added to the map
      * @safe.testcases Test that when adding an object the method returns true, the size has increased and contains returns true
      */
     @Test
-    public void testAddWithObjNotContained() {
+    public void testAddWithObjectNotAlreadyContained() {
         Object o = new Object();
         assertTrue(s.add(o));
         assertEquals(1, s.size());
@@ -43,11 +44,11 @@ public class TestSetAdapter {
     /**
      * Test add object already contained in the set
      * @safe.precondition Set initialized
-     * @safe.postcondition Element added to the list
+     * @safe.postcondition Element added to the map
      * @safe.testcases Test that when adding an object altready contained in the map the method returns false, the size hasn't increased and contains returns true
      */
     @Test
-    public void testAddWithObjContained() {
+    public void testAddWithObjectAlreadyContained() {
         Object o = new Object();
         s.add(o);
         assertFalse(s.add(o));
@@ -294,7 +295,7 @@ public class TestSetAdapter {
      * @safe.testcases Test that s.equals(otherSet) returns true.
      */
 	@Test
-    public void testEqualsEmptyList() {
+    public void testEqualsEmptySet() {
 		HSet otherSet = new SetAdapter();
         assertTrue(s.equals(otherSet));
 	}
@@ -416,7 +417,7 @@ public class TestSetAdapter {
 
     /**
      * Test iterator remove
-     * @safe.precondition set s initialized, 5 objects added to the list, iterator initialized
+     * @safe.precondition set s initialized, 5 objects added to the set, iterator initialized
      * @safe.postcondition One element removed from the set
      * @safe.testcases Test that calling it.next() and it.remove() causes the size of the set to decrease by one
 	 */
@@ -511,7 +512,7 @@ public class TestSetAdapter {
      * Test removeAll with collection partially contained in the set
      * @safe.precondition set initialized, collection c initailized, 3 objects added to the collection, object o added both to the collection and the set
      * @safe.postcondition Object o has been removed from the set
-     * @safe.testcases Test that calling removeAll(c) returns true and removes o from the set (size of the list becomes 0)
+     * @safe.testcases Test that calling removeAll(c) returns true and removes o from the set (size of the set becomes 0)
      */
     @Test
     public void testRemoveAllCollectionPartiallyContained() {
