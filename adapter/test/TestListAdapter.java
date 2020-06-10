@@ -223,9 +223,9 @@ public class TestListAdapter {
 
     /**
      * Test clear
-     * @safe.precondition List initialized, elements added, size greater than 0
+     * @safe.precondition List initialized, 5 Objects and Object o added, size greater than 0
      * @safe.postcondition List is empty, size is 0
-     * @safe.testcases Tests that after calling clear size is 0 and an element isn't contained anymore
+     * @safe.testcases Tests that after calling clear size is 0 and Object o is no longer contained in the list
      */
 	@Test
 	public void testClear() {
@@ -237,7 +237,8 @@ public class TestListAdapter {
 		l.clear();
 		assertEquals(0, l.size());
 		assertFalse(l.contains(o));
-	}
+    }
+    
     /**
      * Test contains object contained
      * @safe.precondition List initialized, Object o added, some objects added
@@ -273,7 +274,7 @@ public class TestListAdapter {
 	* Test contains null
 	* @safe.precondition List initialized
 	* @safe.postcondition NullPointerException thrown
-	* @safe.testcases Test that NullPointerException is thrown.
+	* @safe.testcases Test that when calling contains(null) NullPointerException is thrown.
 	*/
 	@Test (expected = NullPointerException.class)
 	public void testContainsWithNullObject() {
@@ -298,7 +299,7 @@ public class TestListAdapter {
 
     /**
      * Test containsAll with collection not contained
-     * @safe.precondition List initialized, collection initialized
+     * @safe.precondition List initialized, collection initialized with 5 objects
      * @safe.postcondition None
      * @safe.testcases Test that containsAll(c) returns false
      */
@@ -333,7 +334,7 @@ public class TestListAdapter {
      * Test containsAll with null
      * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that NullPointerException is thrown
+     * @safe.testcases Test that when calling containsAll(null) NullPointerException is thrown
      */
 	@Test(expected = NullPointerException.class)
     public void testContainsAllWithNull() {
@@ -396,8 +397,8 @@ public class TestListAdapter {
     /**
      * Test equals with null
      * @safe.precondition List l initialized
-     * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that calling l.equals(null) NullPointerException is thrown
+     * @safe.postcondition None
+     * @safe.testcases Test that when calling l.equals(null) returns false
      */
 	@Test
 	public void testEqualsWithNull() {
