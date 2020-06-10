@@ -399,7 +399,7 @@ public class TestSetAdapter {
 
     /**
      * Test iterator NoSuchElementException
-     * @safe.precondition List initialized, 3 objects added to the set, iterator initialized
+     * @safe.precondition set initialized, 3 objects added to the set, iterator initialized
      * @safe.postcondition NoSuchElementException thrown
      * @safe.testcases Test that calling next 4 causes NoSuchElementException to be thrown
      */
@@ -473,8 +473,8 @@ public class TestSetAdapter {
 	/**
      * Test removeAll with collection contained in the set
      * @safe.precondition set initialized, collection c initailized, 5 objects added both to the collection and the set
-     * @safe.postcondition 5 objects have been removed from the set
-     * @safe.testcases Test that calling removeAll(c) removes the elements of the collection from the set (iterating over the set and calling contains on the elements of the collection return false)
+     * @safe.postcondition All elements in the collection have been removed from the set
+     * @safe.testcases Test that calling removeAll(c) removes the elements of the collection from the set (iterating over the set and calling contains on the elements of the collection returns false)
      */
     @Test
     public void testRemoveAllWithHCollectionContained() {
@@ -607,7 +607,7 @@ public class TestSetAdapter {
      * Test size with an empty set 
      * @safe.precondition set initialized
      * @safe.postcondition None
-     * @safe.testcases Test that calling size with an empty set retrns 0
+     * @safe.testcases Test that calling size with an empty set returns 0
      */
     @Test
     public void testSizeEmpty() {
@@ -672,7 +672,7 @@ public class TestSetAdapter {
 
 	/**
      * Test toArray(Object[]) with an array of length greater than the size of the set
-     * @safe.precondition List initialized, 5 objects added to the set, Object array param of length 10 initialized
+     * @safe.precondition set initialized, 5 objects added to the set, Object array param of length 10 initialized
      * @safe.postcondition setArray contains the array view of the set
      * @safe.testcases Test that calling toArray(param) returns an array with the same elements as the set in the same order returned by the set iterator and of length the length of param. The elements of the array after the index s.size()-1 are set to null.
      */
