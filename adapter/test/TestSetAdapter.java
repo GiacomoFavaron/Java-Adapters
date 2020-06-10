@@ -198,7 +198,7 @@ public class TestSetAdapter {
 
     /**
      * Test containsAll with collection contained
-     * @safe.precondition set initialized, collection initialized, collection added to the set
+     * @safe.precondition set initialized, collection c initialized, collection added to the set
      * @safe.postcondition None
      * @safe.testcases Test that containsAll(c) returns true
      */
@@ -215,7 +215,7 @@ public class TestSetAdapter {
 
     /**
      * Test containsAll with collection not contained
-     * @safe.precondition set initialized, collection initialized with 5 objects
+     * @safe.precondition set initialized, collection c initialized with 5 objects
      * @safe.postcondition None
      * @safe.testcases Test that containsAll(c) returns false
      */
@@ -230,7 +230,7 @@ public class TestSetAdapter {
 
     /**
      * Test containsAll with collection partially contained
-     * @safe.precondition set initialized, collection initialized, collection partially added to list
+     * @safe.precondition set initialized, collection c initialized, collection partially added to set
      * @safe.postcondition None
      * @safe.testcases Test that containsAll(c) returns false
      */
@@ -248,7 +248,7 @@ public class TestSetAdapter {
 
     /**
      * Test containsAll with null
-     * @safe.precondition List initialized
+     * @safe.precondition set initialized
      * @safe.postcondition NullPointerException thrown
      * @safe.testcases Test that when calling containsAll(null) NullPointerException is thrown
      */
@@ -261,7 +261,7 @@ public class TestSetAdapter {
      * Test equals with equal set
      * @safe.precondition set s initialized, otherSet initialized, same objects added to both sets
      * @safe.postcondition None
-     * @safe.testcases Test that l.equals(otherSet) returns true.
+     * @safe.testcases Test that s.equals(otherSet) returns true.
      */
     @Test
     public void testEqualsTrue() {
@@ -278,7 +278,7 @@ public class TestSetAdapter {
      * Test equals with different sets
      * @safe.precondition set s initialized, otherSet initialized, one object added to otherSet
      * @safe.postcondition None
-     * @safe.testcases Test that l.equals(otherSet) returns false.
+     * @safe.testcases Test that s.equals(otherSet) returns false.
      */
     @Test
     public void testEqualsFalse() {
@@ -291,7 +291,7 @@ public class TestSetAdapter {
      * Test equals with empty sets
      * @safe.precondition set s initialized, otherSet initialized, both empty
      * @safe.postcondition None
-     * @safe.testcases Test that l.equals(otherSet) returns true.
+     * @safe.testcases Test that s.equals(otherSet) returns true.
      */
 	@Test
     public void testEqualsEmptyList() {
@@ -313,7 +313,7 @@ public class TestSetAdapter {
     /**
      * Test equals with null
      * @safe.precondition set s initialized
-     * @safe.postcondition NullPointerException thrown
+     * @safe.postcondition none
      * @safe.testcases Test that calling s.equals(null) returns false
      */
 	@Test

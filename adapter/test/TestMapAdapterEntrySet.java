@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for SetAdapter
+ * Test case class for MapAdapterEntrySet, tests all functionalities of the EntrySet as a set.
  */
 public class TestMapAdapterEntrySet {
 
@@ -19,7 +19,7 @@ public class TestMapAdapterEntrySet {
     private HMap.HEntry key2 = null;
 
     /**
-     * Set up
+     * Setup: initializes the EntrySet s with two elements, and saves 4 entries, 2 contained in the entrySet (k1, k2), 2 not contained in the entrySet (key1, key2).
      */
 
     @Before
@@ -41,27 +41,33 @@ public class TestMapAdapterEntrySet {
     }
 
     /**
-     * TestAdd
+     * Test add
+     * @safe.precondition Setup
+     * @safe.postcondition UnsupportedOperationException thrown
+     * @safe.testcases Test that when calling add UnsupportedOperationException is thrown
      */
-
     @Test(expected = UnsupportedOperationException.class)
     public void testAdd() {
         s.add(new Object());
     }
 
-    /**
-     * TestAddAll
+     /**
+     * Test addAll
+     * @safe.precondition Setup
+     * @safe.postcondition UnsupportedOperationException thrown
+     * @safe.testcases Test that when calling addAll UnsupportedOperationException is thrown
      */
-
     @Test(expected = UnsupportedOperationException.class)
     public void testAddAll() {
         s.add(new CollectionAdapter());
     }
 
     /**
-     * TestClear
+     * Test clear
+     * @safe.precondition setup
+     * @safe.postcondition set is empty, size is 0
+     * @safe.testcases Tests that after calling clear size is 0
      */
-
     @Test
     public void testClear() {
         s.clear();
@@ -69,33 +75,55 @@ public class TestMapAdapterEntrySet {
     }
 
     /**
-     * TestContains
+     * Test contains entry contained
+     * @safe.precondition setup
+     * @safe.postcondition None
+     * @safe.testcases Test that contains(k1) returns true.
      */
-
     @Test
     public void testContainsTrue() {
         assertTrue(s.contains(k1));
     }
 
+    /**
+     * Test contains entry not contained
+     * @safe.precondition setup
+     * @safe.postcondition None
+     * @safe.testcases Test that contains(key1) returns false.
+     */
     @Test
     public void testContainsFalse() {
         assertFalse(s.contains(key1));
     }
 
+    /**
+     * Test contains ClassCastException
+     * @safe.precondition setup
+     * @safe.postcondition ClassCastException thrown
+     * @safe.testcases Test that contains(new Object()) throws ClassCastException
+     */
     @Test(expected = ClassCastException.class)
     public void testContainsClassCast() {
         s.contains(new Object());
     }
 
+    /**
+     * Test contains with null
+     * @safe.precondition setup
+     * @safe.postcondition NullPointerException thrown
+     * @safe.testcases Test that contains(null) throws NullPointerException
+     */
     @Test(expected = NullPointerException.class)
     public void testContainsWithNull() {
         s.contains(null);
     }
 
     /**
-     * TestContainsAll
+     * Test containsAll with collection contained
+     * @safe.precondition setup, collection c initialized, k1 and k2 added to collection
+     * @safe.postcondition None
+     * @safe.testcases Test that containsAll(c) returns true
      */
-
     @Test
     public void testContainsAllWithHCollectionContained() {
         HCollection c = new CollectionAdapter();
@@ -104,6 +132,12 @@ public class TestMapAdapterEntrySet {
         assertTrue(s.containsAll(c));
     }
 
+    /**
+     * Test containsAll with collection not contained
+     * @safe.precondition setup, collection c initialized, key1 and key2 added to collection
+     * @safe.postcondition None
+     * @safe.testcases Test that containsAll(c) returns false
+     */
     @Test
     public void testContainsAllWithHCollectionNotContained() {
         HCollection c = new CollectionAdapter();
@@ -112,6 +146,12 @@ public class TestMapAdapterEntrySet {
         assertFalse(s.containsAll(c));
     }
 
+    /**
+     * Test containsAll with collection partially contained
+     * @safe.precondition setup, collection c initialized, k1 and key2 added to collection
+     * @safe.postcondition None
+     * @safe.testcases Test that containsAll(c) returns false
+     */
     @Test
     public void testContainsAllWithHCollectionPartiallyContained() {
         HCollection c = new CollectionAdapter();
@@ -120,6 +160,12 @@ public class TestMapAdapterEntrySet {
         assertFalse(s.containsAll(c));
     }
 
+    /**
+     * Test containsAll ClassCastException
+     * @safe.precondition setup, new Object() added to a collection c
+     * @safe.postcondition ClassCastException thrown
+     * @safe.testcases Test that containsAll(c) throws ClassCastException
+     */
     @Test(expected = ClassCastException.class)
     public void testContainsAllClassCast() {
         HCollection c = new CollectionAdapter();
@@ -127,24 +173,38 @@ public class TestMapAdapterEntrySet {
         s.containsAll(c);
     }
 
+    /**
+     * Test containsAll with null
+     * @safe.precondition setup
+     * @safe.postcondition NullPointerException thrown
+     * @safe.testcases Test that containsAll(null) throws NullPointerException
+     */
     @Test(expected = NullPointerException.class)
     public void testContainsAllWithNull() {
         s.containsAll(null);
     }
 
     /**
-     * TestEquals
+     * Test equals with equal set
+     * @safe.precondition setup, create entrySet (otherSet) from map with the same entries
+     * @safe.postcondition None
+     * @safe.testcases Test that s.equals(otherSet) returns true.
      */
-
     @Test
     public void testEqualsTrue() {
         MapAdapter map = new MapAdapter();
         map.put(Integer.valueOf(1), Integer.valueOf(2));
         map.put(Integer.valueOf(4), Integer.valueOf(5));
         HSet otherSet = map.entrySet();
-        assertEquals(s, otherSet);
+        assertTrue(s.equals(otherSet));
     }
 
+    /**
+     * Test equals with different sets
+     * @safe.precondition setup, otherSet initialized, one object added to otherSet
+     * @safe.postcondition None
+     * @safe.testcases Test that s.equals(otherSet) returns false.
+     */
     @Test
     public void testEqualsFalse() {
         HSet otherSet = new SetAdapter();
@@ -153,9 +213,33 @@ public class TestMapAdapterEntrySet {
     }
 
     /**
-     * Test hashCode
+     * Test equals with itself
+     * @safe.precondition set s initialized
+     * @safe.postcondition None
+     * @safe.testcases Test that s.equals(s) returns true.
      */
+	@Test
+	public void testEqualsEqualToItself() {
+		assertTrue(s.equals(s));
+	}
 
+    /**
+     * Test equals with null
+     * @safe.precondition setup
+     * @safe.postcondition none
+     * @safe.testcases Test that calling s.equals(null) returns false
+     */
+	@Test
+	public void testEqualsWithNull() {
+		assertFalse(s.equals(null));
+    }
+
+    /**
+     * Test hashcode equal sets
+     * @safe.precondition setup, create entrySet (otherSet) from map with the same entries
+     * @safe.postcondition None
+     * @safe.testcases Test that if sets are equal also hashcodes are equal 
+     */
 	@Test
     public void testHashCodeTrue() {
         MapAdapter map = new MapAdapter();
@@ -165,7 +249,13 @@ public class TestMapAdapterEntrySet {
 		assertEquals(s, otherSet);
 		assertTrue(s.hashCode() == otherSet.hashCode());
 	}
-	
+    
+    /**
+     * Test hashcode different sets
+     * @safe.precondition set s initialized, otherSet initialized, objects added to s
+     * @safe.postcondition None
+     * @safe.testcases Test that if sets are not equal also hashcodes are not equal 
+     */
 	@Test
     public void testHashCodeFalse() {
         HSet otherSet = new SetAdapter();
@@ -176,25 +266,35 @@ public class TestMapAdapterEntrySet {
 		assertFalse(s.hashCode() == otherSet.hashCode());
 	}
 
-    /**
-     * TestIsEmpty
+   /**
+     * Test isEmpty with empty list
+     * @safe.precondition setup, call to clear
+     * @safe.postcondition None
+     * @safe.testcases Test that isEmpty returns true
      */
-
     @Test
     public void TestIsEmptyTrue() {
         s.clear();
         assertTrue(s.isEmpty());
     }
 
+     /**
+     * Test isEmpty with non empty set
+     * @safe.precondition setup
+     * @safe.postcondition None
+     * @safe.testcases Test that isEmpty returns false
+     */
     @Test
     public void testIsEmptyFalse() {
         assertFalse(s.isEmpty());
 	}
 
     /**
-     * TestIterator
+     * Test iterator next and hasNext
+     * @safe.precondition set s initialized, 5 objects added to the set, iterator initialized, otherSet initialized
+     * @safe.postcondition set s copied into otherSet
+     * @safe.testcases Test that after iterating over the set s with the iterator's methods next and hasNext and copying the elements returned by next into otherSet, otherSet is equal to s.
      */
-
     @Test
     public void testIteratorNextAndHasNext() {
         HIterator it = s.iterator();
