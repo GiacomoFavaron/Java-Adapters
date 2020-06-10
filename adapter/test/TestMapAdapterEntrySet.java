@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.NoSuchElementException;
 
 /**
- * Test case class for MapAdapterEntrySet, tests all functionalities of the EntrySet as a set.
+ * Test case class for MapAdapter entrySet, tests all functionalities of the EntrySet as a set.
  */
 public class TestMapAdapterEntrySet {
 
@@ -19,7 +19,7 @@ public class TestMapAdapterEntrySet {
     private HMap.HEntry entry2 = null;
 
     /**
-     * Setup: initializes the EntrySet s with two elements, and saves 4 entries, 2 contained in the entrySet (e1, e2), 2 not contained in the entrySet (entry1, entry2).
+     * Setup (for all tests): initializes the EntrySet s with two elements, and saves 4 entries, 2 contained in the entrySet (e1, e2), 2 not contained in the entrySet (entry1, entry2).
      */
 
     @Before
@@ -267,7 +267,7 @@ public class TestMapAdapterEntrySet {
 	}
 
    /**
-     * Test isEmpty with empty list
+     * Test isEmpty with empty set
      * @safe.precondition setup, call to clear
      * @safe.postcondition None
      * @safe.testcases Test that isEmpty returns true
@@ -349,7 +349,7 @@ public class TestMapAdapterEntrySet {
      * Test remove when object isn't contained
      * @safe.precondition setup
      * @safe.postcondition s hasn't been modified
-     * @safe.testcases Test that calling remove(entry) returns false
+     * @safe.testcases Test that calling remove(entry1) returns false
      */
     @Test
     public void testRemoveFalse() {

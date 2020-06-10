@@ -356,7 +356,7 @@ public class TestSetAdapter {
 	}
 
     /**
-     * Test isEmpty with empty list
+     * Test isEmpty with empty set
      * @safe.precondition set initialized empty
      * @safe.postcondition None
      * @safe.testcases Test that isEmpty returns true
