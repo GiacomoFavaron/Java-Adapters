@@ -361,7 +361,7 @@ public class TestMapAdapterKeySet {
 
 	/**
      * Test removeAll with collection not contained in the set
-     * @safe.precondition setup, key1 and key2 added to collection
+     * @safe.precondition setup, key1 and key2 added to collection c
      * @safe.postcondition None
      * @safe.testcases Test that calling removeAll(c) returns false and the size of the set is two
      */
@@ -376,9 +376,9 @@ public class TestMapAdapterKeySet {
 
     /**
      * Test removeAll with collection partially contained in the set
-     * @safe.precondition setup, key1 and k2
+     * @safe.precondition setup, key1 and k2 added to collection c
      * @safe.postcondition k2 has been removed from the set
-     * @safe.testcases Test that calling removeAll(c) returns true and removes k2 from the set (size of the list becomes 1)
+     * @safe.testcases Test that calling removeAll(c) returns true and removes k2 from the set (size of the set becomes 1)
      */
     @Test
     public void testRemoveAllCollectionPartiallyContained() {
@@ -402,7 +402,7 @@ public class TestMapAdapterKeySet {
 
 	/**
      * Test retainAll in a condition when all elements are retained
-     * @safe.precondition setup, collection c initailized, k1 and k2
+     * @safe.precondition setup, collection c initailized, k1 and k2 added to c
      * @safe.postcondition all objects are still in the set
      * @safe.testcases Test that calling retainAll(c) retains all the elements of the collection in the set (retainAll returns false, since the set hasn't been modified and the size of the set is still 2)
      */
@@ -524,8 +524,11 @@ public class TestMapAdapterKeySet {
         Object[] param = new Object[10];
         Object[] setArray = s.toArray(param);
         assertEquals(10, setArray.length);
-        for(int i = 0; i < s.size(); i++) {
-            assertTrue(s.contains(setArray[i]));
+        HIterator it = s.iterator();
+		int j = 0;
+        while(it.hasNext()) {
+			assertEquals(it.next(), setArray[j]);
+			j++;
         }
         for(int i = s.size(); i < param.length; i++) {
             assertEquals(setArray[i], null);

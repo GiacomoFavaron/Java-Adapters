@@ -414,7 +414,7 @@ public class TestMapAdapterEntrySet {
      * Test removeAll with collection partially contained in the set
      * @safe.precondition setup, entry1 and e2
      * @safe.postcondition e2 has been removed from the set
-     * @safe.testcases Test that calling removeAll(c) returns true and removes e2 from the set (size of the list becomes 1)
+     * @safe.testcases Test that calling removeAll(c) returns true and removes e2 from the set (size of the set becomes 1)
      */
     @Test
     public void testRemoveAllCollectionPartiallyContained() {
