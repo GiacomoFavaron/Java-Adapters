@@ -1051,7 +1051,7 @@ public class TestListAdapter {
      * Test removeAll with collection contained in the list
      * @safe.precondition List initialized, collection c initailized, 5 objects added both to the collection and the list
      * @safe.postcondition 5 objects have been removed from the list
-     * @safe.testcases Test that calling remove(c) removes the elements of the collection from the list (iterating over the list and calling contains on the elements of the collection return false)
+     * @safe.testcases Test that calling removeAll(c) removes the elements of the collection from the list (iterating over the list and calling contains on the elements of the collection return false)
      */
     @Test
     public void testRemoveAllCollectionContained() {
@@ -1070,8 +1070,8 @@ public class TestListAdapter {
 	/**
      * Test removeAll with collection not contained in the list
      * @safe.precondition List initialized, collection c initailized, 3 objects added to the collection, one different object added to the list
-     * @safe.postcondition 5 objects have been removed from the list
-     * @safe.testcases Test that calling remove(c) removes the elements of the collection from the list (iterating over the list and calling contains on the elements of the collection return false)
+     * @safe.postcondition None
+     * @safe.testcases Test that calling removeAll(c) returns false and the size of the list is one
      */
     @Test
     public void testRemoveAllCollectionNotContained() {
@@ -1084,6 +1084,12 @@ public class TestListAdapter {
 		assertEquals(1, l.size());
 	}
 
+	/**
+     * Test removeAll with collection partially contained in the list
+     * @safe.precondition List initialized, collection c initailized, 3 objects added to the collection, object o added both to the collection and the list
+     * @safe.postcondition Object o has been removed from the list
+     * @safe.testcases Test that calling removeAll(c) returns true and removes o from the list (size of the list becomes 0)
+     */
 	@Test
     public void testRemoveAllCollectionPartiallyContained() {
         HCollection c = new CollectionAdapter();
@@ -1098,21 +1104,21 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test  
-     * @safe.precondition 
+     * Test removeAll with null
+     * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that 
+     * @safe.testcases Test that calling removeAll(null) throws NullPointerException
      */
 	@Test(expected = NullPointerException.class)
     public void testRemoveAllWithNull() {
         l.removeAll(null);
     }
 
-/**
-     * Test listIterator 
-     * @safe.precondition 
-     * @safe.postcondition 
-     * @safe.testcases Test that 
+	/**
+     * Test retainAll in a condition when all elements are retained
+     * @safe.precondition List initialized, collection c initailized, 5 objects added both to the collection and the list
+     * @safe.postcondition all objects are still in the list
+     * @safe.testcases Test that calling retainAll(c) retains all the elements of the collection in the list (retainAll returns false, since the list hasn't been modified and the size of the list is still 5)
      */
     @Test
     public void testRetainAllAllElementsRetained() {
@@ -1127,6 +1133,12 @@ public class TestListAdapter {
 		assertEquals(5, l.size());
     }
 
+	/**
+     * Test retainAll in a condition when some elements are retained
+     * @safe.precondition List initialized, collection c initailized, 5 objects added to the list, 3 of these objects added to the collection
+     * @safe.postcondition The 3 objects in the collection are still in the list while the other 2 have been removed
+     * @safe.testcases Test that calling retainAll(c) retains the 3 elements of the collection and removes the other 2 (retainAll returns true, since the list has been modified and the size of the list is now 3)
+     */
     @Test
     public void testRetainAllSomeElementsRetained() {
         HCollection c = new CollectionAdapter();
@@ -1140,6 +1152,12 @@ public class TestListAdapter {
 		assertEquals(3, l.size());
 	}
 
+	/**
+     * Test retainAll in a condition when no elements are retained
+     * @safe.precondition List initialized, collection c initailized, 5 objects added to the list
+     * @safe.postcondition The list is empty
+     * @safe.testcases Test that calling retainAll(c) retains no elements (retainAll returns true, since the list has been modified and the size of the list is now 0)
+     */
 	@Test
     public void testRetainAllNoElementsRetained() {
         HCollection c = new CollectionAdapter();
@@ -1152,10 +1170,10 @@ public class TestListAdapter {
 	}
 
 	/**
-     * Test  
-     * @safe.precondition 
+     * Test retainAll with null
+     * @safe.precondition List initialized
      * @safe.postcondition NullPointerException thrown
-     * @safe.testcases Test that 
+     * @safe.testcases Test that calling retainAll(null) throws NullPointerException
      */
 	@Test(expected = NullPointerException.class)
     public void testRetainAllWithNull() {
